@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// POST /player-stats - Create a new player stat
+// POST /playerstats - Create a new player stat
 router.post('/', async (req, res) => {
     try {
         const {
@@ -72,8 +72,28 @@ router.post('/', async (req, res) => {
         res.status(201).json(stat);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error.message });
     }
 });
+
+// PUT /playerstats/:id - Update an existing player stat
+router.put('/:id', async (req, res) => {
+    try {
+        const statId = parseInt(req.params.id, 10);
+        const data = req.body;
+
+        const updatedStat = await prisma.playerStats.update({
+            where: { id: statId },
+            data: data,
+            include: { player: true, match: true },
+        });
+
+        res.json(updatedStat);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 module.exports = router;

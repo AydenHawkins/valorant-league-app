@@ -8,14 +8,16 @@ const matchRouter = require('./routes/match');
 const playerStatsRouter = require('./routes/playerStats');
 
 const app = express();
-app.use
+app.use(cors({
+    origin: 'http://localhost:5173',
+}));
 app.use(express.json());
 
 app.use('/seasons', seasonsRouter);
 app.use('/teams', teamsRouter);
 app.use('/players', playerRouter);
 app.use('/matches', matchRouter);
-app.use('/player-stats', playerStatsRouter);
+app.use('/playerstats', playerStatsRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
