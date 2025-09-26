@@ -37,14 +37,15 @@ model Team {
   players     Player[]
   seasonId    Int
   season      Season   @relation(fields: [seasonId], references: [id])
-  homeMatches Match[]  @relation("HomeTeam")
-  awayMatches Match[]  @relation("AwayTeam")
+  redMatches  Match[]  @relation("RedTeam")
+  blueMatches Match[]  @relation("BlueTeam")
 }
 
 model Player {
   id        Int      @id @default(autoincrement())
-  riotId    String   @unique
-  discordId String   @unique
+  name      String
+  tag       String
+  puuid     String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -53,6 +54,8 @@ model Player {
   team   Team @relation(fields: [teamId], references: [id])
 
   stats PlayerStats[]
+
+  @@unique([name, tag])
 }
 
 model Match {
@@ -66,10 +69,10 @@ model Match {
   seasonId Int
   season   Season @relation(fields: [seasonId], references: [id])
 
-  homeTeamId Int
-  homeTeam   Team @relation("HomeTeam", fields: [homeTeamId], references: [id])
-  awayTeamId Int
-  awayTeam   Team @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  redTeamId  Int
+  redTeam    Team @relation("RedTeam", fields: [redTeamId], references: [id])
+  blueTeamId Int
+  blueTeam   Team @relation("BlueTeam", fields: [blueTeamId], references: [id])
 
   stats PlayerStats[]
 }

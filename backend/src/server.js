@@ -6,6 +6,7 @@ const teamsRouter = require('./routes/team');
 const playerRouter = require('./routes/player');
 const matchRouter = require('./routes/match');
 const playerStatsRouter = require('./routes/playerStats');
+const valorantRouter = require('./routes/valorant');
 
 const app = express();
 app.use(cors({
@@ -18,6 +19,7 @@ app.use('/teams', teamsRouter);
 app.use('/players', playerRouter);
 app.use('/matches', matchRouter);
 app.use('/playerstats', playerStatsRouter);
+app.use('/valorant', valorantRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

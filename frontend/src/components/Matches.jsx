@@ -33,8 +33,8 @@ const Matches = ({ seasonId }) => {
             <ul>
                 {matches.map((match) => (
                     <li key={match.id}>
-                        {match.homeTeam?.name} vs {match.awayTeam?.name}
-                        on <strong>{match.map}</strong> ({new Date(match.date).toLocaleDateString()})
+                        {match.redTeam?.name} vs {match.blueTeam?.name}
+                        on <strong>{match.map}</strong> ({new Date(match.matchDate).toLocaleDateString()})
                         <PlayerStats matchId={match.id} />
                     </li>
                 ))}

@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 router.get('/', async (req, res) => {
     try {
         const matches = await prisma.match.findMany({
-            include: { homeTeam: true, awayTeam: true, season: true },
+            include: { redTeam: true, blueTeam: true, season: true },
             orderBy: { matchDate: 'desc' },
         });
         res.json(matches);
@@ -21,11 +21,11 @@ router.get('/', async (req, res) => {
 // POST /matches - Create a new match
 router.post('/', async (req, res) => {
     try {
-        const { homeTeamId, awayTeamId, seasonId, matchDate, map } = req.body;
+        const { redTeamId, blueTeamId, seasonId, matchDate, map } = req.body;
         const match = await prisma.match.create({
             data: {
-                homeTeam: { connect: { id: homeTeamId } },
-                awayTeam: { connect: { id: awayTeamId } },
+                redTeam: { connect: { id: redTeamId } },
+                blueTeam: { connect: { id: blueTeamId } },
                 season: { connect: { id: seasonId } },
                 matchDate,
                 map
