@@ -9,6 +9,7 @@ async function main() {
         // Delete in order to satisfy FK constraints
         await prisma.playerStats.deleteMany()
         await prisma.match.deleteMany()
+        await prisma.teamRoster.deleteMany()
         await prisma.player.deleteMany()
         await prisma.team.deleteMany()
         await prisma.season.deleteMany()
@@ -25,7 +26,7 @@ async function main() {
             },
         })
 
-        // === Seed Teams and Players ===
+        // === Teams and Players Data ===
         const teams = [
             {
                 name: 'Lawn Chair Guys',
@@ -50,21 +51,36 @@ async function main() {
         ]
 
         console.log('Seeding teams and players...')
-        for (const teamData of teams) {
-            const [teamName, teamPlayers] = [teamData.name, teamData.players]
 
+        for (const teamData of teams) {
+            // 1. Create team
             const team = await prisma.team.create({
                 data: {
-                    name: teamName,
+                    name: teamData.name,
                     seasonId: season.id,
-                    players: {
-                        create: teamPlayers.map((riot) => {
-                            const [name, tag] = riot.split('#')
-                            return { name, tag }
-                        }),
-                    },
                 },
             })
+
+            // 2. Create players & roster links
+            for (const riot of teamData.players) {
+                const [name, tag] = riot.split('#')
+
+                const player = await prisma.player.create({
+                    data: {
+                        name,
+                        tag,
+                    },
+                })
+
+                // 3. Link player <-> team <-> season in roster
+                await prisma.teamRoster.create({
+                    data: {
+                        playerId: player.id,
+                        teamId: team.id,
+                        seasonId: season.id,
+                    },
+                })
+            }
         }
 
         console.log('Seeding complete.')

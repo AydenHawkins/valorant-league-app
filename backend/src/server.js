@@ -8,6 +8,7 @@ const matchRouter = require('./routes/match');
 const playerStatsRouter = require('./routes/playerStats');
 const valorantRouter = require('./routes/valorant');
 const matchImportRouter = require('./routes/matchImport');
+const rankingsRouter = require('./routes/rankings');
 
 const app = express();
 app.use(cors({
@@ -22,6 +23,8 @@ app.use('/matches', matchRouter);
 app.use('/playerstats', playerStatsRouter);
 app.use('/valorant', valorantRouter);
 app.use('/import', matchImportRouter);
+app.use('/rankings', rankingsRouter);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
