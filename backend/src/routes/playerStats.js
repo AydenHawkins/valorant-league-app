@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     try {
         const stats = await prisma.playerStats.findMany({
             include: {
-                mapGame: { include: { series: true } },
+                Match: { include: { series: true } },
                 teamRoster: { include: { player: true, team: true, season: true } }
             }
         });
@@ -26,7 +26,7 @@ router.get('/:id', async (req, res) => {
         const stat = await prisma.playerStats.findUnique({
             where: { id: Number(id) },
             include: {
-                mapGame: { include: { series: true } },
+                Match: { include: { series: true } },
                 teamRoster: { include: { player: true, team: true, season: true } }
             }
         });
@@ -44,7 +44,7 @@ router.get('/player/:playerId', async (req, res) => {
         const stats = await prisma.playerStats.findMany({
             where: { teamRoster: { playerId: Number(playerId) } },
             include: {
-                mapGame: { include: { series: true } },
+                Match: { include: { series: true } },
                 teamRoster: { include: { player: true, team: true, season: true } }
             }
         });
@@ -57,7 +57,7 @@ router.get('/player/:playerId', async (req, res) => {
 // POST /player-stats - Create player stats
 router.post('/', async (req, res) => {
     const {
-        mapGameId,
+        MatchId,
         teamRosterId,
         kills,
         deaths,
@@ -78,7 +78,7 @@ router.post('/', async (req, res) => {
     try {
         const newStat = await prisma.playerStats.create({
             data: {
-                mapGameId,
+                MatchId,
                 teamRosterId,
                 kills,
                 deaths,

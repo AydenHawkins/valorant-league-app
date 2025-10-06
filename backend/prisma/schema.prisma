@@ -85,14 +85,14 @@ model Series {
   blueTeamId Int
   blueTeam   Team @relation("BlueTeam", fields: [blueTeamId], references: [id])
 
-  maps MapGame[]
+  maps Match[]
 
   @@index([seasonId])
   @@index([redTeamId])
   @@index([blueTeamId])
 }
 
-model MapGame {
+model Match {
   id          Int      @id @default(autoincrement())
   mapName     String
   mapNumber   Int
@@ -140,14 +140,14 @@ model PlayerStats {
   updatedAt DateTime @updatedAt
 
   // Foreign keys
-  mapGameId Int
-  mapGame   MapGame @relation(fields: [mapGameId], references: [id])
+  MatchId Int
+  Match   Match @relation(fields: [MatchId], references: [id])
 
   teamRosterId Int
   teamRoster   TeamRoster @relation(fields: [teamRosterId], references: [id])
 
-  @@unique([teamRosterId, mapGameId])
-  @@index([mapGameId])
+  @@unique([teamRosterId, MatchId])
+  @@index([MatchId])
   @@index([teamRosterId])
 }
 
@@ -161,14 +161,14 @@ model TeamStats {
   roundsLost    Int
   winPercent    Float
 
-  mapGameId Int
-  mapGame   MapGame @relation(fields: [mapGameId], references: [id])
+  MatchId Int
+  Match   Match @relation(fields: [MatchId], references: [id])
 
   teamId Int
   team   Team @relation(fields: [teamId], references: [id])
 
-  @@unique([mapGameId, teamId])
-  @@index([mapGameId])
+  @@unique([MatchId, teamId])
+  @@index([MatchId])
   @@index([teamId])
 }
 
@@ -206,11 +206,11 @@ model Substitution {
   substitutedOut   Player   @relation("SubOut", fields: [substitutedOutId], references: [id])
   teamId           Int
   team             Team     @relation(fields: [teamId], references: [id])
-  mapGameId        Int
-  mapGame          MapGame  @relation(fields: [mapGameId], references: [id])
+  MatchId          Int
+  Match            Match    @relation(fields: [MatchId], references: [id])
   timestamp        DateTime @default(now())
 
-  @@index([mapGameId])
+  @@index([MatchId])
   @@index([teamId])
 }
 
@@ -227,16 +227,16 @@ model Round {
   plantTimeMs  Int?
   defuseTimeMs Int?
 
-  mapGameId Int
-  mapGame   MapGame @relation(fields: [mapGameId], references: [id])
+  MatchId Int
+  Match   Match @relation(fields: [MatchId], references: [id])
 
   // Relationships
   plant       Plant?
   defuse      Defuse?
   playerStats RoundPlayerStats[]
 
-  @@unique([mapGameId, roundNumber])
-  @@index([mapGameId])
+  @@unique([MatchId, roundNumber])
+  @@index([MatchId])
   @@index([winningTeam])
 }
 

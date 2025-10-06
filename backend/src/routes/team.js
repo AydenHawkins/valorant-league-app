@@ -47,11 +47,11 @@ router.get("/:id/stats", async (req, res) => {
         const whereClause = { teamId };
 
         if (seasonId) {
-            whereClause.mapGame = { series: { seasonId: parseInt(seasonId) } };
+            whereClause.Match = { series: { seasonId: parseInt(seasonId) } };
         }
 
         if (seriesId) {
-            whereClause.mapGame = { seriesId: parseInt(seriesId) };
+            whereClause.Match = { seriesId: parseInt(seriesId) };
         }
 
         const stats = await prisma.teamStats.aggregate({

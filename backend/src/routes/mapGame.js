@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 // GET /maps - Retrieve all maps ordered by date descending
 router.get('/', async (req, res) => {
     try {
-        const maps = await prisma.mapGame.findMany({
+        const maps = await prisma.Match.findMany({
             include: {
                 series: {
                     include: { redTeam: true, blueTeam: true, season: true }
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const map = await prisma.mapGame.findUnique({
+        const map = await prisma.Match.findUnique({
             where: { id: Number(id) },
             include: {
                 series: {
@@ -60,7 +60,7 @@ router.get('/:id', async (req, res) => {
                 substitutions: { include: { substitutedIn: true, substitutedOut: true, team: true } }
             }
         });
-        if (!map) return res.status(404).json({ error: 'MapGame not found' });
+        if (!map) return res.status(404).json({ error: 'Match not found' });
         res.json(map);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -71,7 +71,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     const { seriesId, mapName, mapNumber, riotMatchId, matchDate } = req.body;
     try {
-        const map = await prisma.mapGame.create({
+        const map = await prisma.Match.create({
             data: {
                 seriesId,
                 mapName,
@@ -91,7 +91,7 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { seriesId, mapName, mapNumber, riotMatchId, matchDate } = req.body;
     try {
-        const updatedMap = await prisma.mapGame.update({
+        const updatedMap = await prisma.Match.update({
             where: { id: Number(id) },
             data: {
                 seriesId,
@@ -111,8 +111,8 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        await prisma.mapGame.delete({ where: { id: Number(id) } });
-        res.json({ message: 'MapGame deleted' });
+        await prisma.Match.delete({ where: { id: Number(id) } });
+        res.json({ message: 'Match deleted' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

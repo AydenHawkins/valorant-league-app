@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     try {
         const rounds = await prisma.round.findMany({
             include: {
-                mapGame: { include: { series: true } },
+                Match: { include: { series: true } },
                 plant: { include: { player: true } },
                 defuse: { include: { player: true } },
                 playerStats: { include: { player: true, team: true } }
@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
         const round = await prisma.round.findUnique({
             where: { id: Number(id) },
             include: {
-                mapGame: { include: { series: true } },
+                Match: { include: { series: true } },
                 plant: { include: { player: true } },
                 defuse: { include: { player: true } },
                 playerStats: { include: { player: true, team: true } }
@@ -43,11 +43,11 @@ router.get('/:id', async (req, res) => {
 
 // POST /rounds - Create a round
 router.post('/', async (req, res) => {
-    const { mapGameId, roundNumber, result, winningTeam, site, plantTimeMs, defuseTimeMs } = req.body;
+    const { MatchId, roundNumber, result, winningTeam, site, plantTimeMs, defuseTimeMs } = req.body;
     try {
         const newRound = await prisma.round.create({
             data: {
-                mapGameId,
+                MatchId,
                 roundNumber,
                 result,
                 winningTeam,
