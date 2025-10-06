@@ -73,24 +73,24 @@ function parseLeagueMatchForDB(matchJson) {
     const matchRoundsCount = Array.isArray(data.rounds) ? data.rounds.length : 0
 
     // Players mapping by puuid
-    const playersByPuuid = {}
-        (data.players || []).forEach(p => {
-            const puuid = p.puuid
-            playersByPuuid[puuid] = {
-                puuid,
-                name: p.name || null,
-                tag: p.tag || null,
-                team: p.team_id || null,
-                agent: p.agent?.name || null,
-                stats: p.stats || {},
-                plants: 0,
-                defuses: 0,
-                fkills: 0,
-                fdeaths: 0,
-                mkills: 0,
-                clutches: 0
-            }
-        })
+    const playersByPuuid = {};
+    (data.players || []).forEach(p => {
+        const puuid = p.puuid
+        playersByPuuid[puuid] = {
+            puuid,
+            name: p.name || null,
+            tag: p.tag || null,
+            team: p.team_id || null,
+            agent: p.agent?.name || null,
+            stats: p.stats || {},
+            plants: 0,
+            defuses: 0,
+            fkills: 0,
+            fdeaths: 0,
+            mkills: 0,
+            clutches: 0
+        }
+    })
 
     // Helper to get/create player record
     function getPlayer(puuid) {
