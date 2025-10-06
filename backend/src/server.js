@@ -4,11 +4,17 @@ const cors = require('cors');
 const seasonsRouter = require('./routes/season');
 const teamsRouter = require('./routes/team');
 const playerRouter = require('./routes/player');
-const matchRouter = require('./routes/match');
+const seriesRouter = require('./routes/series');
+const mapGameRouter = require('./routes/mapGame');
+const roundRouter = require('./routes/round');
+const teamRosterRouter = require('./routes/teamRoster');
 const playerStatsRouter = require('./routes/playerStats');
+const teamStatsRouter = require('./routes/teamStats');
+const substitutionsRouter = require('./routes/substitution');
+const roundPlayerStatsRouter = require('./routes/roundPlayerStats');
+const plantsRouter = require('./routes/plant');
+const defusesRouter = require('./routes/defuse');
 const valorantRouter = require('./routes/valorant');
-const matchImportRouter = require('./routes/matchImport');
-const rankingsRouter = require('./routes/rankings');
 
 const app = express();
 app.use(cors({
@@ -19,11 +25,17 @@ app.use(express.json());
 app.use('/seasons', seasonsRouter);
 app.use('/teams', teamsRouter);
 app.use('/players', playerRouter);
-app.use('/matches', matchRouter);
-app.use('/playerstats', playerStatsRouter);
+app.use('/series', seriesRouter);
+app.use('/mapGames', mapGameRouter);
+app.use('/rounds', roundRouter);
+app.use('/teamRosters', teamRosterRouter);
+app.use('/playerStats', playerStatsRouter);
+app.use('/teamStats', teamStatsRouter);
+app.use('/substitutions', substitutionsRouter);
+app.use('/roundPlayerStats', roundPlayerStatsRouter);
+app.use('/plants', plantsRouter);
+app.use('/defuses', defusesRouter);
 app.use('/valorant', valorantRouter);
-app.use('/import', matchImportRouter);
-app.use('/rankings', rankingsRouter);
 
 
 const PORT = process.env.PORT || 5000;
