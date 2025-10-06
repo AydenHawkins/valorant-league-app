@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -14,6 +8,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//
+// ==================== CORE ENTITIES ====================
+//
+
 model Season {
   id        Int       @id @default(autoincrement())
   name      String
@@ -23,8 +21,11 @@ model Season {
   updatedAt DateTime  @updatedAt
 
   // Relationships
-  teams   Team[]
-  matches Match[]
+  series      Series[]
+  teamRosters TeamRoster[]
+
+  @@unique([name])
+  @@index([startDate])
 }
 
 model Team {
@@ -34,11 +35,14 @@ model Team {
   updatedAt DateTime @updatedAt
 
   // Relationships
-  players     Player[]
-  seasonId    Int
-  season      Season   @relation(fields: [seasonId], references: [id])
-  redMatches  Match[]  @relation("RedTeam")
-  blueMatches Match[]  @relation("BlueTeam")
+  rosters          TeamRoster[]
+  redSeries        Series[]           @relation("RedTeam")
+  blueSeries       Series[]           @relation("BlueTeam")
+  teamStats        TeamStats[]
+  substitutions    Substitution[]
+  roundPlayerStats RoundPlayerStats[]
+
+  @@index([name])
 }
 
 model Player {
@@ -49,23 +53,30 @@ model Player {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relationships
-  teamId Int
-  team   Team @relation(fields: [teamId], references: [id])
-
-  stats PlayerStats[]
+  rosters    TeamRoster[]
+  subIns     Substitution[]     @relation("SubIn")
+  subOuts    Substitution[]     @relation("SubOut")
+  plants     Plant[]
+  defuses    Defuse[]
+  roundStats RoundPlayerStats[]
 
   @@unique([name, tag])
+  @@index([name, tag])
 }
 
-model Match {
-  id        Int      @id @default(autoincrement())
-  map       String
-  matchDate DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+//
+// ==================== MATCH STRUCTURE ====================
+//
 
-  // Relationships
+model Series {
+  id        Int       @id @default(autoincrement())
+  bestOf    Int
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Foreign keys
   seasonId Int
   season   Season @relation(fields: [seasonId], references: [id])
 
@@ -74,8 +85,39 @@ model Match {
   blueTeamId Int
   blueTeam   Team @relation("BlueTeam", fields: [blueTeamId], references: [id])
 
-  stats PlayerStats[]
+  maps MapGame[]
+
+  @@index([seasonId])
+  @@index([redTeamId])
+  @@index([blueTeamId])
 }
+
+model MapGame {
+  id          Int      @id @default(autoincrement())
+  mapName     String
+  mapNumber   Int
+  riotMatchId String?  @unique
+  matchDate   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  seriesId Int
+  series   Series @relation(fields: [seriesId], references: [id])
+
+  playerStats   PlayerStats[]
+  teamStats     TeamStats[]
+  rounds        Round[]
+  substitutions Substitution[]
+
+  @@unique([seriesId, mapNumber])
+  @@index([mapName])
+  @@index([matchDate])
+}
+
+//
+// ==================== STATS MODELS ====================
+//
 
 model PlayerStats {
   id            Int    @id @default(autoincrement())
@@ -83,30 +125,176 @@ model PlayerStats {
   deaths        Int
   assists       Int
   acs           Int
-  plusMinus     Int
-  kdRatio       Float
-  delta         Float
   adr           Float
-  hs            Float
+  hsPercent     Float
   kast          Float
   fkills        Int
   fdeaths       Int
-  mkills        Int
   plants        Int
   defuses       Int
   clutches      Int
-  clutchpercent Float
-  agents        String
+  clutchPercent Float
+  agent         String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relationships
+  // Foreign keys
+  mapGameId Int
+  mapGame   MapGame @relation(fields: [mapGameId], references: [id])
+
+  teamRosterId Int
+  teamRoster   TeamRoster @relation(fields: [teamRosterId], references: [id])
+
+  @@unique([teamRosterId, mapGameId])
+  @@index([mapGameId])
+  @@index([teamRosterId])
+}
+
+model TeamStats {
+  id            Int   @id @default(autoincrement())
+  attackWins    Int
+  defenseWins   Int
+  postPlantsWon Int
+  roundsPlayed  Int
+  roundsWon     Int
+  roundsLost    Int
+  winPercent    Float
+
+  mapGameId Int
+  mapGame   MapGame @relation(fields: [mapGameId], references: [id])
+
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  @@unique([mapGameId, teamId])
+  @@index([mapGameId])
+  @@index([teamId])
+}
+
+//
+// ==================== ROSTERS & SUBS ====================
+//
+
+model TeamRoster {
+  id        Int       @id @default(autoincrement())
+  startDate DateTime  @default(now())
+  endDate   DateTime?
+
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
   playerId Int
   player   Player @relation(fields: [playerId], references: [id])
 
-  matchId Int
-  match   Match @relation(fields: [matchId], references: [id])
+  seasonId Int
+  season   Season @relation(fields: [seasonId], references: [id])
 
-  @@unique([playerId, matchId])
+  playerStats PlayerStats[]
+
+  @@unique([playerId, teamId, seasonId])
+  @@index([teamId])
+  @@index([playerId])
+  @@index([seasonId])
+}
+
+model Substitution {
+  id               Int      @id @default(autoincrement())
+  substitutedInId  Int
+  substitutedIn    Player   @relation("SubIn", fields: [substitutedInId], references: [id])
+  substitutedOutId Int
+  substitutedOut   Player   @relation("SubOut", fields: [substitutedOutId], references: [id])
+  teamId           Int
+  team             Team     @relation(fields: [teamId], references: [id])
+  mapGameId        Int
+  mapGame          MapGame  @relation(fields: [mapGameId], references: [id])
+  timestamp        DateTime @default(now())
+
+  @@index([mapGameId])
+  @@index([teamId])
+}
+
+//
+// ==================== ROUND DATA ====================
+//
+
+model Round {
+  id           Int     @id @default(autoincrement())
+  roundNumber  Int
+  result       String
+  winningTeam  String
+  site         String?
+  plantTimeMs  Int?
+  defuseTimeMs Int?
+
+  mapGameId Int
+  mapGame   MapGame @relation(fields: [mapGameId], references: [id])
+
+  // Relationships
+  plant       Plant?
+  defuse      Defuse?
+  playerStats RoundPlayerStats[]
+
+  @@unique([mapGameId, roundNumber])
+  @@index([mapGameId])
+  @@index([winningTeam])
+}
+
+model Plant {
+  id        Int     @id @default(autoincrement())
+  roundId   Int     @unique
+  round     Round   @relation(fields: [roundId], references: [id])
+  site      String
+  playerId  Int?
+  player    Player? @relation(fields: [playerId], references: [id])
+  timeMs    Int?
+  locationX Float?
+  locationY Float?
+
+  @@index([playerId])
+  @@index([site])
+}
+
+model Defuse {
+  id        Int     @id @default(autoincrement())
+  roundId   Int     @unique
+  round     Round   @relation(fields: [roundId], references: [id])
+  playerId  Int?
+  player    Player? @relation(fields: [playerId], references: [id])
+  timeMs    Int?
+  locationX Float?
+  locationY Float?
+
+  @@index([playerId])
+}
+
+model RoundPlayerStats {
+  id       Int    @id @default(autoincrement())
+  roundId  Int
+  round    Round  @relation(fields: [roundId], references: [id])
+  playerId Int
+  player   Player @relation(fields: [playerId], references: [id])
+  teamId   Int
+  team     Team   @relation(fields: [teamId], references: [id])
+
+  score            Int
+  kills            Int
+  deaths           Int?
+  assists          Int?
+  headshots        Int
+  bodyshots        Int
+  legshots         Int
+  damageDealt      Int
+  damageReceived   Int?
+  weapon           String?
+  armor            String?
+  loadoutValue     Int?
+  creditsRemaining Int?
+  wasAfk           Boolean?
+  stayedInSpawn    Boolean?
+
+  @@unique([roundId, playerId])
+  @@index([roundId])
+  @@index([playerId])
+  @@index([teamId])
 }
