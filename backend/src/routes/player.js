@@ -36,6 +36,20 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// GET /players/:id/stats - Retrieve stats for a specific player by ID
+router.get("/:id/stats", async (req, res) => {
+    const playerId = parseInt(req.params.id);
+
+    // Compute aggregates from PlayerStats
+    const stats = await prisma.playerStats.aggregate({
+        where: { teamRoster: { playerId } },
+        _sum: { kills: true, deaths: true, assists: true, plants: true, defuses: true },
+        _avg: { acs: true, adr: true, hsPercent: true, kast: true, clutchPercent: true },
+    });
+
+    res.json(stats);
+});
+
 // POST /players - Create a new player
 router.post('/', async (req, res) => {
     try {

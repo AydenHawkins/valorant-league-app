@@ -38,6 +38,49 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// GET /teams/:id/stats - Retrieve stats for a specific team by ID
+router.get("/:id/stats", async (req, res) => {
+    try {
+        const teamId = parseInt(req.params.id);
+        const { seasonId, seriesId } = req.query;
+
+        const whereClause = { teamId };
+
+        if (seasonId) {
+            whereClause.mapGame = { series: { seasonId: parseInt(seasonId) } };
+        }
+
+        if (seriesId) {
+            whereClause.mapGame = { seriesId: parseInt(seriesId) };
+        }
+
+        const stats = await prisma.teamStats.aggregate({
+            where: whereClause,
+            _sum: {
+                roundsPlayed: true,
+                roundsWon: true,
+                roundsLost: true,
+                attackWins: true,
+                defenseWins: true,
+                postPlantsWon: true,
+            },
+        });
+
+        let winPercent = null;
+        if (stats._sum.roundsPlayed && stats._sum.roundsPlayed > 0) {
+            winPercent = (stats._sum.roundsWon / stats._sum.roundsPlayed) * 100;
+        }
+
+        res.json({
+            ...stats._sum,
+            winPercent,
+        });
+    } catch (err) {
+        console.error("Error fetching team stats:", err);
+        res.status(500).json({ error: "Failed to fetch team stats" });
+    }
+});
+
 // POST /teams - Create a new team
 router.post('/', async (req, res) => {
     try {
