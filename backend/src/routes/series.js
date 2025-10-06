@@ -5,7 +5,7 @@ const { PrismaClient } = require('../../generated/prisma');
 const prisma = new PrismaClient();
 
 // GET /series - Retrieve all series ordered by date descending
-outer.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const seriesList = await prisma.series.findMany({
             include: {
