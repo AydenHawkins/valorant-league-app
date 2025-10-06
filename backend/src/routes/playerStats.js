@@ -7,93 +7,124 @@ const prisma = new PrismaClient();
 // GET /player-stats - Retrieve all player stats
 router.get('/', async (req, res) => {
     try {
-        const playerStats = await prisma.playerStats.findMany({
-            include: { player: true, match: true },
-            orderBy: { id: 'asc' },
+        const stats = await prisma.playerStats.findMany({
+            include: {
+                mapGame: { include: { series: true } },
+                teamRoster: { include: { player: true, team: true, season: true } }
+            }
         });
-        res.json(playerStats);
+        res.json(stats);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error.message });
     }
 });
 
-// POST /playerstats - Create a new player stat
-router.post('/', async (req, res) => {
+// GET /player-stats/:id - Retrieve player stats by ID
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
     try {
-        const {
-            playerId,
-            matchId,
-            kills,
-            deaths,
-            assists,
-            acs,
-            plusMinus,
-            kdRatio,
-            delta,
-            adr,
-            hs,
-            kast,
-            fkills,
-            fdeaths,
-            mkills,
-            plants,
-            defuses,
-            clutches,
-            clutchpercent,
-            agents,
-        } = req.body;
+        const stat = await prisma.playerStats.findUnique({
+            where: { id: Number(id) },
+            include: {
+                mapGame: { include: { series: true } },
+                teamRoster: { include: { player: true, team: true, season: true } }
+            }
+        });
+        if (!stat) return res.status(404).json({ error: 'PlayerStats not found' });
+        res.json(stat);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-        const stat = await prisma.playerStats.create({
+// GET /player-stats/player/:playerId - Retrieve all stats for a specific player (across teams)
+router.get('/player/:playerId', async (req, res) => {
+    const { playerId } = req.params;
+    try {
+        const stats = await prisma.playerStats.findMany({
+            where: { teamRoster: { playerId: Number(playerId) } },
+            include: {
+                mapGame: { include: { series: true } },
+                teamRoster: { include: { player: true, team: true, season: true } }
+            }
+        });
+        res.json(stats);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// POST /player-stats - Create player stats
+router.post('/', async (req, res) => {
+    const {
+        mapGameId,
+        teamRosterId,
+        kills,
+        deaths,
+        assists,
+        acs,
+        adr,
+        hsPercent,
+        kast,
+        fkills,
+        fdeaths,
+        plants,
+        defuses,
+        clutches,
+        clutchPercent,
+        agent
+    } = req.body;
+
+    try {
+        const newStat = await prisma.playerStats.create({
             data: {
-                player: { connect: { id: playerId } },
-                match: { connect: { id: matchId } },
+                mapGameId,
+                teamRosterId,
                 kills,
                 deaths,
                 assists,
                 acs,
-                plusMinus,
-                kdRatio,
-                delta,
                 adr,
-                hs,
+                hsPercent,
                 kast,
                 fkills,
                 fdeaths,
-                mkills,
                 plants,
                 defuses,
                 clutches,
-                clutchpercent,
-                agents,
-            },
+                clutchPercent,
+                agent
+            }
         });
-
-        res.status(201).json(stat);
+        res.json(newStat);
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: error.message });
     }
 });
 
-// PUT /playerstats/:id - Update an existing player stat
+// PUT /player-stats/:id - Update player stats
 router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+
     try {
-        const statId = parseInt(req.params.id, 10);
-        const data = req.body;
-
         const updatedStat = await prisma.playerStats.update({
-            where: { id: statId },
-            data: data,
-            include: { player: true, match: true },
+            where: { id: Number(id) },
+            data: updates
         });
-
         res.json(updatedStat);
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: error.message });
     }
 });
 
-
-module.exports = router;
+// DELETE /player-stats/:id - Delete player stats
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await prisma.playerStats.delete({ where: { id: Number(id) } });
+        res.json({ message: 'PlayerStats deleted' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});

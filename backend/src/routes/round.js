@@ -4,7 +4,7 @@ const { PrismaClient } = require('../../generated/prisma');
 
 const prisma = new PrismaClient();
 
-// GET /series - Retrieve all series ordered by date descending
+// GET /rounds - Retrieve all rounds ordered by date descending
 router.get('/', async (req, res) => {
     try {
         const rounds = await prisma.round.findMany({
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET a round by ID
+// GET /rounds/:id - Retrieve a round by ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -41,7 +41,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST create a round
+// POST /rounds - Create a round
 router.post('/', async (req, res) => {
     const { mapGameId, roundNumber, result, winningTeam, site, plantTimeMs, defuseTimeMs } = req.body;
     try {
@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT update a round
+// PUT /rounds/:id - Update a round
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { result, winningTeam, site, plantTimeMs, defuseTimeMs } = req.body;
@@ -77,7 +77,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE a round
+// DELETE /rounds/:id - Delete a round
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
