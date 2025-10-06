@@ -4,7 +4,7 @@ const { PrismaClient } = require('../../generated/prisma');
 
 const prisma = new PrismaClient();
 
-// GET /players - Retrieve all players ordered by last name
+// GET /players - Retrieve all players
 router.get('/', async (req, res) => {
     try {
         const players = await prisma.player.findMany(

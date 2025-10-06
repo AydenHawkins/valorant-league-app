@@ -23,9 +23,8 @@ model Season {
   updatedAt DateTime  @updatedAt
 
   // Relationships
-  teams      Team[]
-  matches    Match[]
-  TeamRoster TeamRoster[]
+  matches     Match[]
+  teamRosters TeamRoster[]
 }
 
 model Team {
@@ -35,8 +34,6 @@ model Team {
   updatedAt DateTime @updatedAt
 
   // Relationships
-  seasonId    Int
-  season      Season       @relation(fields: [seasonId], references: [id])
   rosters     TeamRoster[]
   redMatches  Match[]      @relation("RedTeam")
   blueMatches Match[]      @relation("BlueTeam")
@@ -52,7 +49,6 @@ model Player {
 
   // Relationships
   rosters TeamRoster[]
-  stats   PlayerStats[]
 
   @@unique([name, tag])
 }
@@ -73,7 +69,7 @@ model Match {
   blueTeamId Int
   blueTeam   Team @relation("BlueTeam", fields: [blueTeamId], references: [id])
 
-  stats PlayerStats[]
+  playerStats PlayerStats[]
 }
 
 model PlayerStats {
@@ -101,13 +97,13 @@ model PlayerStats {
   updatedAt DateTime @updatedAt
 
   // Relationships
-  playerId Int
-  player   Player @relation(fields: [playerId], references: [id])
+  teamRosterId Int
+  teamRoster   TeamRoster @relation(fields: [teamRosterId], references: [id])
 
   matchId Int
   match   Match @relation(fields: [matchId], references: [id])
 
-  @@unique([playerId, matchId])
+  @@unique([teamRosterId, matchId])
 }
 
 model TeamRoster {
@@ -124,6 +120,8 @@ model TeamRoster {
 
   seasonId Int
   season   Season @relation(fields: [seasonId], references: [id])
+
+  playerStats PlayerStats[]
 
   @@unique([playerId, teamId, seasonId])
 }
