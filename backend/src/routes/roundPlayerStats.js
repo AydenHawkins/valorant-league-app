@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
                 player: true,
                 round: {
                     include: {
-                        Match: {
+                        match: {
                             include: { series: true }
                         }
                     }
@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
             where: { id: Number(id) },
             include: {
                 player: true,
-                round: { include: { Match: true } },
+                round: { include: { match: true } },
                 team: true
             }
         });
@@ -69,7 +69,7 @@ router.get('/player/:playerId', async (req, res) => {
         const stats = await prisma.roundPlayerStats.findMany({
             where: { playerId: Number(playerId) },
             include: {
-                round: { include: { Match: true } },
+                round: { include: { match: true } },
                 team: true
             }
         });

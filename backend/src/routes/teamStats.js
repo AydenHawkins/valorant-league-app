@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         const stats = await prisma.teamStats.findMany({
             include: {
                 team: true,
-                Match: { include: { series: true } }
+                match: { include: { series: true } }
             }
         });
         res.json(stats);
@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
             where: { id: Number(id) },
             include: {
                 team: true,
-                Match: { include: { series: true } }
+                match: { include: { series: true } }
             }
         });
         if (!stat) return res.status(404).json({ error: 'TeamStats not found' });
@@ -45,7 +45,7 @@ router.get('/team/:teamId', async (req, res) => {
             where: { teamId: Number(teamId) },
             include: {
                 team: true,
-                Match: { include: { series: true } }
+                match: { include: { series: true } }
             }
         });
         res.json(stats);
@@ -54,15 +54,15 @@ router.get('/team/:teamId', async (req, res) => {
     }
 });
 
-// GET /team-stats/map/:MatchId - Retrieve all team stats for a specific map
-router.get('/map/:MatchId', async (req, res) => {
-    const { MatchId } = req.params;
+// GET /team-stats/map/:matchId - Retrieve all team stats for a specific map
+router.get('/map/:matchId', async (req, res) => {
+    const { matchId } = req.params;
     try {
         const stats = await prisma.teamStats.findMany({
-            where: { MatchId: Number(MatchId) },
+            where: { matchId: Number(matchId) },
             include: {
                 team: true,
-                Match: { include: { series: true } }
+                match: { include: { series: true } }
             }
         });
         res.json(stats);
@@ -74,7 +74,7 @@ router.get('/map/:MatchId', async (req, res) => {
 // POST /team-stats - Create team stats
 router.post('/', async (req, res) => {
     const {
-        MatchId,
+        matchId,
         teamId,
         attackWins,
         defenseWins,
@@ -88,7 +88,7 @@ router.post('/', async (req, res) => {
     try {
         const newStat = await prisma.teamStats.create({
             data: {
-                MatchId,
+                matchId,
                 teamId,
                 attackWins,
                 defenseWins,

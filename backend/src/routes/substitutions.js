@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
                 substitutedIn: true,
                 substitutedOut: true,
                 team: true,
-                Match: { include: { series: true } }
+                match: { include: { series: true } }
             }
         });
         res.json(subs);
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
                 substitutedIn: true,
                 substitutedOut: true,
                 team: true,
-                Match: { include: { series: true } }
+                match: { include: { series: true } }
             }
         });
         if (!sub) return res.status(404).json({ error: 'Substitution not found' });
@@ -41,12 +41,12 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// GET /substitutions/map/:MatchId - Retrieve all substitutions for a specific map
-router.get('/map/:MatchId', async (req, res) => {
-    const { MatchId } = req.params;
+// GET /substitutions/map/:matchId - Retrieve all substitutions for a specific map
+router.get('/map/:matchId', async (req, res) => {
+    const { matchId } = req.params;
     try {
         const subs = await prisma.substitution.findMany({
-            where: { MatchId: Number(MatchId) },
+            where: { matchId: Number(matchId) },
             include: {
                 substitutedIn: true,
                 substitutedOut: true,
@@ -68,7 +68,7 @@ router.get('/team/:teamId', async (req, res) => {
             include: {
                 substitutedIn: true,
                 substitutedOut: true,
-                Match: true
+                match: true
             }
         });
         res.json(subs);
@@ -79,7 +79,7 @@ router.get('/team/:teamId', async (req, res) => {
 
 // POST /substitutions - Create a substitution record
 router.post('/', async (req, res) => {
-    const { substitutedInId, substitutedOutId, teamId, MatchId, timestamp } = req.body;
+    const { substitutedInId, substitutedOutId, teamId, matchId, timestamp } = req.body;
 
     try {
         const newSub = await prisma.substitution.create({
@@ -87,7 +87,7 @@ router.post('/', async (req, res) => {
                 substitutedInId,
                 substitutedOutId,
                 teamId,
-                MatchId,
+                matchId,
                 timestamp: timestamp ? new Date(timestamp) : undefined
             }
         });
