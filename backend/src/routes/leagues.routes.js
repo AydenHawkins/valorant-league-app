@@ -7,11 +7,14 @@ const {
     updateLeague,
     deleteLeague,
 } = require("../controllers/leagues.controller");
+const seasonRouts = require("./seasons.routes");
 
-router.get("/leagues", getLeagues);
-router.get("/leagues/:id", getLeagueById);
-router.post("/leagues", createLeague);
-router.patch("/leagues/:id", updateLeague);
-router.delete("/leagues/:id", deleteLeague);
+router.get("/", getLeagues);
+router.get("/:id", getLeagueById);
+router.post("/", createLeague);
+router.patch("/:id", updateLeague);
+router.delete("/:id", deleteLeague);
+
+router.use("/:leagueId/seasons", seasonRouts);
 
 module.exports = router;
