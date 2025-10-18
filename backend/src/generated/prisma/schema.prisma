@@ -1,0 +1,525 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//
+// ==================== REFERENCE DATA ====================
+//
+
+model Agent {
+  id   String @id
+  name String @unique
+  role String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  matchParticipations MatchParticipation[]
+  matchPlayerStats    MatchPlayerStats[]
+
+  @@index([role])
+}
+
+model Map {
+  id   String @id
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  matches Match[]
+
+  @@index([name])
+}
+
+//
+// ==================== CALCULATED STATS FORMULAS ====================
+//
+// These formulas should be used when parsing match data and storing stats:
+//
+// ADR (Average Damage per Round) = damageDealt / roundsPlayed
+// ACS (Average Combat Score) = score / roundsPlayed
+// K/D Ratio = kills / deaths (or kills if deaths = 0)
+// HS% (Headshot Percentage) = headshots / (headshots + bodyshots + legshots) * 100
+// KAST (Kill, Assist, Survive, Trade %) = (rounds with K or A or survived or traded) / roundsPlayed * 100
+//
+// Note: KAST requires round-by-round analysis to determine if player survived or was traded
+// Note: First Kills/Deaths need to be derived from Kill events (first kill of each round)
+//
+
+//
+// ==================== CORE ENTITIES ====================
+//
+
+model League {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  seasons Season[]
+
+  @@index([name])
+}
+
+model Season {
+  id        Int       @id @default(autoincrement())
+  leagueId  Int
+  league    League    @relation(fields: [leagueId], references: [id])
+  name      String
+  startDate DateTime
+  endDate   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  series      Series[]
+  teamRosters TeamRoster[]
+
+  @@unique([leagueId, name])
+  @@index([startDate])
+  @@index([leagueId])
+}
+
+model Team {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rosters             TeamRoster[]
+  redSeries           Series[]             @relation("RedTeam")
+  blueSeries          Series[]             @relation("BlueTeam")
+  teamStats           MatchTeamStats[]
+  substitutions       Substitution[]
+  roundStats          RoundTeamStats[]
+  matchParticipations MatchParticipation[]
+
+  @@index([name])
+}
+
+model Player {
+  id    Int    @id @default(autoincrement())
+  name  String
+  tag   String
+  puuid String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rosters             TeamRoster[]
+  subIns              Substitution[]       @relation("SubIn")
+  subOuts             Substitution[]       @relation("SubOut")
+  plants              Plant[]
+  defuses             Defuse[]
+  roundStats          RoundPlayerStats[]
+  matchStats          MatchPlayerStats[]
+  kills               Kill[]               @relation("Killer")
+  deaths              Kill[]               @relation("Victim")
+  killAssists         Kill[]               @relation("Assistant")
+  matchParticipations MatchParticipation[]
+
+  @@unique([name, tag])
+  @@index([puuid])
+  @@index([name, tag])
+}
+
+//
+// ==================== MATCH STRUCTURE ====================
+//
+
+// A Series is a Bo1, Bo3, Bo5, etc. between two teams
+model Series {
+  id       Int    @id @default(autoincrement())
+  seasonId Int
+  season   Season @relation(fields: [seasonId], references: [id])
+
+  redTeamId Int
+  redTeam   Team @relation("RedTeam", fields: [redTeamId], references: [id])
+
+  blueTeamId Int
+  blueTeam   Team @relation("BlueTeam", fields: [blueTeamId], references: [id])
+
+  bestOf       Int
+  winnerTeamId Int?
+
+  status String @default("scheduled") // "scheduled", "ongoing", "completed", "forfeit", "cancelled"
+
+  startDate DateTime
+  endDate   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  matches Match[]
+
+  @@index([seasonId])
+  @@index([redTeamId])
+  @@index([blueTeamId])
+  @@index([startDate])
+  @@index([status])
+}
+
+// A Match is a single game/map within a series
+model Match {
+  id       Int    @id @default(autoincrement())
+  seriesId Int
+  series   Series @relation(fields: [seriesId], references: [id])
+
+  matchNumber Int
+  riotMatchId String? @unique
+
+  mapId String?
+  map   Map?    @relation(fields: [mapId], references: [id])
+
+  gameLengthMs Int?
+  startedAt    DateTime
+  completedAt  DateTime?
+  isCompleted  Boolean   @default(false)
+
+  status String @default("scheduled") // "scheduled", "ongoing", "completed", "forfeit", "cancelled"
+
+  winnerTeamSide String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rounds           Round[]
+  matchPlayerStats MatchPlayerStats[]
+  matchTeamStats   MatchTeamStats[]
+  substitutions    Substitution[]
+  kills            Kill[]
+  participations   MatchParticipation[]
+
+  @@unique([seriesId, matchNumber])
+  @@index([seriesId])
+  @@index([mapId])
+  @@index([startedAt])
+  @@index([riotMatchId])
+  @@index([status])
+}
+
+// Track which players actually played in which matches (handles substitutions)
+model MatchParticipation {
+  id      Int   @id @default(autoincrement())
+  matchId Int
+  match   Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  playerId Int
+  player   Player @relation(fields: [playerId], references: [id])
+
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  teamSide String
+
+  agentId String?
+  agent   Agent?  @relation(fields: [agentId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  matchStats MatchPlayerStats?
+  roundStats RoundPlayerStats[]
+
+  @@unique([matchId, playerId])
+  @@index([matchId])
+  @@index([playerId])
+  @@index([teamId])
+  @@index([agentId])
+}
+
+//
+// ==================== MATCH-LEVEL STATS ====================
+//
+
+model MatchPlayerStats {
+  id                   Int                @id @default(autoincrement())
+  matchParticipationId Int                @unique
+  matchParticipation   MatchParticipation @relation(fields: [matchParticipationId], references: [id], onDelete: Cascade)
+
+  matchId Int
+  match   Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  playerId Int
+  player   Player @relation(fields: [playerId], references: [id])
+
+  agentId   String?
+  agentName String?
+
+  // Combat stats
+  score     Int
+  kills     Int
+  deaths    Int
+  assists   Int
+  headshots Int
+  bodyshots Int
+  legshots  Int
+
+  // Damage
+  damageDealt    Int
+  damageReceived Int
+
+  // Calculated Stats (derived from raw data)
+  // ADR = Average Damage per Round = damageDealt / rounds played
+  adr         Float?
+  // ACS = Average Combat Score per Round = score / rounds played  
+  acs         Float?
+  // K/D Ratio = kills / deaths (or kills if deaths = 0)
+  kd          Float?
+  // HS% = Headshot Percentage = headshots / (headshots + bodyshots + legshots)
+  hsPercent   Float?
+  // KAST = Kill/Assist/Survive/Trade percentage (% of rounds with K, A, S, or T)
+  kast        Float?
+  // First Kills - First Deaths
+  firstKills  Int?
+  firstDeaths Int?
+
+  // Ability usage
+  grenadeCasts  Int?
+  ability1Casts Int?
+  ability2Casts Int?
+  ultimateCasts Int?
+
+  // Economy
+  spentOverall   Int?
+  spentAverage   Float?
+  loadoutOverall Int?
+  loadoutAverage Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Agent     Agent?   @relation(fields: [agentId], references: [id])
+
+  @@index([matchId])
+  @@index([playerId])
+}
+
+model MatchTeamStats {
+  id      Int   @id @default(autoincrement())
+  matchId Int
+  match   Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  teamSide String
+
+  roundsWon  Int
+  roundsLost Int
+  won        Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([matchId, teamId])
+  @@index([matchId])
+  @@index([teamId])
+}
+
+//
+// ==================== ROUND-LEVEL DATA ====================
+//
+
+model Round {
+  id      Int   @id @default(autoincrement())
+  matchId Int
+  match   Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  roundNumber Int
+  result      String
+  ceremony    String?
+  winningTeam String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  plant       Plant?
+  defuse      Defuse?
+  playerStats RoundPlayerStats[]
+  teamStats   RoundTeamStats[]
+
+  @@unique([matchId, roundNumber])
+  @@index([matchId])
+  @@index([winningTeam])
+}
+
+model Plant {
+  id      Int   @id @default(autoincrement())
+  roundId Int   @unique
+  round   Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
+
+  playerId Int
+  player   Player @relation(fields: [playerId], references: [id])
+
+  roundTimeMs Int
+  site        String
+  locationX   Float?
+  locationY   Float?
+
+  @@index([playerId])
+  @@index([site])
+}
+
+model Defuse {
+  id      Int   @id @default(autoincrement())
+  roundId Int   @unique
+  round   Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
+
+  playerId Int
+  player   Player @relation(fields: [playerId], references: [id])
+
+  roundTimeMs Int
+  locationX   Float?
+  locationY   Float?
+
+  @@index([playerId])
+}
+
+model RoundPlayerStats {
+  id      Int   @id @default(autoincrement())
+  roundId Int
+  round   Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
+
+  matchParticipationId Int
+  matchParticipation   MatchParticipation @relation(fields: [matchParticipationId], references: [id], onDelete: Cascade)
+
+  playerId  Int
+  player    Player @relation(fields: [playerId], references: [id])
+  // Combat stats for this round
+  score     Int
+  kills     Int
+  headshots Int
+  bodyshots Int
+  legshots  Int
+
+  // Ability usage this round
+  grenadeCasts  Int?
+  ability1Casts Int?
+  ability2Casts Int?
+  ultimateCasts Int?
+
+  // Economy
+  loadoutValue     Int?
+  creditsRemaining Int?
+  weaponId         String?
+  weaponName       String?
+  armorId          String?
+  armorName        String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([roundId, matchParticipationId])
+  @@index([roundId])
+  @@index([playerId])
+  @@index([matchParticipationId])
+}
+
+model RoundTeamStats {
+  id      Int   @id @default(autoincrement())
+  roundId Int
+  round   Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
+
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  teamSide String
+  won      Boolean
+
+  @@unique([roundId, teamId])
+  @@index([roundId])
+  @@index([teamId])
+}
+
+//
+// ==================== KILL EVENTS ====================
+//
+
+model Kill {
+  id      Int   @id @default(autoincrement())
+  matchId Int
+  match   Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  roundNumber   Int
+  timeInRoundMs Int
+  timeInMatchMs Int
+
+  killerId Int
+  killer   Player @relation("Killer", fields: [killerId], references: [id])
+
+  victimId Int
+  victim   Player @relation("Victim", fields: [victimId], references: [id])
+
+  assistants Player[] @relation("Assistant")
+
+  locationX Float?
+  locationY Float?
+
+  weaponId          String?
+  weaponName        String?
+  weaponType        String?
+  secondaryFireMode Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([matchId])
+  @@index([killerId])
+  @@index([victimId])
+  @@index([roundNumber])
+}
+
+//
+// ==================== ROSTERS & SUBSTITUTIONS ====================
+//
+
+model TeamRoster {
+  id     Int  @id @default(autoincrement())
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  playerId Int
+  player   Player @relation(fields: [playerId], references: [id])
+
+  seasonId Int
+  season   Season @relation(fields: [seasonId], references: [id])
+
+  startDate DateTime  @default(now())
+  endDate   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([playerId, teamId, seasonId])
+  @@index([teamId])
+  @@index([playerId])
+  @@index([seasonId])
+}
+
+model Substitution {
+  id      Int   @id @default(autoincrement())
+  matchId Int
+  match   Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  substitutedInId Int
+  substitutedIn   Player @relation("SubIn", fields: [substitutedInId], references: [id])
+
+  substitutedOutId Int
+  substitutedOut   Player @relation("SubOut", fields: [substitutedOutId], references: [id])
+
+  timestamp DateTime @default(now())
+
+  @@index([matchId])
+  @@index([teamId])
+  @@index([substitutedInId])
+  @@index([substitutedOutId])
+}
