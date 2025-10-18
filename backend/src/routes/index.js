@@ -6,11 +6,13 @@ const mapsRoutes = require("./maps.routes");
 const leagueRoutes = require("./leagues.routes");
 const seasonsRoutes = require("./seasons.routes");
 const teamsRoutes = require("./teams.routes");
+const playersRoutes = require("./players.routes");
 
 router.use("/agents", agentsRoutes);
 router.use("/maps", mapsRoutes);
 router.use("/leagues", leagueRoutes);
 router.use("/seasons", seasonsRoutes);
 router.use("/teams", teamsRoutes);
+router.use("/players", playersRoutes);
 
 module.exports = router;
