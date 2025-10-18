@@ -1,0 +1,155 @@
+GET    /agents          -> list all agents
+GET    /agents/:id      -> get single agent
+POST   /agents          -> create agent
+PATCH  /agents/:id      -> update agent
+DELETE /agents/:id      -> delete agent
+
+
+GET    /maps
+GET    /maps/:id
+POST   /maps
+PATCH  /maps/:id
+DELETE /maps/:id
+
+
+GET    /leagues
+GET    /leagues/:id
+POST   /leagues
+PATCH  /leagues/:id
+DELETE /leagues/:id
+
+# Nested
+GET    /leagues/:id/seasons      -> seasons in this league
+POST   /leagues/:id/seasons
+
+
+GET    /seasons
+GET    /seasons/:id
+POST   /seasons
+PATCH  /seasons/:id
+DELETE /seasons/:id
+
+# Nested
+GET    /seasons/:id/series
+GET    /seasons/:id/rosters
+
+
+GET    /teams
+GET    /teams/:id
+POST   /teams
+PATCH  /teams/:id
+DELETE /teams/:id
+
+# Nested
+GET    /teams/:id/rosters
+GET    /teams/:id/series/red    -> series where this team was red
+GET    /teams/:id/series/blue   -> series where this team was blue
+GET    /teams/:id/stats
+
+
+GET    /players
+GET    /players/:id
+POST   /players
+PATCH  /players/:id
+DELETE /players/:id
+
+# Nested
+GET    /players/:id/rosters
+GET    /players/:id/matches
+GET    /players/:id/stats        -> aggregated stats (match/round level)
+
+
+GET    /series
+GET    /series/:id
+POST   /series
+PATCH  /series/:id
+DELETE /series/:id
+
+# Nested
+GET    /series/:id/matches
+GET    /series/:id/teams          -> red and blue teams
+
+
+GET    /matches
+GET    /matches/:id
+POST   /matches
+PATCH  /matches/:id
+DELETE /matches/:id
+
+# Nested
+GET    /matches/:id/rounds
+GET    /matches/:id/player-stats
+GET    /matches/:id/team-stats
+GET    /matches/:id/substitutions
+GET    /matches/:id/kills
+GET    /matches/:id/participations
+
+
+GET    /match-participations
+GET    /match-participations/:id
+POST   /match-participations
+PATCH  /match-participations/:id
+DELETE /match-participations/:id
+
+
+GET    /rounds
+GET    /rounds/:id
+POST   /rounds
+PATCH  /rounds/:id
+DELETE /rounds/:id
+
+# Nested
+GET    /rounds/:id/player-stats
+GET    /rounds/:id/team-stats
+GET    /rounds/:id/plant
+GET    /rounds/:id/defuse
+
+
+GET    /plants
+GET    /plants/:id
+POST   /plants
+PATCH  /plants/:id
+DELETE /plants/:id
+
+GET    /defuses
+GET    /defuses/:id
+POST   /defuses
+PATCH  /defuses/:id
+DELETE /defuses/:id
+
+
+GET    /round-player-stats
+GET    /round-player-stats/:id
+GET    /round-team-stats
+GET    /round-team-stats/:id
+
+
+GET    /kills
+GET    /kills/:id
+POST   /kills
+PATCH  /kills/:id
+DELETE /kills/:id
+
+
+GET    /rosters
+GET    /rosters/:id
+POST   /rosters
+PATCH  /rosters/:id
+DELETE /rosters/:id
+
+# Nested
+GET    /teams/:id/rosters
+GET    /seasons/:id/rosters
+
+
+GET    /substitutions
+GET    /substitutions/:id
+POST   /substitutions
+PATCH  /substitutions/:id
+DELETE /substitutions/:id
+
+# Nested
+GET    /matches/:id/substitutions
+GET    /teams/:id/substitutions
+
+

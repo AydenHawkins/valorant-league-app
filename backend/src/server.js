@@ -1,6 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -8,8 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json({ message: 'Valorant Tournament API is running!' });
+app.get("/", (req, res) => {
+    res.json({ message: "Valorant Tournament API is running!" });
 });
 
 const PORT = process.env.PORT || 5000;
