@@ -1,5 +1,6 @@
 const prisma = require("../utilities/prisma");
 
+// GET /teams - Retrieve all teams
 const getTeams = async (req, res) => {
     try {
         const teams = await prisma.team.findMany();
@@ -10,6 +11,7 @@ const getTeams = async (req, res) => {
     }
 };
 
+// GET /teams/:id - Retrieve a team by ID
 const getTeamById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -27,6 +29,7 @@ const getTeamById = async (req, res) => {
     }
 };
 
+// POST /teams - Create a new team
 const createTeam = async (req, res) => {
     const { name } = req.body;
     try {
@@ -40,6 +43,7 @@ const createTeam = async (req, res) => {
     }
 };
 
+// PUT /teams/:id - Update an existing team
 const updateTeam = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
@@ -55,6 +59,7 @@ const updateTeam = async (req, res) => {
     }
 };
 
+// DELETE /teams/:id - Delete a team
 const deleteTeam = async (req, res) => {
     const { id } = req.params;
     try {

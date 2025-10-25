@@ -1,5 +1,6 @@
 const prisma = require("../utilities/prisma");
 
+// GET /leagues - Retrieve all leagues
 const getLeagues = async (req, res) => {
     try {
         const leagues = await prisma.league.findMany();
@@ -10,6 +11,7 @@ const getLeagues = async (req, res) => {
     }
 };
 
+// GET /leagues/:id - Retrieve a league by ID
 const getLeagueById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -27,6 +29,7 @@ const getLeagueById = async (req, res) => {
     }
 };
 
+// POST /leagues - Create a new league
 const createLeague = async (req, res) => {
     const { name } = req.body;
     try {
@@ -40,6 +43,7 @@ const createLeague = async (req, res) => {
     }
 };
 
+// PUT /leagues/:id - Update an existing league
 const updateLeague = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
@@ -55,6 +59,7 @@ const updateLeague = async (req, res) => {
     }
 };
 
+// DELETE /leagues/:id - Delete a league
 const deleteLeague = async (req, res) => {
     const { id } = req.params;
     try {

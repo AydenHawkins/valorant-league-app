@@ -1,5 +1,6 @@
 const prisma = require("../utilities/prisma");
 
+// GET /seasons - Retrieve all seasons
 const getSeasons = async (req, res) => {
     try {
         const seasons = await prisma.season.findMany();
@@ -10,6 +11,7 @@ const getSeasons = async (req, res) => {
     }
 };
 
+// GET /seasons/:id - Retrieve a season by ID
 const getSeasonById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -27,6 +29,7 @@ const getSeasonById = async (req, res) => {
     }
 };
 
+// GET /leagues/:leagueId/seasons - Retrieve all seasons for a specific league
 const getSeasonsForLeague = async (req, res) => {
     const { leagueId } = req.params;
     try {
@@ -40,6 +43,7 @@ const getSeasonsForLeague = async (req, res) => {
     }
 };
 
+// POST /seasons - Create a new season
 const createSeason = async (req, res) => {
     const { name, startDate, endDate } = req.body;
     try {
@@ -53,6 +57,7 @@ const createSeason = async (req, res) => {
     }
 };
 
+// PUT /seasons/:id - Update an existing season
 const updateSeason = async (req, res) => {
     const { id } = req.params;
     const { name, startDate, endDate } = req.body;
@@ -68,6 +73,7 @@ const updateSeason = async (req, res) => {
     }
 };
 
+// DELETE /seasons/:id - Delete a season
 const deleteSeason = async (req, res) => {
     const { id } = req.params;
     try {
@@ -81,6 +87,7 @@ const deleteSeason = async (req, res) => {
     }
 };
 
+// POST /leagues/:leagueId/seasons - Create a new season for a specific league
 const createSeasonForLeague = async (req, res) => {
     const { leagueId } = req.params;
     const { name, startDate, endDate } = req.body;
