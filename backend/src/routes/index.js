@@ -8,6 +8,7 @@ const seasonsRoutes = require("./seasons.routes");
 const teamsRoutes = require("./teams.routes");
 const playersRoutes = require("./players.routes");
 const seriesRoutes = require("./series.routes");
+const matchesRoutes = require("./matches.routes");
 
 router.use("/agents", agentsRoutes);
 router.use("/maps", mapsRoutes);
@@ -16,5 +17,6 @@ router.use("/seasons", seasonsRoutes);
 router.use("/teams", teamsRoutes);
 router.use("/players", playersRoutes);
 router.use("/series", seriesRoutes);
+router.use("/matches", matchesRoutes);
 
 module.exports = router;
