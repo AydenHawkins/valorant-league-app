@@ -14,9 +14,10 @@ const roundRoutes = require("./rounds.routes");
 const plantRoutes = require("./plants.routes");
 const defuseRoutes = require("./defuses.routes");
 const roundPlayerStatsRoutes = require("./roundPlayerStats.routes");
+const roundTeamStatsRoutes = require("./roundTeamStats.routes");
 const killRoutes = require("./kills.routes");
 const rostersRoutes = require("./rosters.routes");
-const substitutionRoutes = require("../utilities/prisma");
+const substitutionRoutes = require("./substitutions.routes");
 
 router.use("/agents", agentsRoutes);
 router.use("/maps", mapsRoutes);
@@ -34,5 +35,6 @@ router.use("/roundPlayerStats", roundPlayerStatsRoutes);
 router.use("/kills", killRoutes);
 router.use("/rosters", rostersRoutes);
 router.use("/substitutions", substitutionRoutes);
+router.use("/roundTeamStats", roundTeamStatsRoutes);
 
 module.exports = router;
