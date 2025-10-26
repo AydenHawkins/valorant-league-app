@@ -335,7 +335,6 @@ model Round {
 
   roundNumber Int
   result      String
-  ceremony    String?
   winningTeam String
 
   createdAt DateTime @default(now())
