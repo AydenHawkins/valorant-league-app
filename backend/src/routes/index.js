@@ -14,6 +14,7 @@ const roundRoutes = require("./rounds.routes");
 const plantRoutes = require("./plants.routes");
 const defuseRoutes = require("./defuses.routes");
 const roundPlayerStatsRoutes = require("./roundPlayerStats.routes");
+const killRoutes = require("./kills.routes");
 
 router.use("/agents", agentsRoutes);
 router.use("/maps", mapsRoutes);
@@ -28,5 +29,6 @@ router.use("/rounds", roundRoutes);
 router.use("/plants", plantRoutes);
 router.use("/defuses", defuseRoutes);
 router.use("/roundPlayerStats", roundPlayerStatsRoutes);
+router.use("/kills", killRoutes);
 
 module.exports = router;
