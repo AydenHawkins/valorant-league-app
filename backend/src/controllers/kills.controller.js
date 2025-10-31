@@ -54,12 +54,14 @@ const createKill = async (req, res) => {
                 timeInMatchMs,
                 killerId,
                 vicitimId,
-                locationX,
-                locationY,
-                weaponId,
-                weaponName,
-                weaponType,
-                secondaryFireMode,
+                locationX: locationX ? locationX : null,
+                locationY: locationY ? locationY : null,
+                weaponId: weaponId ? weaponId : null,
+                weaponName: weaponName ? weaponName : null,
+                weaponType: weaponType ? weaponType : null,
+                secondaryFireMode: secondaryFireMode
+                    ? secondaryFireMode
+                    : false,
             },
         });
         res.status(201).json(newKill);

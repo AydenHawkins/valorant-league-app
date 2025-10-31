@@ -50,12 +50,12 @@ const createMatch = async (req, res) => {
                 matchNumber,
                 riotMatchId,
                 mapId,
-                gameLengthMs,
+                gameLengthMs: gameLengthMs ? gameLengthMs : null,
                 startedAt,
-                completedAt,
+                completedAt: completedAt ? completedAt : null,
                 isCompleted,
                 status,
-                winnerTeamSide,
+                winnerTeamSide: winnerTeamSide ? winnerTeamSide : null,
             },
         });
         res.status(201).json(newMatch);

@@ -1,4 +1,4 @@
-const prisma = require("../utilities/prisma");
+const prisma = require("../utils/prisma");
 
 // GET /maps - Retrieve all maps
 const getMaps = async (req, res) => {
@@ -30,10 +30,11 @@ const getMapById = async (req, res) => {
 
 // POST /maps - Create a new map
 const createMap = async (req, res) => {
-    const { name } = req.body;
+    const { id, name } = req.body;
     try {
         const newMap = await prisma.map.create({
             data: {
+                id,
                 name,
             },
         });
@@ -50,7 +51,7 @@ const updateMap = async (req, res) => {
     const { name } = req.body;
     try {
         const updatedMap = await prisma.map.update({
-            where: { id: Number(id) },
+            where: { id },
             data: {
                 name,
             },
@@ -67,7 +68,7 @@ const deleteMap = async (req, res) => {
     const { id } = req.params;
     try {
         await prisma.map.delete({
-            where: { id: Number(id) },
+            where: { id },
         });
         res.status(204).send();
     } catch (error) {

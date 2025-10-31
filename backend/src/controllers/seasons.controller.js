@@ -48,7 +48,7 @@ const createSeason = async (req, res) => {
     const { name, startDate, endDate } = req.body;
     try {
         const newSeason = await prisma.season.create({
-            data: { name, startDate, endDate },
+            data: { name, startDate, endDate: endDate ? endDate : null },
         });
         res.status(201).json(newSeason);
     } catch (error) {

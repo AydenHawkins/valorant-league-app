@@ -51,7 +51,7 @@ const createSeries = async (req, res) => {
                 status,
                 winnerTeamId,
                 startDate,
-                endDate,
+                endDate: endDate ? endDate : null,
             },
         });
         res.status(201).json(newSeries);

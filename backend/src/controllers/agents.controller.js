@@ -1,4 +1,4 @@
-const prisma = require("../utilities/prisma");
+const prisma = require("../utils/prisma");
 
 // GET /agents - Retrieve all agents
 const getAgents = async (req, res) => {
@@ -16,7 +16,7 @@ const getAgentById = async (req, res) => {
     const { id } = req.params;
     try {
         const agent = await prisma.agent.findUnique({
-            where: { id: parseInt(id) },
+            where: { id },
         });
         if (agent) {
             res.json(agent);
@@ -31,10 +31,10 @@ const getAgentById = async (req, res) => {
 
 // POST /agents - Create a new agent
 const createAgent = async (req, res) => {
-    const { name, role } = req.body;
+    const { id, name, role } = req.body;
     try {
         const newAgent = await prisma.agent.create({
-            data: { name, role },
+            data: { id, name, role },
         });
         res.status(201).json(newAgent);
     } catch (error) {
@@ -49,7 +49,7 @@ const updateAgent = async (req, res) => {
     const { name, role } = req.body;
     try {
         const updatedAgent = await prisma.agent.update({
-            where: { id: parseInt(id) },
+            where: { id },
             data: { name, role },
         });
         res.json(updatedAgent);
@@ -63,7 +63,7 @@ const updateAgent = async (req, res) => {
 const deleteAgent = async (req, res) => {
     const { id } = req.params;
     try {
-        await prisma.agent.delete({ where: { id: parseInt(id) } });
+        await prisma.agent.delete({ where: { id } });
         res.status(204).end();
     } catch (error) {
         console.log(error);

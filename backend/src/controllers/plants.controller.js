@@ -39,8 +39,8 @@ const createPlant = async (req, res) => {
                 playerId,
                 roundTimeMs,
                 site,
-                locationX,
-                locationY,
+                locationX: locationX ? locationX : null,
+                locationY: locationY ? locationY : null,
             },
         });
         res.status(201).json(newPlant);

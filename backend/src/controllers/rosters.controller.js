@@ -39,7 +39,7 @@ const createRoster = async (req, res) => {
                 playerId,
                 seasonId,
                 startDate,
-                endDate,
+                endDate: endDate ? endDate : null,
             },
         });
         res.status(201).json(roster);

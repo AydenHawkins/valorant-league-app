@@ -38,7 +38,13 @@ const createMatchParticipation = async (req, res) => {
     const { matchId, playerId, teamId, teamSide, agentId } = req.body;
     try {
         const newMatchParticipation = await prisma.matchParticipation.create({
-            data: { matchId, playerId, teamId, teamSide, agentId },
+            data: {
+                matchId,
+                playerId,
+                teamId,
+                teamSide,
+                agentId: agentId ? agentId : null,
+            },
         });
         res.status(201).json(newMatchParticipation);
     } catch (error) {

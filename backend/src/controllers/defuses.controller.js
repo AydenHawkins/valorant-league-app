@@ -38,8 +38,8 @@ const createDefuse = async (req, res) => {
                 roundId,
                 playerId,
                 roundTimeMs,
-                locationX,
-                locationY,
+                locationX: locationX ? locationX : null,
+                locationY: locationY ? locationY : null,
             },
         });
         res.status(201).json(newDefuse);
