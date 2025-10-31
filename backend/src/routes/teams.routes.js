@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getTeams,
-    getTeamById,
-    createTeam,
-    updateTeam,
-    deleteTeam,
+  getTeams,
+  getTeamById,
+  createTeam,
+  updateTeam,
+  deleteTeam,
 } = require("../controllers/teams.controller");
 
 router.get("/", getTeams);

@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getAgents,
-    getAgentById,
-    createAgent,
-    updateAgent,
-    deleteAgent,
+  getAgents,
+  getAgentById,
+  createAgent,
+  updateAgent,
+  deleteAgent,
 } = require("../controllers/agents.controller");
 
 router.get("/", getAgents);

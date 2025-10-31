@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getKills,
-    getKillById,
-    createKill,
-    updateKill,
-    deleteKill,
+  getKills,
+  getKillById,
+  createKill,
+  updateKill,
+  deleteKill,
 } = require("../controllers/kills.controller");
 
 router.get("/", getKills);
