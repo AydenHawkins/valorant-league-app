@@ -32,9 +32,9 @@ router.use("/rounds", roundRoutes);
 router.use("/plants", plantRoutes);
 router.use("/defuses", defuseRoutes);
 router.use("/roundPlayerStats", roundPlayerStatsRoutes);
+router.use("/roundTeamStats", roundTeamStatsRoutes);
 router.use("/kills", killRoutes);
 router.use("/rosters", rostersRoutes);
 router.use("/substitutions", substitutionRoutes);
-router.use("/roundTeamStats", roundTeamStatsRoutes);
 
 module.exports = router;
