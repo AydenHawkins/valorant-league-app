@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const {
-  getSeasons,
-  getSeasonById,
-  createSeason,
-  updateSeason,
-  deleteSeason,
-  getSeasonsForLeague,
-  createSeasonForLeague,
+    getSeasons,
+    getSeasonById,
+    createSeason,
+    updateSeason,
+    deleteSeason,
+    getSeasonsForLeague,
+    createSeasonForLeague,
 } = require("../controllers/seasons.controller");
 
 router.get("/", getSeasons);

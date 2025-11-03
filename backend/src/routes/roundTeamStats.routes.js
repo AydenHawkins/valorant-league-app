@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getRoundTeamStats,
-  getRoundTeamStatById,
-  createRoundTeamStat,
-  updateRoundTeamStat,
-  deleteRoundTeamStat,
+    getRoundTeamStats,
+    getRoundTeamStatById,
+    createRoundTeamStat,
+    updateRoundTeamStat,
+    deleteRoundTeamStat,
 } = require("../controllers/roundTeamStats.controller");
 
 router.get("/", getRoundTeamStats);

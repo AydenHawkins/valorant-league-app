@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getMaps,
-  getMapById,
-  createMap,
-  updateMap,
-  deleteMap,
+    getMaps,
+    getMapById,
+    createMap,
+    updateMap,
+    deleteMap,
 } = require("../controllers/maps.controller");
 
 router.get("/", getMaps);

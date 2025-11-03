@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getSeries,
-  getSeriesById,
-  createSeries,
-  updateSeries,
-  deleteSeries,
+    getSeries,
+    getSeriesById,
+    createSeries,
+    updateSeries,
+    deleteSeries,
 } = require("../controllers/series.controller");
 
 router.get("/", getSeries);
