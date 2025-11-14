@@ -1,24 +1,26 @@
 const express = require("express");
 const router = express.Router();
 
-const agentsRoutes = require("./agents.routes");
-const mapsRoutes = require("./maps.routes");
-const leagueRoutes = require("./leagues.routes");
-const seasonsRoutes = require("./seasons.routes");
-const teamsRoutes = require("./teams.routes");
-const playersRoutes = require("./players.routes");
-const seriesRoutes = require("./series.routes");
-const matchesRoutes = require("./matches.routes");
-const matchParticipationsRoutes = require("./matchParticipations.routes");
-const roundRoutes = require("./rounds.routes");
-const plantRoutes = require("./plants.routes");
-const defuseRoutes = require("./defuses.routes");
-const roundPlayerStatsRoutes = require("./roundPlayerStats.routes");
-const roundTeamStatsRoutes = require("./roundTeamStats.routes");
-const killRoutes = require("./kills.routes");
-const rostersRoutes = require("./rosters.routes");
-const substitutionRoutes = require("./substitutions.routes");
+// Import routes from modules
+const agentsRoutes = require("../modules/agents/agents.routes");
+const mapsRoutes = require("../modules/maps/maps.routes");
+const leagueRoutes = require("../modules/leagues/leagues.routes");
+const seasonsRoutes = require("../modules/seasons/seasons.routes");
+const teamsRoutes = require("../modules/teams/teams.routes");
+const playersRoutes = require("../modules/players/players.routes");
+const seriesRoutes = require("../modules/series/series.routes");
+const matchesRoutes = require("../modules/matches/matches.routes");
+const matchParticipationsRoutes = require("../modules/matchParticipations/matchParticipations.routes");
+const roundRoutes = require("../modules/rounds/rounds.routes");
+const plantRoutes = require("../modules/plants/plants.routes");
+const defuseRoutes = require("../modules/defuses/defuses.routes");
+const roundPlayerStatsRoutes = require("../modules/roundPlayerStats/roundPlayerStats.routes");
+const roundTeamStatsRoutes = require("../modules/roundTeamStats/roundTeamStats.routes");
+const killRoutes = require("../modules/kills/kills.routes");
+const rostersRoutes = require("../modules/rosters/rosters.routes");
+const substitutionRoutes = require("../modules/substitutions/substitutions.routes");
 
+// Mount routes
 router.use("/agents", agentsRoutes);
 router.use("/maps", mapsRoutes);
 router.use("/leagues", leagueRoutes);
