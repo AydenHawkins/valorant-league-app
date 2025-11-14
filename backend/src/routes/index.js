@@ -19,6 +19,7 @@ const roundTeamStatsRoutes = require("../modules/roundTeamStats/roundTeamStats.r
 const killRoutes = require("../modules/kills/kills.routes");
 const rostersRoutes = require("../modules/rosters/rosters.routes");
 const substitutionRoutes = require("../modules/substitutions/substitutions.routes");
+const matchParserRoutes = require("../modules/matchParser/matchParser.routes");
 
 // Mount routes
 router.use("/agents", agentsRoutes);
@@ -38,5 +39,6 @@ router.use("/roundTeamStats", roundTeamStatsRoutes);
 router.use("/kills", killRoutes);
 router.use("/rosters", rostersRoutes);
 router.use("/substitutions", substitutionRoutes);
+router.use("/matchParser", matchParserRoutes);
 
 module.exports = router;
