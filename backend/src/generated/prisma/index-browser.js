@@ -260,7 +260,6 @@ exports.Prisma.RoundScalarFieldEnum = {
   matchId: 'matchId',
   roundNumber: 'roundNumber',
   result: 'result',
-  ceremony: 'ceremony',
   winningTeam: 'winningTeam',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
