@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getRoundPlayerStats,
-    getRoundPlayerStatById,
-    createRoundPlayerStat,
-    updateRoundPlayerStat,
-    deleteRoundPlayerStat,
+  getRoundPlayerStats,
+  getRoundPlayerStatById,
+  createRoundPlayerStat,
+  updateRoundPlayerStat,
+  deleteRoundPlayerStat,
 } = require("./roundPlayerStats.controller");
 
 router.get("/", getRoundPlayerStats);

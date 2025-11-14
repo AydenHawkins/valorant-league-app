@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getLeagues,
-    getLeagueById,
-    createLeague,
-    updateLeague,
-    deleteLeague,
+  getLeagues,
+  getLeagueById,
+  createLeague,
+  updateLeague,
+  deleteLeague,
 } = require("./leagues.controller");
 
 router.get("/", getLeagues);

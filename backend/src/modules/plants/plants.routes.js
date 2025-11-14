@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getPlants,
-    getPlantById,
-    createPlant,
-    updatePlant,
-    deletePlant,
+  getPlants,
+  getPlantById,
+  createPlant,
+  updatePlant,
+  deletePlant,
 } = require("./plants.controller");
 
 router.get("/", getPlants);

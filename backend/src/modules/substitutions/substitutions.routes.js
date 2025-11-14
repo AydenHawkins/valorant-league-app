@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getSubstitutions,
-    getSubstitutionById,
-    createSubstitution,
-    updateSubstitution,
-    deleteSubstitution,
+  getSubstitutions,
+  getSubstitutionById,
+  createSubstitution,
+  updateSubstitution,
+  deleteSubstitution,
 } = require("./substitutions.controller");
 
 router.get("/", getSubstitutions);

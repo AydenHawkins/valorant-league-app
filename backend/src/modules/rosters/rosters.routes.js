@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getRosters,
-    getRosterById,
-    createRoster,
-    updateRoster,
-    deleteRoster,
+  getRosters,
+  getRosterById,
+  createRoster,
+  updateRoster,
+  deleteRoster,
 } = require("./rosters.controller");
 
 router.get("/", getRosters);

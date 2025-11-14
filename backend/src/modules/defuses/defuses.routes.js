@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getDefuses,
-    getDefuseById,
-    createDefuse,
-    updateDefuse,
-    deleteDefuse,
+  getDefuses,
+  getDefuseById,
+  createDefuse,
+  updateDefuse,
+  deleteDefuse,
 } = require("./defuses.controller");
 
 router.get("/", getDefuses);

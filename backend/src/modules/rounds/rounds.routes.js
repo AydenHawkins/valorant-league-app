@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getRounds,
-    getRoundById,
-    createRound,
-    updateRound,
-    deleteRound,
+  getRounds,
+  getRoundById,
+  createRound,
+  updateRound,
+  deleteRound,
 } = require("./rounds.controller");
 
 router.get("/", getRounds);
