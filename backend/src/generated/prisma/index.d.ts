@@ -11602,7 +11602,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId: string | null
-    mapId: string | null
+    mapId: string
     gameLengthMs: number | null
     startedAt: Date
     completedAt: Date | null
@@ -11647,7 +11647,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     series?: boolean | SeriesDefaultArgs<ExtArgs>
-    map?: boolean | Match$mapArgs<ExtArgs>
+    map?: boolean | MapDefaultArgs<ExtArgs>
     rounds?: boolean | Match$roundsArgs<ExtArgs>
     matchPlayerStats?: boolean | Match$matchPlayerStatsArgs<ExtArgs>
     matchTeamStats?: boolean | Match$matchTeamStatsArgs<ExtArgs>
@@ -11672,7 +11672,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     series?: boolean | SeriesDefaultArgs<ExtArgs>
-    map?: boolean | Match$mapArgs<ExtArgs>
+    map?: boolean | MapDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["match"]>
 
   export type MatchSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11690,7 +11690,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     series?: boolean | SeriesDefaultArgs<ExtArgs>
-    map?: boolean | Match$mapArgs<ExtArgs>
+    map?: boolean | MapDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["match"]>
 
   export type MatchSelectScalar = {
@@ -11712,7 +11712,7 @@ export namespace Prisma {
   export type MatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "seriesId" | "matchNumber" | "riotMatchId" | "mapId" | "gameLengthMs" | "startedAt" | "completedAt" | "isCompleted" | "status" | "winnerTeamSide" | "createdAt" | "updatedAt", ExtArgs["result"]["match"]>
   export type MatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     series?: boolean | SeriesDefaultArgs<ExtArgs>
-    map?: boolean | Match$mapArgs<ExtArgs>
+    map?: boolean | MapDefaultArgs<ExtArgs>
     rounds?: boolean | Match$roundsArgs<ExtArgs>
     matchPlayerStats?: boolean | Match$matchPlayerStatsArgs<ExtArgs>
     matchTeamStats?: boolean | Match$matchTeamStatsArgs<ExtArgs>
@@ -11723,18 +11723,18 @@ export namespace Prisma {
   }
   export type MatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     series?: boolean | SeriesDefaultArgs<ExtArgs>
-    map?: boolean | Match$mapArgs<ExtArgs>
+    map?: boolean | MapDefaultArgs<ExtArgs>
   }
   export type MatchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     series?: boolean | SeriesDefaultArgs<ExtArgs>
-    map?: boolean | Match$mapArgs<ExtArgs>
+    map?: boolean | MapDefaultArgs<ExtArgs>
   }
 
   export type $MatchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Match"
     objects: {
       series: Prisma.$SeriesPayload<ExtArgs>
-      map: Prisma.$MapPayload<ExtArgs> | null
+      map: Prisma.$MapPayload<ExtArgs>
       rounds: Prisma.$RoundPayload<ExtArgs>[]
       matchPlayerStats: Prisma.$MatchPlayerStatsPayload<ExtArgs>[]
       matchTeamStats: Prisma.$MatchTeamStatsPayload<ExtArgs>[]
@@ -11747,7 +11747,7 @@ export namespace Prisma {
       seriesId: number
       matchNumber: number
       riotMatchId: string | null
-      mapId: string | null
+      mapId: string
       gameLengthMs: number | null
       startedAt: Date
       completedAt: Date | null
@@ -12151,7 +12151,7 @@ export namespace Prisma {
   export interface Prisma__MatchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     series<T extends SeriesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SeriesDefaultArgs<ExtArgs>>): Prisma__SeriesClient<$Result.GetResult<Prisma.$SeriesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    map<T extends Match$mapArgs<ExtArgs> = {}>(args?: Subset<T, Match$mapArgs<ExtArgs>>): Prisma__MapClient<$Result.GetResult<Prisma.$MapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    map<T extends MapDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MapDefaultArgs<ExtArgs>>): Prisma__MapClient<$Result.GetResult<Prisma.$MapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     rounds<T extends Match$roundsArgs<ExtArgs> = {}>(args?: Subset<T, Match$roundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchPlayerStats<T extends Match$matchPlayerStatsArgs<ExtArgs> = {}>(args?: Subset<T, Match$matchPlayerStatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPlayerStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matchTeamStats<T extends Match$matchTeamStatsArgs<ExtArgs> = {}>(args?: Subset<T, Match$matchTeamStatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchTeamStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -12593,25 +12593,6 @@ export namespace Prisma {
      * Limit how many Matches to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Match.map
-   */
-  export type Match$mapArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Map
-     */
-    select?: MapSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Map
-     */
-    omit?: MapOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MapInclude<ExtArgs> | null
-    where?: MapWhereInput
   }
 
   /**
@@ -16794,7 +16775,6 @@ export namespace Prisma {
     matchId: number | null
     roundNumber: number | null
     result: string | null
-    ceremony: string | null
     winningTeam: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -16805,7 +16785,6 @@ export namespace Prisma {
     matchId: number | null
     roundNumber: number | null
     result: string | null
-    ceremony: string | null
     winningTeam: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -16816,7 +16795,6 @@ export namespace Prisma {
     matchId: number
     roundNumber: number
     result: number
-    ceremony: number
     winningTeam: number
     createdAt: number
     updatedAt: number
@@ -16841,7 +16819,6 @@ export namespace Prisma {
     matchId?: true
     roundNumber?: true
     result?: true
-    ceremony?: true
     winningTeam?: true
     createdAt?: true
     updatedAt?: true
@@ -16852,7 +16829,6 @@ export namespace Prisma {
     matchId?: true
     roundNumber?: true
     result?: true
-    ceremony?: true
     winningTeam?: true
     createdAt?: true
     updatedAt?: true
@@ -16863,7 +16839,6 @@ export namespace Prisma {
     matchId?: true
     roundNumber?: true
     result?: true
-    ceremony?: true
     winningTeam?: true
     createdAt?: true
     updatedAt?: true
@@ -16961,7 +16936,6 @@ export namespace Prisma {
     matchId: number
     roundNumber: number
     result: string
-    ceremony: string | null
     winningTeam: string
     createdAt: Date
     updatedAt: Date
@@ -16991,7 +16965,6 @@ export namespace Prisma {
     matchId?: boolean
     roundNumber?: boolean
     result?: boolean
-    ceremony?: boolean
     winningTeam?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17008,7 +16981,6 @@ export namespace Prisma {
     matchId?: boolean
     roundNumber?: boolean
     result?: boolean
-    ceremony?: boolean
     winningTeam?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17020,7 +16992,6 @@ export namespace Prisma {
     matchId?: boolean
     roundNumber?: boolean
     result?: boolean
-    ceremony?: boolean
     winningTeam?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17032,13 +17003,12 @@ export namespace Prisma {
     matchId?: boolean
     roundNumber?: boolean
     result?: boolean
-    ceremony?: boolean
     winningTeam?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RoundOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "matchId" | "roundNumber" | "result" | "ceremony" | "winningTeam" | "createdAt" | "updatedAt", ExtArgs["result"]["round"]>
+  export type RoundOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "matchId" | "roundNumber" | "result" | "winningTeam" | "createdAt" | "updatedAt", ExtArgs["result"]["round"]>
   export type RoundInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     match?: boolean | MatchDefaultArgs<ExtArgs>
     plant?: boolean | Round$plantArgs<ExtArgs>
@@ -17068,7 +17038,6 @@ export namespace Prisma {
       matchId: number
       roundNumber: number
       result: string
-      ceremony: string | null
       winningTeam: string
       createdAt: Date
       updatedAt: Date
@@ -17504,7 +17473,6 @@ export namespace Prisma {
     readonly matchId: FieldRef<"Round", 'Int'>
     readonly roundNumber: FieldRef<"Round", 'Int'>
     readonly result: FieldRef<"Round", 'String'>
-    readonly ceremony: FieldRef<"Round", 'String'>
     readonly winningTeam: FieldRef<"Round", 'String'>
     readonly createdAt: FieldRef<"Round", 'DateTime'>
     readonly updatedAt: FieldRef<"Round", 'DateTime'>
@@ -26532,7 +26500,6 @@ export namespace Prisma {
     matchId: 'matchId',
     roundNumber: 'roundNumber',
     result: 'result',
-    ceremony: 'ceremony',
     winningTeam: 'winningTeam',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -27245,7 +27212,7 @@ export namespace Prisma {
     seriesId?: IntFilter<"Match"> | number
     matchNumber?: IntFilter<"Match"> | number
     riotMatchId?: StringNullableFilter<"Match"> | string | null
-    mapId?: StringNullableFilter<"Match"> | string | null
+    mapId?: StringFilter<"Match"> | string
     gameLengthMs?: IntNullableFilter<"Match"> | number | null
     startedAt?: DateTimeFilter<"Match"> | Date | string
     completedAt?: DateTimeNullableFilter<"Match"> | Date | string | null
@@ -27255,7 +27222,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Match"> | Date | string
     updatedAt?: DateTimeFilter<"Match"> | Date | string
     series?: XOR<SeriesScalarRelationFilter, SeriesWhereInput>
-    map?: XOR<MapNullableScalarRelationFilter, MapWhereInput> | null
+    map?: XOR<MapScalarRelationFilter, MapWhereInput>
     rounds?: RoundListRelationFilter
     matchPlayerStats?: MatchPlayerStatsListRelationFilter
     matchTeamStats?: MatchTeamStatsListRelationFilter
@@ -27269,7 +27236,7 @@ export namespace Prisma {
     seriesId?: SortOrder
     matchNumber?: SortOrder
     riotMatchId?: SortOrderInput | SortOrder
-    mapId?: SortOrderInput | SortOrder
+    mapId?: SortOrder
     gameLengthMs?: SortOrderInput | SortOrder
     startedAt?: SortOrder
     completedAt?: SortOrderInput | SortOrder
@@ -27297,7 +27264,7 @@ export namespace Prisma {
     NOT?: MatchWhereInput | MatchWhereInput[]
     seriesId?: IntFilter<"Match"> | number
     matchNumber?: IntFilter<"Match"> | number
-    mapId?: StringNullableFilter<"Match"> | string | null
+    mapId?: StringFilter<"Match"> | string
     gameLengthMs?: IntNullableFilter<"Match"> | number | null
     startedAt?: DateTimeFilter<"Match"> | Date | string
     completedAt?: DateTimeNullableFilter<"Match"> | Date | string | null
@@ -27307,7 +27274,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Match"> | Date | string
     updatedAt?: DateTimeFilter<"Match"> | Date | string
     series?: XOR<SeriesScalarRelationFilter, SeriesWhereInput>
-    map?: XOR<MapNullableScalarRelationFilter, MapWhereInput> | null
+    map?: XOR<MapScalarRelationFilter, MapWhereInput>
     rounds?: RoundListRelationFilter
     matchPlayerStats?: MatchPlayerStatsListRelationFilter
     matchTeamStats?: MatchTeamStatsListRelationFilter
@@ -27321,7 +27288,7 @@ export namespace Prisma {
     seriesId?: SortOrder
     matchNumber?: SortOrder
     riotMatchId?: SortOrderInput | SortOrder
-    mapId?: SortOrderInput | SortOrder
+    mapId?: SortOrder
     gameLengthMs?: SortOrderInput | SortOrder
     startedAt?: SortOrder
     completedAt?: SortOrderInput | SortOrder
@@ -27345,7 +27312,7 @@ export namespace Prisma {
     seriesId?: IntWithAggregatesFilter<"Match"> | number
     matchNumber?: IntWithAggregatesFilter<"Match"> | number
     riotMatchId?: StringNullableWithAggregatesFilter<"Match"> | string | null
-    mapId?: StringNullableWithAggregatesFilter<"Match"> | string | null
+    mapId?: StringWithAggregatesFilter<"Match"> | string
     gameLengthMs?: IntNullableWithAggregatesFilter<"Match"> | number | null
     startedAt?: DateTimeWithAggregatesFilter<"Match"> | Date | string
     completedAt?: DateTimeNullableWithAggregatesFilter<"Match"> | Date | string | null
@@ -27729,7 +27696,6 @@ export namespace Prisma {
     matchId?: IntFilter<"Round"> | number
     roundNumber?: IntFilter<"Round"> | number
     result?: StringFilter<"Round"> | string
-    ceremony?: StringNullableFilter<"Round"> | string | null
     winningTeam?: StringFilter<"Round"> | string
     createdAt?: DateTimeFilter<"Round"> | Date | string
     updatedAt?: DateTimeFilter<"Round"> | Date | string
@@ -27745,7 +27711,6 @@ export namespace Prisma {
     matchId?: SortOrder
     roundNumber?: SortOrder
     result?: SortOrder
-    ceremony?: SortOrderInput | SortOrder
     winningTeam?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27765,7 +27730,6 @@ export namespace Prisma {
     matchId?: IntFilter<"Round"> | number
     roundNumber?: IntFilter<"Round"> | number
     result?: StringFilter<"Round"> | string
-    ceremony?: StringNullableFilter<"Round"> | string | null
     winningTeam?: StringFilter<"Round"> | string
     createdAt?: DateTimeFilter<"Round"> | Date | string
     updatedAt?: DateTimeFilter<"Round"> | Date | string
@@ -27781,7 +27745,6 @@ export namespace Prisma {
     matchId?: SortOrder
     roundNumber?: SortOrder
     result?: SortOrder
-    ceremony?: SortOrderInput | SortOrder
     winningTeam?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27800,7 +27763,6 @@ export namespace Prisma {
     matchId?: IntWithAggregatesFilter<"Round"> | number
     roundNumber?: IntWithAggregatesFilter<"Round"> | number
     result?: StringWithAggregatesFilter<"Round"> | string
-    ceremony?: StringNullableWithAggregatesFilter<"Round"> | string | null
     winningTeam?: StringWithAggregatesFilter<"Round"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Round"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Round"> | Date | string
@@ -28929,7 +28891,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     series: SeriesCreateNestedOneWithoutMatchesInput
-    map?: MapCreateNestedOneWithoutMatchesInput
+    map: MapCreateNestedOneWithoutMatchesInput
     rounds?: RoundCreateNestedManyWithoutMatchInput
     matchPlayerStats?: MatchPlayerStatsCreateNestedManyWithoutMatchInput
     matchTeamStats?: MatchTeamStatsCreateNestedManyWithoutMatchInput
@@ -28943,7 +28905,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -28972,7 +28934,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     series?: SeriesUpdateOneRequiredWithoutMatchesNestedInput
-    map?: MapUpdateOneWithoutMatchesNestedInput
+    map?: MapUpdateOneRequiredWithoutMatchesNestedInput
     rounds?: RoundUpdateManyWithoutMatchNestedInput
     matchPlayerStats?: MatchPlayerStatsUpdateManyWithoutMatchNestedInput
     matchTeamStats?: MatchTeamStatsUpdateManyWithoutMatchNestedInput
@@ -28986,7 +28948,7 @@ export namespace Prisma {
     seriesId?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29008,7 +28970,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -29037,7 +28999,7 @@ export namespace Prisma {
     seriesId?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29439,7 +29401,6 @@ export namespace Prisma {
   export type RoundCreateInput = {
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29455,7 +29416,6 @@ export namespace Prisma {
     matchId: number
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29468,7 +29428,6 @@ export namespace Prisma {
   export type RoundUpdateInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29484,7 +29443,6 @@ export namespace Prisma {
     matchId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29499,7 +29457,6 @@ export namespace Prisma {
     matchId: number
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29508,7 +29465,6 @@ export namespace Prisma {
   export type RoundUpdateManyMutationInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29519,7 +29475,6 @@ export namespace Prisma {
     matchId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30658,9 +30613,9 @@ export namespace Prisma {
     isNot?: SeriesWhereInput
   }
 
-  export type MapNullableScalarRelationFilter = {
-    is?: MapWhereInput | null
-    isNot?: MapWhereInput | null
+  export type MapScalarRelationFilter = {
+    is?: MapWhereInput
+    isNot?: MapWhereInput
   }
 
   export type RoundListRelationFilter = {
@@ -31111,7 +31066,6 @@ export namespace Prisma {
     matchId?: SortOrder
     roundNumber?: SortOrder
     result?: SortOrder
-    ceremony?: SortOrder
     winningTeam?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -31128,7 +31082,6 @@ export namespace Prisma {
     matchId?: SortOrder
     roundNumber?: SortOrder
     result?: SortOrder
-    ceremony?: SortOrder
     winningTeam?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -31139,7 +31092,6 @@ export namespace Prisma {
     matchId?: SortOrder
     roundNumber?: SortOrder
     result?: SortOrder
-    ceremony?: SortOrder
     winningTeam?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -32823,12 +32775,10 @@ export namespace Prisma {
     update?: XOR<XOR<SeriesUpdateToOneWithWhereWithoutMatchesInput, SeriesUpdateWithoutMatchesInput>, SeriesUncheckedUpdateWithoutMatchesInput>
   }
 
-  export type MapUpdateOneWithoutMatchesNestedInput = {
+  export type MapUpdateOneRequiredWithoutMatchesNestedInput = {
     create?: XOR<MapCreateWithoutMatchesInput, MapUncheckedCreateWithoutMatchesInput>
     connectOrCreate?: MapCreateOrConnectWithoutMatchesInput
     upsert?: MapUpsertWithoutMatchesInput
-    disconnect?: MapWhereInput | boolean
-    delete?: MapWhereInput | boolean
     connect?: MapWhereUniqueInput
     update?: XOR<XOR<MapUpdateToOneWithWhereWithoutMatchesInput, MapUpdateWithoutMatchesInput>, MapUncheckedUpdateWithoutMatchesInput>
   }
@@ -34176,7 +34126,7 @@ export namespace Prisma {
     seriesId?: IntFilter<"Match"> | number
     matchNumber?: IntFilter<"Match"> | number
     riotMatchId?: StringNullableFilter<"Match"> | string | null
-    mapId?: StringNullableFilter<"Match"> | string | null
+    mapId?: StringFilter<"Match"> | string
     gameLengthMs?: IntNullableFilter<"Match"> | number | null
     startedAt?: DateTimeFilter<"Match"> | Date | string
     completedAt?: DateTimeNullableFilter<"Match"> | Date | string | null
@@ -35541,7 +35491,7 @@ export namespace Prisma {
     winnerTeamSide?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    map?: MapCreateNestedOneWithoutMatchesInput
+    map: MapCreateNestedOneWithoutMatchesInput
     rounds?: RoundCreateNestedManyWithoutMatchInput
     matchPlayerStats?: MatchPlayerStatsCreateNestedManyWithoutMatchInput
     matchTeamStats?: MatchTeamStatsCreateNestedManyWithoutMatchInput
@@ -35554,7 +35504,7 @@ export namespace Prisma {
     id?: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -35755,7 +35705,6 @@ export namespace Prisma {
   export type RoundCreateWithoutMatchInput = {
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35769,7 +35718,6 @@ export namespace Prisma {
     id?: number
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -36083,7 +36031,6 @@ export namespace Prisma {
     matchId?: IntFilter<"Round"> | number
     roundNumber?: IntFilter<"Round"> | number
     result?: StringFilter<"Round"> | string
-    ceremony?: StringNullableFilter<"Round"> | string | null
     winningTeam?: StringFilter<"Round"> | string
     createdAt?: DateTimeFilter<"Round"> | Date | string
     updatedAt?: DateTimeFilter<"Round"> | Date | string
@@ -36181,7 +36128,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     series: SeriesCreateNestedOneWithoutMatchesInput
-    map?: MapCreateNestedOneWithoutMatchesInput
+    map: MapCreateNestedOneWithoutMatchesInput
     rounds?: RoundCreateNestedManyWithoutMatchInput
     matchPlayerStats?: MatchPlayerStatsCreateNestedManyWithoutMatchInput
     matchTeamStats?: MatchTeamStatsCreateNestedManyWithoutMatchInput
@@ -36194,7 +36141,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -36458,7 +36405,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     series?: SeriesUpdateOneRequiredWithoutMatchesNestedInput
-    map?: MapUpdateOneWithoutMatchesNestedInput
+    map?: MapUpdateOneRequiredWithoutMatchesNestedInput
     rounds?: RoundUpdateManyWithoutMatchNestedInput
     matchPlayerStats?: MatchPlayerStatsUpdateManyWithoutMatchNestedInput
     matchTeamStats?: MatchTeamStatsUpdateManyWithoutMatchNestedInput
@@ -36471,7 +36418,7 @@ export namespace Prisma {
     seriesId?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36732,7 +36679,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     series: SeriesCreateNestedOneWithoutMatchesInput
-    map?: MapCreateNestedOneWithoutMatchesInput
+    map: MapCreateNestedOneWithoutMatchesInput
     rounds?: RoundCreateNestedManyWithoutMatchInput
     matchTeamStats?: MatchTeamStatsCreateNestedManyWithoutMatchInput
     substitutions?: SubstitutionCreateNestedManyWithoutMatchInput
@@ -36745,7 +36692,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -36886,7 +36833,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     series?: SeriesUpdateOneRequiredWithoutMatchesNestedInput
-    map?: MapUpdateOneWithoutMatchesNestedInput
+    map?: MapUpdateOneRequiredWithoutMatchesNestedInput
     rounds?: RoundUpdateManyWithoutMatchNestedInput
     matchTeamStats?: MatchTeamStatsUpdateManyWithoutMatchNestedInput
     substitutions?: SubstitutionUpdateManyWithoutMatchNestedInput
@@ -36899,7 +36846,7 @@ export namespace Prisma {
     seriesId?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -37004,7 +36951,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     series: SeriesCreateNestedOneWithoutMatchesInput
-    map?: MapCreateNestedOneWithoutMatchesInput
+    map: MapCreateNestedOneWithoutMatchesInput
     rounds?: RoundCreateNestedManyWithoutMatchInput
     matchPlayerStats?: MatchPlayerStatsCreateNestedManyWithoutMatchInput
     substitutions?: SubstitutionCreateNestedManyWithoutMatchInput
@@ -37017,7 +36964,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -37091,7 +37038,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     series?: SeriesUpdateOneRequiredWithoutMatchesNestedInput
-    map?: MapUpdateOneWithoutMatchesNestedInput
+    map?: MapUpdateOneRequiredWithoutMatchesNestedInput
     rounds?: RoundUpdateManyWithoutMatchNestedInput
     matchPlayerStats?: MatchPlayerStatsUpdateManyWithoutMatchNestedInput
     substitutions?: SubstitutionUpdateManyWithoutMatchNestedInput
@@ -37104,7 +37051,7 @@ export namespace Prisma {
     seriesId?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -37168,7 +37115,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     series: SeriesCreateNestedOneWithoutMatchesInput
-    map?: MapCreateNestedOneWithoutMatchesInput
+    map: MapCreateNestedOneWithoutMatchesInput
     matchPlayerStats?: MatchPlayerStatsCreateNestedManyWithoutMatchInput
     matchTeamStats?: MatchTeamStatsCreateNestedManyWithoutMatchInput
     substitutions?: SubstitutionCreateNestedManyWithoutMatchInput
@@ -37181,7 +37128,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -37343,7 +37290,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     series?: SeriesUpdateOneRequiredWithoutMatchesNestedInput
-    map?: MapUpdateOneWithoutMatchesNestedInput
+    map?: MapUpdateOneRequiredWithoutMatchesNestedInput
     matchPlayerStats?: MatchPlayerStatsUpdateManyWithoutMatchNestedInput
     matchTeamStats?: MatchTeamStatsUpdateManyWithoutMatchNestedInput
     substitutions?: SubstitutionUpdateManyWithoutMatchNestedInput
@@ -37356,7 +37303,7 @@ export namespace Prisma {
     seriesId?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -37461,7 +37408,6 @@ export namespace Prisma {
   export type RoundCreateWithoutPlantInput = {
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37476,7 +37422,6 @@ export namespace Prisma {
     matchId: number
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37546,7 +37491,6 @@ export namespace Prisma {
   export type RoundUpdateWithoutPlantInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37561,7 +37505,6 @@ export namespace Prisma {
     matchId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37621,7 +37564,6 @@ export namespace Prisma {
   export type RoundCreateWithoutDefuseInput = {
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37636,7 +37578,6 @@ export namespace Prisma {
     matchId: number
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37706,7 +37647,6 @@ export namespace Prisma {
   export type RoundUpdateWithoutDefuseInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37721,7 +37661,6 @@ export namespace Prisma {
     matchId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37781,7 +37720,6 @@ export namespace Prisma {
   export type RoundCreateWithoutPlayerStatsInput = {
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37796,7 +37734,6 @@ export namespace Prisma {
     matchId: number
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -37892,7 +37829,6 @@ export namespace Prisma {
   export type RoundUpdateWithoutPlayerStatsInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37907,7 +37843,6 @@ export namespace Prisma {
     matchId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37999,7 +37934,6 @@ export namespace Prisma {
   export type RoundCreateWithoutTeamStatsInput = {
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38014,7 +37948,6 @@ export namespace Prisma {
     matchId: number
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38072,7 +38005,6 @@ export namespace Prisma {
   export type RoundUpdateWithoutTeamStatsInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38087,7 +38019,6 @@ export namespace Prisma {
     matchId?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38144,7 +38075,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     series: SeriesCreateNestedOneWithoutMatchesInput
-    map?: MapCreateNestedOneWithoutMatchesInput
+    map: MapCreateNestedOneWithoutMatchesInput
     rounds?: RoundCreateNestedManyWithoutMatchInput
     matchPlayerStats?: MatchPlayerStatsCreateNestedManyWithoutMatchInput
     matchTeamStats?: MatchTeamStatsCreateNestedManyWithoutMatchInput
@@ -38157,7 +38088,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -38327,7 +38258,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     series?: SeriesUpdateOneRequiredWithoutMatchesNestedInput
-    map?: MapUpdateOneWithoutMatchesNestedInput
+    map?: MapUpdateOneRequiredWithoutMatchesNestedInput
     rounds?: RoundUpdateManyWithoutMatchNestedInput
     matchPlayerStats?: MatchPlayerStatsUpdateManyWithoutMatchNestedInput
     matchTeamStats?: MatchTeamStatsUpdateManyWithoutMatchNestedInput
@@ -38340,7 +38271,7 @@ export namespace Prisma {
     seriesId?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38706,7 +38637,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     series: SeriesCreateNestedOneWithoutMatchesInput
-    map?: MapCreateNestedOneWithoutMatchesInput
+    map: MapCreateNestedOneWithoutMatchesInput
     rounds?: RoundCreateNestedManyWithoutMatchInput
     matchPlayerStats?: MatchPlayerStatsCreateNestedManyWithoutMatchInput
     matchTeamStats?: MatchTeamStatsCreateNestedManyWithoutMatchInput
@@ -38719,7 +38650,7 @@ export namespace Prisma {
     seriesId: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -38877,7 +38808,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     series?: SeriesUpdateOneRequiredWithoutMatchesNestedInput
-    map?: MapUpdateOneWithoutMatchesNestedInput
+    map?: MapUpdateOneRequiredWithoutMatchesNestedInput
     rounds?: RoundUpdateManyWithoutMatchNestedInput
     matchPlayerStats?: MatchPlayerStatsUpdateManyWithoutMatchNestedInput
     matchTeamStats?: MatchTeamStatsUpdateManyWithoutMatchNestedInput
@@ -38890,7 +38821,7 @@ export namespace Prisma {
     seriesId?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40311,7 +40242,7 @@ export namespace Prisma {
     id?: number
     matchNumber: number
     riotMatchId?: string | null
-    mapId?: string | null
+    mapId: string
     gameLengthMs?: number | null
     startedAt: Date | string
     completedAt?: Date | string | null
@@ -40333,7 +40264,7 @@ export namespace Prisma {
     winnerTeamSide?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    map?: MapUpdateOneWithoutMatchesNestedInput
+    map?: MapUpdateOneRequiredWithoutMatchesNestedInput
     rounds?: RoundUpdateManyWithoutMatchNestedInput
     matchPlayerStats?: MatchPlayerStatsUpdateManyWithoutMatchNestedInput
     matchTeamStats?: MatchTeamStatsUpdateManyWithoutMatchNestedInput
@@ -40346,7 +40277,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40367,7 +40298,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     matchNumber?: IntFieldUpdateOperationsInput | number
     riotMatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    mapId?: NullableStringFieldUpdateOperationsInput | string | null
+    mapId?: StringFieldUpdateOperationsInput | string
     gameLengthMs?: NullableIntFieldUpdateOperationsInput | number | null
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40382,7 +40313,6 @@ export namespace Prisma {
     id?: number
     roundNumber: number
     result: string
-    ceremony?: string | null
     winningTeam: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40469,7 +40399,6 @@ export namespace Prisma {
   export type RoundUpdateWithoutMatchInput = {
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40483,7 +40412,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40497,7 +40425,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     roundNumber?: IntFieldUpdateOperationsInput | number
     result?: StringFieldUpdateOperationsInput | string
-    ceremony?: NullableStringFieldUpdateOperationsInput | string | null
     winningTeam?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

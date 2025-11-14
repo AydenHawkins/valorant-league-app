@@ -177,8 +177,8 @@ model Match {
   matchNumber Int
   riotMatchId String? @unique
 
-  mapId String?
-  map   Map?    @relation(fields: [mapId], references: [id])
+  mapId String
+  map   Map    @relation(fields: [mapId], references: [id])
 
   gameLengthMs Int?
   startedAt    DateTime
@@ -335,7 +335,6 @@ model Round {
 
   roundNumber Int
   result      String
-  ceremony    String?
   winningTeam String
 
   createdAt DateTime @default(now())
