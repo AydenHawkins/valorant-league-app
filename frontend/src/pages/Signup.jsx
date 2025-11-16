@@ -17,7 +17,6 @@ export default function Signup() {
         e.preventDefault();
         setError("");
 
-        // Validation
         if (!username || !email || !password || !confirmPassword) {
             setError("Please fill in all fields.");
             return;
@@ -32,24 +31,34 @@ export default function Signup() {
 
         try {
             await authService.signup(username, email, password);
-            // Redirect to login or dashboard after successful signup
             navigate("/login");
         } catch (err) {
-            setError(err.message || "Failed to create account. Please try again.");
+            setError(err.message || "Failed to create account.");
         } finally {
             setIsLoading(false);
         }
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-            <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
-                <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
+        <div
+            className="min-h-screen flex items-center justify-center 
+                        bg-[#2C0F74] px-4"
+        >
+            <div
+                className="w-full max-w-md bg-[#1B0252] 
+                            rounded-xl p-8 shadow-xl
+                            border border-[#A020F0]"
+            >
+                <h1
+                    className="text-3xl font-extrabold text-center 
+                               text-[#25C8FF] drop-shadow-md mb-6"
+                >
+                    Sign Up
+                </h1>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <Input
                         label="Username"
-                        type="text"
                         value={username}
                         onChange={setUsername}
                         placeholder="Choose a username"
@@ -79,17 +88,20 @@ export default function Signup() {
                         placeholder="Confirm your password"
                     />
 
-                    {error && <p className="text-red-600 text-sm">{error}</p>}
+                    {error && <p className="text-[#FF4BD5] text-sm">{error}</p>}
 
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? "Creating Account..." : "Sign Up"}
                     </Button>
                 </form>
 
-                <p className="text-center text-sm text-gray-600 mt-4">
+                <p className="text-center text-sm text-[#89E3FF] mt-4">
                     Already have an account?{" "}
-                    <a href="/login" className="text-blue-600 hover:underline">
-                        Log in
+                    <a
+                        href="/login"
+                        className="text-[#25C8FF] hover:text-[#33E3CC]"
+                    >
+                        Login
                     </a>
                 </p>
             </div>
