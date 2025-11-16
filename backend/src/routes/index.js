@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Import routes from modules
+const authRoutes = require("../modules/auth/auth.routes");
 const agentsRoutes = require("../modules/agents/agents.routes");
 const mapsRoutes = require("../modules/maps/maps.routes");
 const leagueRoutes = require("../modules/leagues/leagues.routes");
@@ -22,6 +23,7 @@ const substitutionRoutes = require("../modules/substitutions/substitutions.route
 const matchParserRoutes = require("../modules/matchParser/matchParser.routes");
 
 // Mount routes
+router.use("/auth", authRoutes);
 router.use("/agents", agentsRoutes);
 router.use("/maps", mapsRoutes);
 router.use("/leagues", leagueRoutes);
