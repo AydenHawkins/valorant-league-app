@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import { authService } from "../services/auth";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import { authService } from "../../services/auth";
 
-export default function Login() {
+export default function Signup() {
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
@@ -15,18 +17,23 @@ export default function Login() {
         e.preventDefault();
         setError("");
 
-        if (!username || !password) {
-            setError("Please enter both username and password.");
+        if (!username || !email || !password || !confirmPassword) {
+            setError("Please fill in all fields.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError("Passwords do not match.");
             return;
         }
 
         setIsLoading(true);
 
         try {
-            await authService.login(username, password);
-            navigate("/");
+            await authService.signup(username, email, password);
+            navigate("/login");
         } catch (err) {
-            setError(err.message || "Failed to login. Try again.");
+            setError(err.message || "Failed to create account.");
         } finally {
             setIsLoading(false);
         }
@@ -46,16 +53,23 @@ export default function Login() {
                     className="text-3xl font-extrabold text-center 
                                text-[#25C8FF] drop-shadow-md mb-6"
                 >
-                    Login
+                    Sign Up
                 </h1>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <Input
                         label="Username"
-                        type="text"
                         value={username}
                         onChange={setUsername}
-                        placeholder="Enter your username"
+                        placeholder="Choose a username"
+                    />
+
+                    <Input
+                        label="Email"
+                        type="email"
+                        value={email}
+                        onChange={setEmail}
+                        placeholder="Enter your email"
                     />
 
                     <Input
@@ -66,20 +80,28 @@ export default function Login() {
                         placeholder="Enter your password"
                     />
 
+                    <Input
+                        label="Confirm Password"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={setConfirmPassword}
+                        placeholder="Confirm your password"
+                    />
+
                     {error && <p className="text-[#FF4BD5] text-sm">{error}</p>}
 
                     <Button type="submit" disabled={isLoading}>
-                        {isLoading ? "Logging in..." : "Login"}
+                        {isLoading ? "Creating Account..." : "Sign Up"}
                     </Button>
                 </form>
 
                 <p className="text-center text-sm text-[#89E3FF] mt-4">
-                    Don’t have an account?{" "}
+                    Already have an account?{" "}
                     <a
-                        href="/signup"
+                        href="/login"
                         className="text-[#25C8FF] hover:text-[#33E3CC]"
                     >
-                        Sign up
+                        Login
                     </a>
                 </p>
             </div>
