@@ -32,8 +32,8 @@ const signupController = async (req, res) => {
         // Set HTTP-only cookie
         res.cookie("token", result.token, {
             httpOnly: true, // Cannot be accessed by JavaScript
-            secure: process.env.NODE_ENV === "production", // HTTPS only in production
-            sameSite: "strict", // CSRF protection
+            secure: false, // Allow HTTP in development
+            sameSite: "lax", // Less strict for development
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
@@ -67,8 +67,8 @@ const loginController = async (req, res) => {
         // Set HTTP-only cookie
         res.cookie("token", result.token, {
             httpOnly: true, // Cannot be accessed by JavaScript
-            secure: process.env.NODE_ENV === "production", // HTTPS only in production
-            sameSite: "strict", // CSRF protection
+            secure: false, // Allow HTTP in development
+            sameSite: "lax", // Less strict for development
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 

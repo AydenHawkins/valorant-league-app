@@ -1,6 +1,6 @@
 const express = require("express");
-const cors = require("cors");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const routes = require("./routes");
 
@@ -9,15 +9,15 @@ dotenv.config();
 const app = express();
 
 // CORS configuration to allow credentials (cookies)
-app.use(
-    cors({
-        origin: process.env.FRONTEND_URL || "http://localhost:5173", // Vite default port
-        credentials: true, // Allow cookies to be sent
-    })
-);
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use(cookieParser()); // Parse cookies from requests
+app.use(cookieParser());
 
 app.use("/api", routes);
 
