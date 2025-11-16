@@ -1,23 +1,37 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { authService } from "../services/auth";
 
 export default function Login() {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         setError("");
 
-        // No API yet → keep local
-        if (!email || !password) {
-            setError("Please enter both email and password.");
+        // Validation
+        if (!username || !password) {
+            setError("Please enter both username and password.");
             return;
         }
 
-        alert("Login clicked (backend not implemented yet)");
+        setIsLoading(true);
+
+        try {
+            await authService.login(username, password);
+            // Redirect to dashboard or home after successful login
+            navigate("/");
+        } catch (err) {
+            setError(err.message || "Failed to login. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -27,11 +41,11 @@ export default function Login() {
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <Input
-                        label="Email"
-                        type="email"
-                        value={email}
-                        onChange={setEmail}
-                        placeholder="Enter your email"
+                        label="Username"
+                        type="text"
+                        value={username}
+                        onChange={setUsername}
+                        placeholder="Enter your username"
                     />
 
                     <Input
@@ -44,7 +58,9 @@ export default function Login() {
 
                     {error && <p className="text-red-600 text-sm">{error}</p>}
 
-                    <Button type="submit">Login</Button>
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading ? "Logging in..." : "Login"}
+                    </Button>
                 </form>
 
                 <p className="text-center text-sm text-gray-600 mt-4">

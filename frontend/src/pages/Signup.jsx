@@ -1,19 +1,24 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { authService } from "../services/auth";
 
 export default function Signup() {
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         setError("");
 
-        // No API yet → keep local
-        if (!email || !password || !confirmPassword) {
+        // Validation
+        if (!username || !email || !password || !confirmPassword) {
             setError("Please fill in all fields.");
             return;
         }
@@ -23,7 +28,17 @@ export default function Signup() {
             return;
         }
 
-        alert("Signup clicked (backend not implemented yet)");
+        setIsLoading(true);
+
+        try {
+            await authService.signup(username, email, password);
+            // Redirect to login or dashboard after successful signup
+            navigate("/login");
+        } catch (err) {
+            setError(err.message || "Failed to create account. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -32,6 +47,14 @@ export default function Signup() {
                 <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <Input
+                        label="Username"
+                        type="text"
+                        value={username}
+                        onChange={setUsername}
+                        placeholder="Choose a username"
+                    />
+
                     <Input
                         label="Email"
                         type="email"
@@ -58,7 +81,9 @@ export default function Signup() {
 
                     {error && <p className="text-red-600 text-sm">{error}</p>}
 
-                    <Button type="submit">Sign Up</Button>
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading ? "Creating Account..." : "Sign Up"}
+                    </Button>
                 </form>
 
                 <p className="text-center text-sm text-gray-600 mt-4">
