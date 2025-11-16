@@ -7,7 +7,6 @@ function Home() {
     return (
         <div className="min-h-screen flex items-center justify-center px-4">
             <div className="w-full max-w-4xl">
-                {/* Hero Section */}
                 <div className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-[#25C8FF] drop-shadow-md mb-4">
                         Welcome to Better Vibes League
@@ -22,7 +21,6 @@ function Home() {
                     </p>
                 </div>
 
-                {/* Feature Cards */}
                 <div className="grid md:grid-cols-3 gap-6 mb-12">
                     <div className="bg-[#1B0252] rounded-xl p-6 border border-[#A020F0] shadow-xl hover:shadow-[0_0_15px_#A020F0] transition-shadow">
                         <h3 className="text-xl font-bold text-[#25C8FF] mb-3">
@@ -55,7 +53,6 @@ function Home() {
                     </div>
                 </div>
 
-                {/* Call to Action */}
                 <div className="bg-[#1B0252] rounded-xl p-8 border border-[#A020F0] shadow-xl text-center">
                     <h2 className="text-2xl font-bold text-[#25C8FF] mb-4">
                         Ready to Get Started?
