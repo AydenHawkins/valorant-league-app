@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
+    // Read token from HTTP-only cookie instead of Authorization header
+    const token = req.cookies.token;
 
     if (!token) {
         return res.status(401).json({ error: "Access token required" });

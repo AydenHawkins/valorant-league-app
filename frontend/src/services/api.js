@@ -7,6 +7,7 @@ export const api = {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include', // Include HTTP-only cookies
       body: JSON.stringify(data),
     });
 
@@ -19,18 +20,13 @@ export const api = {
     return responseData;
   },
 
-  async get(endpoint, token) {
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-
+  async get(endpoint) {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'GET',
-      headers,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // Include HTTP-only cookies
     });
 
     const responseData = await response.json();

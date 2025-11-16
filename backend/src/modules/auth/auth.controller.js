@@ -29,10 +29,18 @@ const signupController = async (req, res) => {
 
         const result = await signup(username, email, password);
 
+        // Set HTTP-only cookie
+        res.cookie("token", result.token, {
+            httpOnly: true, // Cannot be accessed by JavaScript
+            secure: process.env.NODE_ENV === "production", // HTTPS only in production
+            sameSite: "strict", // CSRF protection
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
         res.status(201).json({
             message: "User created successfully",
             user: result.user,
-            token: result.token,
+            // No token in response body
         });
     } catch (error) {
         if (error.message === "Username already exists") {
@@ -56,10 +64,18 @@ const loginController = async (req, res) => {
 
         const result = await login(username, password);
 
+        // Set HTTP-only cookie
+        res.cookie("token", result.token, {
+            httpOnly: true, // Cannot be accessed by JavaScript
+            secure: process.env.NODE_ENV === "production", // HTTPS only in production
+            sameSite: "strict", // CSRF protection
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
         res.status(200).json({
             message: "Login successful",
             user: result.user,
-            token: result.token,
+            // No token in response body
         });
     } catch (error) {
         if (error.message === "Invalid credentials") {
@@ -70,7 +86,26 @@ const loginController = async (req, res) => {
     }
 };
 
+const logoutController = async (req, res) => {
+    try {
+        // Clear the token cookie
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
+        res.status(200).json({
+            message: "Logout successful",
+        });
+    } catch (error) {
+        console.error("Logout error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 module.exports = {
     signupController,
     loginController,
+    logoutController,
 };

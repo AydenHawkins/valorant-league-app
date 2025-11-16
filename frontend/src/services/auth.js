@@ -8,9 +8,9 @@ export const authService = {
       password,
     });
 
-    // Store token and user data
-    if (response.token) {
-      localStorage.setItem('token', response.token);
+    // Token is now stored in HTTP-only cookie by the server
+    // Only store user data in localStorage
+    if (response.user) {
       localStorage.setItem('user', JSON.stringify(response.user));
     }
 
@@ -23,22 +23,25 @@ export const authService = {
       password,
     });
 
-    // Store token and user data
-    if (response.token) {
-      localStorage.setItem('token', response.token);
+    // Token is now stored in HTTP-only cookie by the server
+    // Only store user data in localStorage
+    if (response.user) {
       localStorage.setItem('user', JSON.stringify(response.user));
     }
 
     return response;
   },
 
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  },
-
-  getToken() {
-    return localStorage.getItem('token');
+  async logout() {
+    // Call backend to clear the HTTP-only cookie
+    try {
+      await api.post('/auth/logout', {});
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Always clear local user data
+      localStorage.removeItem('user');
+    }
   },
 
   getUser() {
@@ -47,6 +50,8 @@ export const authService = {
   },
 
   isAuthenticated() {
-    return !!this.getToken();
+    // Check if user data exists in localStorage
+    // The actual token validation happens on the server
+    return !!this.getUser();
   },
 };
