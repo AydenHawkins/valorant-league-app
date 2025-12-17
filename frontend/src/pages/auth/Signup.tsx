@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -13,7 +13,7 @@ export default function Signup() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    async function handleSubmit(e) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setError("");
 
@@ -33,7 +33,8 @@ export default function Signup() {
             await authService.signup(username, email, password);
             navigate("/login");
         } catch (err) {
-            setError(err.message || "Failed to create account.");
+            const errorMessage = err instanceof Error ? err.message : "Failed to create account.";
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -45,12 +46,12 @@ export default function Signup() {
                         bg-gradient-to-br from-[#0A0118] to-[#1A0A2E] px-4"
         >
             <div
-                className="w-full max-w-md bg-[#1B0252] 
+                className="w-full max-w-md bg-[#1B0252]
                             rounded-xl p-8 shadow-xl
                             border border-[#A020F0]"
             >
                 <h1
-                    className="text-3xl font-extrabold text-center 
+                    className="text-3xl font-extrabold text-center
                                text-[#25C8FF] drop-shadow-md mb-6"
                 >
                     Sign Up
