@@ -19,11 +19,11 @@ export default function Input({
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}
                 className={`
-          px-3 py-2 rounded-md 
-          bg-[#1B0252] 
+          px-3 py-2 rounded-md
+          bg-[#1B0252]
           text-white
           border border-[#A020F0]
-          focus:outline-none 
+          focus:outline-none
           focus:ring-2 focus:ring-[#FF4BD5]
           focus:border-[#FF4BD5]
           placeholder:text-gray-400

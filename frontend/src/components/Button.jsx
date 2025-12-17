@@ -11,7 +11,7 @@ export default function Button({
             disabled={disabled}
             className={`
         w-full py-2 rounded-md font-semibold
-        text-white 
+        text-white
         bg-[#25C8FF]
         hover:bg-[#33E3CC]
         shadow-[0_0_10px_#25C8FF]

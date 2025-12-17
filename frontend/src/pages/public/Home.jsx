@@ -5,7 +5,7 @@ function Home() {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0118] to-[#1A0A2E] px-4">
             <div className="w-full max-w-4xl">
                 <div className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-[#25C8FF] drop-shadow-md mb-4">
