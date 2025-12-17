@@ -1,10 +1,11 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
     previewMatchData,
     importMatchData,
     validateMatchData,
-} = require("./matchParser.controller");
+} from "./matchParser.controller";
+
+const router = express.Router();
 
 // Preview parsed match data before importing
 router.post("/preview", previewMatchData);
@@ -15,4 +16,4 @@ router.post("/import", importMatchData);
 // Validate match data format
 router.post("/validate", validateMatchData);
 
-module.exports = router;
+export default router;

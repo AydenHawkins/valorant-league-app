@@ -1,4 +1,4 @@
-const {
+import {
     calculateHeadshotPercentage,
     calculateKDRatio,
     calculateKDA,
@@ -9,41 +9,24 @@ const {
     mapTeamIdToSide,
     organizeKillsByRound,
     calculatePlantsAndDefuses,
-} = require("./matchParser.utils");
+} from "./matchParser.utils";
 
-const {
-    upsertPlayer,
-    createMatch,
-    createMatchParticipation,
-    createMatchPlayerStats,
-    createRound,
-    createRoundPlayerStats,
-    createRoundTeamStats,
-    createKill,
-    createPlant,
-    createDefuse,
-    createMatchTeamStats,
-    findMatchByRiotId,
-} = require("./matchParser.repository");
+import * as matchParserRepository from "./matchParser.repository";
 
 /**
  * Parse match metadata from API response
- * @param {Object} matchData - Raw match data from Valorant API
- * @param {Object} contextData - User-provided context {seriesId, matchNumber}
- * @returns {Object} Parsed match metadata
  */
-const parseMatchMetadata = (matchData, contextData) => {
+const parseMatchMetadata = (matchData: any, contextData: any) => {
     const metadata = matchData.data.metadata;
     const teams = matchData.data.teams;
 
-    // Determine winner
-    const winnerTeam = teams.find(t => t.won === true);
+    const winnerTeam = teams.find((t: any) => t.won === true);
     const winnerTeamSide = winnerTeam ? winnerTeam.team_id : null;
 
     return {
         riotMatchId: metadata.match_id,
-        seriesId: contextData.seriesId, // User input
-        matchNumber: contextData.matchNumber, // User input
+        seriesId: contextData.seriesId,
+        matchNumber: contextData.matchNumber,
         mapId: metadata.map.id,
         mapName: metadata.map.name,
         gameLengthMs: metadata.game_length_in_ms,
@@ -57,23 +40,19 @@ const parseMatchMetadata = (matchData, contextData) => {
 
 /**
  * Parse player data and calculate advanced statistics
- * @param {Object} matchData - Raw match data from Valorant API
- * @returns {Array} Array of parsed player objects
  */
-const parsePlayersData = (matchData) => {
+const parsePlayersData = (matchData: any) => {
     const players = matchData.data.players;
     const rounds = matchData.data.rounds;
     const totalRounds = rounds.length;
     const allKills = matchData.data.kills;
 
-    // Organize kills by round for first blood/death calculations
     const roundKills = organizeKillsByRound(allKills, totalRounds);
 
-    return players.map(player => {
+    return players.map((player: any) => {
         const stats = player.stats;
         const { plants, defuses } = calculatePlantsAndDefuses(rounds, player.puuid);
 
-        // Calculate advanced statistics
         const hsPercentage = calculateHeadshotPercentage(
             stats.headshots,
             stats.bodyshots,
@@ -121,63 +100,67 @@ const parsePlayersData = (matchData) => {
 
 /**
  * Parse round data
- * @param {Object} matchData - Raw match data from Valorant API
- * @returns {Array} Array of parsed round objects
  */
-const parseRoundsData = (matchData) => {
+const parseRoundsData = (matchData: any) => {
     const rounds = matchData.data.rounds;
 
-    return rounds.map((round, index) => ({
-        roundNumber: index + 1, // 1-indexed for display
+    return rounds.map((round: any, index: number) => ({
+        roundNumber: index + 1,
         result: round.result,
         winningTeam: round.winning_team,
         ceremony: round.ceremony,
-        plant: round.plant ? {
-            roundTimeMs: round.plant.round_time_in_ms,
-            site: round.plant.site,
-            locationX: round.plant.location.x,
-            locationY: round.plant.location.y,
-            playerPuuid: round.plant.player.puuid,
-            playerName: round.plant.player.name,
-            playerTag: round.plant.player.tag,
-            playerTeam: round.plant.player.team,
-        } : null,
-        defuse: round.defuse ? {
-            roundTimeMs: round.defuse.round_time_in_ms,
-            locationX: round.defuse.location.x,
-            locationY: round.defuse.location.y,
-            playerPuuid: round.defuse.player.puuid,
-            playerName: round.defuse.player.name,
-            playerTag: round.defuse.player.tag,
-            playerTeam: round.defuse.player.team,
-        } : null,
+        plant: round.plant
+            ? {
+                  roundTimeMs: round.plant.round_time_in_ms,
+                  site: round.plant.site,
+                  locationX: round.plant.location.x,
+                  locationY: round.plant.location.y,
+                  playerPuuid: round.plant.player.puuid,
+                  playerName: round.plant.player.name,
+                  playerTag: round.plant.player.tag,
+                  playerTeam: round.plant.player.team,
+              }
+            : null,
+        defuse: round.defuse
+            ? {
+                  roundTimeMs: round.defuse.round_time_in_ms,
+                  locationX: round.defuse.location.x,
+                  locationY: round.defuse.location.y,
+                  playerPuuid: round.defuse.player.puuid,
+                  playerName: round.defuse.player.name,
+                  playerTag: round.defuse.player.tag,
+                  playerTeam: round.defuse.player.team,
+              }
+            : null,
     }));
 };
 
 /**
  * Parse round player stats
- * @param {Object} matchData - Raw match data from Valorant API
- * @param {number} matchId - Database match ID (after match is created)
- * @param {Object} matchParticipationMap - Map of puuid to matchParticipationId
- * @returns {Array} Array of round player stat objects
  */
-const parseRoundPlayerStats = (matchData, matchId, matchParticipationMap) => {
+const parseRoundPlayerStats = (
+    matchData: any,
+    matchId: number,
+    matchParticipationMap: Record<string, number>
+) => {
     const rounds = matchData.data.rounds;
-    const allRoundStats = [];
+    const allRoundStats: any[] = [];
 
-    rounds.forEach((round, roundIndex) => {
+    rounds.forEach((round: any, roundIndex: number) => {
         if (round.stats && round.stats.length > 0) {
-            round.stats.forEach(playerStat => {
+            round.stats.forEach((playerStat: any) => {
                 const puuid = playerStat.player.puuid;
                 const matchParticipationId = matchParticipationMap[puuid];
 
                 if (!matchParticipationId) {
-                    console.warn(`No match participation found for player ${puuid}`);
+                    console.warn(
+                        `No match participation found for player ${puuid}`
+                    );
                     return;
                 }
 
                 allRoundStats.push({
-                    roundId: matchId, // This will need to be the actual round DB ID
+                    roundId: matchId,
                     roundNumber: roundIndex + 1,
                     matchParticipationId,
                     playerPuuid: puuid,
@@ -207,18 +190,15 @@ const parseRoundPlayerStats = (matchData, matchId, matchParticipationMap) => {
 
 /**
  * Parse kills from match data
- * @param {Object} matchData - Raw match data from Valorant API
- * @param {number} matchId - Database match ID
- * @returns {Array} Array of kill objects
  */
-const parseKills = (matchData, matchId) => {
+const parseKills = (matchData: any, matchId: number) => {
     const kills = matchData.data.kills;
-    const allKills = [];
+    const allKills: any[] = [];
 
-    kills.forEach(kill => {
+    kills.forEach((kill: any) => {
         allKills.push({
             matchId,
-            roundNumber: kill.round + 1, // Convert 0-indexed to 1-indexed
+            roundNumber: kill.round + 1,
             timeInRoundMs: kill.time_in_round_in_ms,
             timeInMatchMs: kill.time_in_match_in_ms,
             killerPuuid: kill.killer.puuid,
@@ -237,17 +217,13 @@ const parseKills = (matchData, matchId) => {
 
 /**
  * Parse round team stats
- * @param {Object} matchData - Raw match data from Valorant API
- * @param {Object} teamIdMap - Map of team_id (Red/Blue) to database team ID
- * @returns {Array} Array of round team stat objects
  */
-const parseRoundTeamStats = (matchData, teamIdMap) => {
+const parseRoundTeamStats = (matchData: any, teamIdMap: Record<string, number>) => {
     const rounds = matchData.data.rounds;
-    const roundTeamStats = [];
+    const roundTeamStats: any[] = [];
 
-    rounds.forEach((round, roundIndex) => {
-        // Create stats for both teams
-        ['Red', 'Blue'].forEach(teamId => {
+    rounds.forEach((round: any, roundIndex: number) => {
+        ["Red", "Blue"].forEach((teamId) => {
             const dbTeamId = teamIdMap[teamId];
             if (!dbTeamId) {
                 console.warn(`No team mapping found for ${teamId}`);
@@ -271,48 +247,40 @@ const parseRoundTeamStats = (matchData, teamIdMap) => {
 
 /**
  * Main parser function - orchestrates all parsing
- * @param {Object} matchData - Raw match data from Valorant API
- * @param {Object} context - User-provided context
- * @returns {Object} Fully parsed match data ready for database insertion
  */
-const parseMatchData = (matchData, context) => {
+export const parseMatchData = (matchData: any, context: any) => {
     const match = parseMatchMetadata(matchData, context);
     const players = parsePlayersData(matchData);
     const rounds = parseRoundsData(matchData);
-
-    // Note: kills, roundPlayerStats, and roundTeamStats will need database IDs
-    // These should be parsed after initial entities are created
 
     return {
         match,
         players,
         rounds,
-        rawData: matchData, // Keep for reference if needed
+        rawData: matchData,
     };
 };
 
 /**
  * Import match data to database
- * @param {Object} matchData - Raw match data from Valorant API
- * @param {Object} context - Import context {seriesId, matchNumber, teamMappings}
- * @returns {Promise<Object>} Import result with created record IDs
  */
-const importMatchToDatabase = async (matchData, context) => {
+export const importMatchToDatabase = async (matchData: any, context: any) => {
     const { seriesId, matchNumber, teamMappings } = context;
 
-    // Check if match already exists
-    const existingMatch = await findMatchByRiotId(matchData.data.metadata.match_id);
+    const existingMatch = await matchParserRepository.findMatchByRiotId(
+        matchData.data.metadata.match_id
+    );
     if (existingMatch) {
-        throw new Error(`Match with Riot ID ${matchData.data.metadata.match_id} already exists in database`);
+        throw new Error(
+            `Match with Riot ID ${matchData.data.metadata.match_id} already exists in database`
+        );
     }
 
-    // Parse match data
     const parsedData = parseMatchData(matchData, { seriesId, matchNumber });
 
-    // Step 1: Upsert all players first
-    const playerMap = new Map(); // puuid -> player DB record
+    const playerMap = new Map();
     for (const playerData of parsedData.players) {
-        const player = await upsertPlayer({
+        const player = await matchParserRepository.upsertPlayer({
             puuid: playerData.puuid,
             name: playerData.name,
             tag: playerData.tag,
@@ -320,8 +288,7 @@ const importMatchToDatabase = async (matchData, context) => {
         playerMap.set(playerData.puuid, player);
     }
 
-    // Step 2: Create match record
-    const match = await createMatch({
+    const match = await matchParserRepository.createMatch({
         seriesId: parsedData.match.seriesId,
         matchNumber: parsedData.match.matchNumber,
         riotMatchId: parsedData.match.riotMatchId,
@@ -334,21 +301,18 @@ const importMatchToDatabase = async (matchData, context) => {
         winnerTeamSide: parsedData.match.winnerTeamSide,
     });
 
-    // Step 3: Create match participations and player stats
-    const participationMap = new Map(); // puuid -> matchParticipation DB record
+    const participationMap = new Map();
     for (const playerData of parsedData.players) {
         const player = playerMap.get(playerData.puuid);
-        const teamId = teamMappings[playerData.teamId]; // Map Red/Blue to actual team IDs
+        const teamId = teamMappings[playerData.teamId];
 
         if (!teamId) {
             throw new Error(`No team mapping found for ${playerData.teamId}`);
         }
 
-        // Determine team side (Attack/Defense) - we'll use the first round as reference
         const teamSide = mapTeamIdToSide(playerData.teamId, 0);
 
-        // Create match participation
-        const participation = await createMatchParticipation({
+        const participation = await matchParserRepository.createMatchParticipation({
             matchId: match.id,
             playerId: player.id,
             teamId: teamId,
@@ -358,8 +322,7 @@ const importMatchToDatabase = async (matchData, context) => {
 
         participationMap.set(playerData.puuid, participation);
 
-        // Create match player stats
-        await createMatchPlayerStats({
+        await matchParserRepository.createMatchPlayerStats({
             matchParticipationId: participation.id,
             matchId: match.id,
             playerId: player.id,
@@ -391,10 +354,9 @@ const importMatchToDatabase = async (matchData, context) => {
         });
     }
 
-    // Step 4: Create rounds
-    const roundMap = new Map(); // roundNumber -> round DB record
+    const roundMap = new Map();
     for (const roundData of parsedData.rounds) {
-        const round = await createRound({
+        const round = await matchParserRepository.createRound({
             matchId: match.id,
             roundNumber: roundData.roundNumber,
             result: roundData.result,
@@ -403,10 +365,9 @@ const importMatchToDatabase = async (matchData, context) => {
 
         roundMap.set(roundData.roundNumber, round);
 
-        // Create plant if exists
         if (roundData.plant) {
             const planter = playerMap.get(roundData.plant.playerPuuid);
-            await createPlant({
+            await matchParserRepository.createPlant({
                 roundId: round.id,
                 playerId: planter.id,
                 roundTimeMs: roundData.plant.roundTimeMs,
@@ -416,10 +377,9 @@ const importMatchToDatabase = async (matchData, context) => {
             });
         }
 
-        // Create defuse if exists
         if (roundData.defuse) {
             const defuser = playerMap.get(roundData.defuse.playerPuuid);
-            await createDefuse({
+            await matchParserRepository.createDefuse({
                 roundId: round.id,
                 playerId: defuser.id,
                 roundTimeMs: roundData.defuse.roundTimeMs,
@@ -429,12 +389,11 @@ const importMatchToDatabase = async (matchData, context) => {
         }
     }
 
-    // Step 5: Create round player stats
     const roundPlayerStatsData = parseRoundPlayerStats(
         matchData,
         match.id,
         Object.fromEntries(
-            Array.from(participationMap.entries()).map(([puuid, participation]) => [
+            Array.from(participationMap.entries()).map(([puuid, participation]: any) => [
                 puuid,
                 participation.id,
             ])
@@ -445,7 +404,7 @@ const importMatchToDatabase = async (matchData, context) => {
         const round = roundMap.get(statData.roundNumber);
         const player = playerMap.get(statData.playerPuuid);
 
-        await createRoundPlayerStats({
+        await matchParserRepository.createRoundPlayerStats({
             roundId: round.id,
             matchParticipationId: statData.matchParticipationId,
             playerId: player.id,
@@ -467,13 +426,12 @@ const importMatchToDatabase = async (matchData, context) => {
         });
     }
 
-    // Step 6: Create round team stats
     const roundTeamStatsData = parseRoundTeamStats(matchData, teamMappings);
 
     for (const statData of roundTeamStatsData) {
         const round = roundMap.get(statData.roundNumber);
 
-        await createRoundTeamStats({
+        await matchParserRepository.createRoundTeamStats({
             roundId: round.id,
             teamId: statData.teamId,
             teamSide: statData.teamSide,
@@ -481,30 +439,28 @@ const importMatchToDatabase = async (matchData, context) => {
         });
     }
 
-    // Step 7: Create match team stats
     const teams = matchData.data.teams;
     for (const teamData of teams) {
         const teamId = teamMappings[teamData.team_id];
         if (!teamId) continue;
 
-        await createMatchTeamStats({
+        await matchParserRepository.createMatchTeamStats({
             matchId: match.id,
             teamId: teamId,
-            teamSide: teamData.team_id, // Red or Blue
+            teamSide: teamData.team_id,
             roundsWon: teamData.rounds.won,
             roundsLost: teamData.rounds.lost,
             won: teamData.won,
         });
     }
 
-    // Step 8: Create kills
     const killsData = parseKills(matchData, match.id);
 
     for (const killData of killsData) {
         const killer = playerMap.get(killData.killerPuuid);
         const victim = playerMap.get(killData.victimPuuid);
 
-        await createKill({
+        await matchParserRepository.createKill({
             matchId: match.id,
             roundNumber: killData.roundNumber,
             timeInRoundMs: killData.timeInRoundMs,
@@ -527,15 +483,4 @@ const importMatchToDatabase = async (matchData, context) => {
         roundsImported: roundMap.size,
         killsImported: killsData.length,
     };
-};
-
-module.exports = {
-    parseMatchData,
-    parseMatchMetadata,
-    parsePlayersData,
-    parseRoundsData,
-    parseRoundPlayerStats,
-    parseKills,
-    parseRoundTeamStats,
-    importMatchToDatabase,
 };

@@ -1,26 +1,28 @@
-const { parseMatchData, importMatchToDatabase } = require("./matchParser.service");
-const { getMatchById } = require("../../integrations/valorantApi.integrations");
+import { Request, Response } from "express";
+import * as matchParserService from "./matchParser.service";
+import * as valorantApi from "../../integrations/valorantApi.integrations";
 
 /**
  * POST /matchParser/preview
  * Preview parsed match data before importing
  */
-const previewMatchData = async (req, res) => {
+export const previewMatchData = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
     try {
         const { region, matchId, seriesId, matchNumber } = req.body;
 
-        // Validate required fields
         if (!region || !matchId) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: "Missing required fields: region and matchId are required",
             });
+            return;
         }
 
-        // Fetch match data from Valorant API
-        const matchData = await getMatchById(region, matchId);
+        const matchData = await valorantApi.getMatchById(region, matchId);
 
-        // Parse the match data
-        const parsedData = parseMatchData(matchData, {
+        const parsedData = matchParserService.parseMatchData(matchData, {
             seriesId: seriesId || null,
             matchNumber: matchNumber || 1,
         });
@@ -30,7 +32,7 @@ const previewMatchData = async (req, res) => {
             message: "Match data parsed successfully",
             data: parsedData,
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error previewing match data:", error);
         res.status(500).json({
             error: "Failed to preview match data",
@@ -43,54 +45,52 @@ const previewMatchData = async (req, res) => {
  * POST /matchParser/import
  * Import match data into database
  */
-const importMatchData = async (req, res) => {
+export const importMatchData = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
     try {
-        const {
-            region,
-            matchId,
-            seriesId,
-            matchNumber,
-            teamMappings, // { Red: dbTeamId, Blue: dbTeamId }
-        } = req.body;
+        const { region, matchId, seriesId, matchNumber, teamMappings } = req.body;
 
-        // Validate required fields
         if (!region || !matchId || !seriesId || !teamMappings) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: "Missing required fields: region, matchId, seriesId, and teamMappings are required",
             });
+            return;
         }
 
-        // Validate teamMappings has both Red and Blue
         if (!teamMappings.Red || !teamMappings.Blue) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: "teamMappings must include both 'Red' and 'Blue' team IDs",
             });
+            return;
         }
 
-        // Fetch match data from Valorant API
-        const matchData = await getMatchById(region, matchId);
+        const matchData = await valorantApi.getMatchById(region, matchId);
 
-        // Import match data to database
-        const result = await importMatchToDatabase(matchData, {
-            seriesId,
-            matchNumber: matchNumber || 1,
-            teamMappings,
-        });
+        const result = await matchParserService.importMatchToDatabase(
+            matchData,
+            {
+                seriesId,
+                matchNumber: matchNumber || 1,
+                teamMappings,
+            }
+        );
 
         res.json({
             success: true,
             message: "Match data imported successfully",
             data: result,
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error importing match data:", error);
 
-        // Check if it's a duplicate match error
         if (error.message.includes("already exists")) {
-            return res.status(409).json({
+            res.status(409).json({
                 error: "Match already imported",
                 details: error.message,
             });
+            return;
         }
 
         res.status(500).json({
@@ -104,31 +104,37 @@ const importMatchData = async (req, res) => {
  * POST /matchParser/validate
  * Validate match data format
  */
-const validateMatchData = async (req, res) => {
+export const validateMatchData = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
     try {
         const { region, matchId } = req.body;
 
         if (!region || !matchId) {
-            return res.status(400).json({
+            res.status(400).json({
                 error: "Missing required fields: region and matchId are required",
             });
+            return;
         }
 
-        // Fetch and validate match data exists
-        const matchData = await getMatchById(region, matchId);
+        const matchData = await valorantApi.getMatchById(region, matchId);
 
-        // Basic validation
         const validation = {
             hasMetadata: !!matchData.data?.metadata,
-            hasPlayers: !!matchData.data?.players && matchData.data.players.length > 0,
-            hasRounds: !!matchData.data?.rounds && matchData.data.rounds.length > 0,
-            hasTeams: !!matchData.data?.teams && matchData.data.teams.length === 2,
+            hasPlayers:
+                !!matchData.data?.players && matchData.data.players.length > 0,
+            hasRounds:
+                !!matchData.data?.rounds && matchData.data.rounds.length > 0,
+            hasTeams:
+                !!matchData.data?.teams && matchData.data.teams.length === 2,
             playerCount: matchData.data?.players?.length || 0,
             roundCount: matchData.data?.rounds?.length || 0,
             isCompleted: matchData.data?.metadata?.is_completed || false,
         };
 
-        const isValid = validation.hasMetadata &&
+        const isValid =
+            validation.hasMetadata &&
             validation.hasPlayers &&
             validation.hasRounds &&
             validation.hasTeams &&
@@ -139,17 +145,11 @@ const validateMatchData = async (req, res) => {
             validation,
             matchId: matchData.data?.metadata?.match_id,
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error validating match data:", error);
         res.status(500).json({
             error: "Failed to validate match data",
             details: error.message,
         });
     }
-};
-
-module.exports = {
-    previewMatchData,
-    importMatchData,
-    validateMatchData,
 };
