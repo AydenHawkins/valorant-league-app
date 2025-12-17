@@ -1,33 +1,41 @@
-const { signup, login } = require("./auth.service");
+import { Request, Response } from "express";
+import * as authService from "./auth.service";
 
-const signupController = async (req, res) => {
+export const signupController = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
     try {
         const { username, email, password } = req.body;
 
         // Validate input
         if (!username || !email || !password) {
-            return res
-                .status(400)
-                .json({ error: "Username, email, and password are required" });
+            res.status(400).json({
+                error: "Username, email, and password are required",
+            });
+            return;
         }
 
         if (username.length < 3) {
-            return res
-                .status(400)
-                .json({ error: "Username must be at least 3 characters long" });
+            res.status(400).json({
+                error: "Username must be at least 3 characters long",
+            });
+            return;
         }
 
         if (!/\S+@\S+\.\S+/.test(email)) {
-            return res.status(400).json({ error: "Invalid email format" });
+            res.status(400).json({ error: "Invalid email format" });
+            return;
         }
 
         if (password.length < 6) {
-            return res
-                .status(400)
-                .json({ error: "Password must be at least 6 characters long" });
+            res.status(400).json({
+                error: "Password must be at least 6 characters long",
+            });
+            return;
         }
 
-        const result = await signup(username, email, password);
+        const result = await authService.signup(username, email, password);
 
         // Set HTTP-only cookie
         res.cookie("token", result.token, {
@@ -43,26 +51,31 @@ const signupController = async (req, res) => {
             // No token in response body
         });
     } catch (error) {
-        if (error.message === "Username already exists") {
-            return res.status(409).json({ error: error.message });
+        if (error instanceof Error && error.message === "Username already exists") {
+            res.status(409).json({ error: error.message });
+            return;
         }
         console.error("Signup error:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
 
-const loginController = async (req, res) => {
+export const loginController = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
     try {
         const { username, password } = req.body;
 
         // Validate input
         if (!username || !password) {
-            return res
-                .status(400)
-                .json({ error: "Username and password are required" });
+            res.status(400).json({
+                error: "Username and password are required",
+            });
+            return;
         }
 
-        const result = await login(username, password);
+        const result = await authService.login(username, password);
 
         // Set HTTP-only cookie
         res.cookie("token", result.token, {
@@ -78,15 +91,19 @@ const loginController = async (req, res) => {
             // No token in response body
         });
     } catch (error) {
-        if (error.message === "Invalid credentials") {
-            return res.status(401).json({ error: error.message });
+        if (error instanceof Error && error.message === "Invalid credentials") {
+            res.status(401).json({ error: error.message });
+            return;
         }
         console.error("Login error:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
 
-const logoutController = async (req, res) => {
+export const logoutController = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
     try {
         // Clear the token cookie
         res.clearCookie("token", {
@@ -102,10 +119,4 @@ const logoutController = async (req, res) => {
         console.error("Logout error:", error);
         res.status(500).json({ error: "Internal server error" });
     }
-};
-
-module.exports = {
-    signupController,
-    loginController,
-    logoutController,
 };
