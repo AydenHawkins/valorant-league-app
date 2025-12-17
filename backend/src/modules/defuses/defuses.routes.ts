@@ -1,12 +1,13 @@
-const express = require("express");
+import express from "express";
+import {
+    getDefuses,
+    getDefuseById,
+    createDefuse,
+    updateDefuse,
+    deleteDefuse,
+} from "./defuses.controller";
+
 const router = express.Router();
-const {
-  getDefuses,
-  getDefuseById,
-  createDefuse,
-  updateDefuse,
-  deleteDefuse,
-} = require("./defuses.controller");
 
 router.get("/", getDefuses);
 router.get("/:id", getDefuseById);
@@ -14,4 +15,4 @@ router.post("/", createDefuse);
 router.put("/:id", updateDefuse);
 router.delete("/:id", deleteDefuse);
 
-module.exports = router;
+export default router;
