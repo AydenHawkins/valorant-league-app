@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import { authService } from "../services/auth";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import { authService } from "../../services/auth";
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -15,7 +15,6 @@ export default function Login() {
         e.preventDefault();
         setError("");
 
-        // Validation
         if (!username || !password) {
             setError("Please enter both username and password.");
             return;
@@ -25,19 +24,30 @@ export default function Login() {
 
         try {
             await authService.login(username, password);
-            // Redirect to dashboard or home after successful login
             navigate("/");
         } catch (err) {
-            setError(err.message || "Failed to login. Please try again.");
+            setError(err.message || "Failed to login. Try again.");
         } finally {
             setIsLoading(false);
         }
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-            <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
-                <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <div
+            className="min-h-screen flex items-center justify-center
+                        bg-gradient-to-br from-[#0A0118] to-[#1A0A2E] px-4"
+        >
+            <div
+                className="w-full max-w-md bg-[#1B0252] 
+                            rounded-xl p-8 shadow-xl
+                            border border-[#A020F0]"
+            >
+                <h1
+                    className="text-3xl font-extrabold text-center 
+                               text-[#25C8FF] drop-shadow-md mb-6"
+                >
+                    Login
+                </h1>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <Input
@@ -56,16 +66,19 @@ export default function Login() {
                         placeholder="Enter your password"
                     />
 
-                    {error && <p className="text-red-600 text-sm">{error}</p>}
+                    {error && <p className="text-[#FF4BD5] text-sm">{error}</p>}
 
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? "Logging in..." : "Login"}
                     </Button>
                 </form>
 
-                <p className="text-center text-sm text-gray-600 mt-4">
+                <p className="text-center text-sm text-[#89E3FF] mt-4">
                     Don’t have an account?{" "}
-                    <a href="/signup" className="text-blue-600 hover:underline">
+                    <a
+                        href="/signup"
+                        className="text-[#25C8FF] hover:text-[#33E3CC]"
+                    >
                         Sign up
                     </a>
                 </p>
