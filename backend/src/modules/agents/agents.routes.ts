@@ -1,12 +1,13 @@
-const express = require("express");
+import express from "express";
+import {
+    getAgents,
+    getAgentById,
+    createAgent,
+    updateAgent,
+    deleteAgent,
+} from "./agents.controller";
+
 const router = express.Router();
-const {
-  getAgents,
-  getAgentById,
-  createAgent,
-  updateAgent,
-  deleteAgent,
-} = require("./agents.controller");
 
 router.get("/", getAgents);
 router.get("/:id", getAgentById);
@@ -14,4 +15,4 @@ router.post("/", createAgent);
 router.patch("/:id", updateAgent);
 router.delete("/:id", deleteAgent);
 
-module.exports = router;
+export default router;
