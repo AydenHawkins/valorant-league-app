@@ -1,12 +1,13 @@
-const express = require("express");
+import express from "express";
+import {
+    getSubstitutions,
+    getSubstitutionById,
+    createSubstitution,
+    updateSubstitution,
+    deleteSubstitution,
+} from "./substitutions.controller";
+
 const router = express.Router();
-const {
-  getSubstitutions,
-  getSubstitutionById,
-  createSubstitution,
-  updateSubstitution,
-  deleteSubstitution,
-} = require("./substitutions.controller");
 
 router.get("/", getSubstitutions);
 router.get("/:id", getSubstitutionById);
@@ -14,4 +15,4 @@ router.post("/", createSubstitution);
 router.put("/:id", updateSubstitution);
 router.delete("/:id", deleteSubstitution);
 
-module.exports = router;
+export default router;
