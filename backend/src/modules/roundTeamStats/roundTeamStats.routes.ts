@@ -1,12 +1,13 @@
-const express = require("express");
+import express from "express";
+import {
+    getRoundTeamStats,
+    getRoundTeamStatById,
+    createRoundTeamStat,
+    updateRoundTeamStat,
+    deleteRoundTeamStat,
+} from "./roundTeamStats.controller";
+
 const router = express.Router();
-const {
-  getRoundTeamStats,
-  getRoundTeamStatById,
-  createRoundTeamStat,
-  updateRoundTeamStat,
-  deleteRoundTeamStat,
-} = require("./roundTeamStats.controller");
 
 router.get("/", getRoundTeamStats);
 router.get("/:id", getRoundTeamStatById);
@@ -14,4 +15,4 @@ router.post("/", createRoundTeamStat);
 router.put("/:id", updateRoundTeamStat);
 router.delete("/:id", deleteRoundTeamStat);
 
-module.exports = router;
+export default router;
