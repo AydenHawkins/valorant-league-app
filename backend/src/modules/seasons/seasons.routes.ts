@@ -1,14 +1,15 @@
-const express = require("express");
+import express from "express";
+import {
+    getSeasons,
+    getSeasonById,
+    createSeason,
+    updateSeason,
+    deleteSeason,
+    getSeasonsForLeague,
+    createSeasonForLeague,
+} from "./seasons.controller";
+
 const router = express.Router();
-const {
-  getSeasons,
-  getSeasonById,
-  createSeason,
-  updateSeason,
-  deleteSeason,
-  getSeasonsForLeague,
-  createSeasonForLeague,
-} = require("./seasons.controller");
 
 router.get("/", getSeasons);
 router.get("/:id", getSeasonById);
@@ -20,4 +21,4 @@ router.delete("/:id", deleteSeason);
 router.get("/leagues/:leagueId/seasons", getSeasonsForLeague);
 router.post("/leagues/:leagueId/seasons", createSeasonForLeague);
 
-module.exports = router;
+export default router;
