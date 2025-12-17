@@ -1,8 +1,8 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const routes = require("./routes");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import routes from "./routes";
 
 dotenv.config();
 
