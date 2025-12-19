@@ -1,0 +1,30 @@
+import prisma from "../../utils/prisma";
+
+export const findAll = async () => {
+    return await prisma.map.findMany();
+};
+
+export const findById = async (id: string) => {
+    return await prisma.map.findUnique({
+        where: { id: Number(id) },
+    });
+};
+
+export const create = async (data: { id: number; name: string }) => {
+    return await prisma.map.create({
+        data,
+    });
+};
+
+export const update = async (id: number, data: { name?: string }) => {
+    return await prisma.map.update({
+        where: { id },
+        data,
+    });
+};
+
+export const remove = async (id: number) => {
+    return await prisma.map.delete({
+        where: { id },
+    });
+};
