@@ -3,7 +3,7 @@ import * as defusesService from "./defuses.service";
 
 // GET /defuses - Retrieve all defuses
 export const getDefuses = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

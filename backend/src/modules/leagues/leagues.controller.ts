@@ -3,7 +3,7 @@ import * as leaguesService from "./leagues.service";
 
 // GET /leagues - Retrieve all leagues
 export const getLeagues = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

@@ -3,7 +3,7 @@ import * as roundPlayerStatsService from "./roundPlayerStats.service";
 
 // GET /roundPlayerStats - Retrieve all round player stats
 export const getRoundPlayerStats = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as killsService from "./kills.service";
 
 // GET /kills - Retrieve all kills
-export const getKills = async (req: Request, res: Response): Promise<void> => {
+export const getKills = async (_req: Request, res: Response): Promise<void> => {
     try {
         const kills = await killsService.getAllKills();
         res.status(200).json(kills);

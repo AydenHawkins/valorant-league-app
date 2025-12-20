@@ -3,7 +3,7 @@ import * as seriesService from "./series.service";
 
 // GET /series - Retrieve all series
 export const getSeries = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

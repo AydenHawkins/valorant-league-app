@@ -101,7 +101,7 @@ export const loginController = async (
 };
 
 export const logoutController = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

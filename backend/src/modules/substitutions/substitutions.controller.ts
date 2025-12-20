@@ -3,7 +3,7 @@ import * as substitutionsService from "./substitutions.service";
 
 // GET /substitutions - Retrieve all substitutions
 export const getSubstitutions = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

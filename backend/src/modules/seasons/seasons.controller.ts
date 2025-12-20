@@ -3,7 +3,7 @@ import * as seasonsService from "./seasons.service";
 
 // GET /seasons - Retrieve all seasons
 export const getSeasons = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {
@@ -55,7 +55,8 @@ export const createSeason = async (
     res: Response
 ): Promise<void> => {
     try {
-        const newSeason = await seasonsService.createSeason(req.body);
+        const { leagueId, ...seasonData } = req.body;
+        const newSeason = await seasonsService.createSeason(leagueId, seasonData);
         res.status(201).json(newSeason);
     } catch (error) {
         console.log(error);

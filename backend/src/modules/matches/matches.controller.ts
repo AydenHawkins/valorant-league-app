@@ -3,7 +3,7 @@ import * as matchesService from "./matches.service";
 
 // GET /matches - Retrieve all matches
 export const getMatches = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

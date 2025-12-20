@@ -1,6 +1,7 @@
 import prisma from "../../utils/prisma";
 
 interface SeasonData {
+    leagueId: number;
     name: string;
     startDate: Date;
     endDate?: Date | null;
@@ -28,7 +29,7 @@ export const create = async (data: SeasonData) => {
     });
 };
 
-export const createForLeague = async (leagueId: string, data: SeasonData) => {
+export const createForLeague = async (leagueId: string, data: Omit<SeasonData, 'leagueId'>) => {
     return await prisma.season.create({
         data: {
             ...data,

@@ -18,9 +18,10 @@ export const getSeasonsForLeague = async (leagueId: string) => {
     return await seasonsRepository.findByLeagueId(leagueId);
 };
 
-export const createSeason = async (data: SeasonInput) => {
+export const createSeason = async (leagueId: number, data: SeasonInput) => {
     const { name, startDate, endDate } = data;
     return await seasonsRepository.create({
+        leagueId,
         name,
         startDate,
         endDate: endDate ? endDate : null,

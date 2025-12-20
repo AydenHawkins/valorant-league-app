@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as mapsService from "./maps.service";
 
 // GET /maps - Retrieve all maps
-export const getMaps = async (req: Request, res: Response): Promise<void> => {
+export const getMaps = async (_req: Request, res: Response): Promise<void> => {
     try {
         const maps = await mapsService.getAllMaps();
         res.json(maps);

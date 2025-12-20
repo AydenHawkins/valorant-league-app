@@ -3,7 +3,7 @@ import * as rostersService from "./rosters.service";
 
 // GET /rosters - Retrieve all rosters
 export const getRosters = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {
