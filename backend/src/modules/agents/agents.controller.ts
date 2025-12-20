@@ -3,7 +3,7 @@ import * as agentsService from "./agents.service";
 
 // GET /agents - Retrieve all agents
 export const getAgents = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {
@@ -20,9 +20,9 @@ export const getAgentById = async (
     req: Request,
     res: Response
 ): Promise<void> => {
-    const { id } = req.params;
+    const { id} = req.params;
     try {
-        const agent = await agentsService.getAgentById(Number(id));
+        const agent = await agentsService.getAgentById(id);
         if (agent) {
             res.json(agent);
         } else {
@@ -56,7 +56,7 @@ export const updateAgent = async (
     const { id } = req.params;
     try {
         const updatedAgent = await agentsService.updateAgent(
-            Number(id),
+            id,
             req.body
         );
         res.json(updatedAgent);
@@ -73,7 +73,7 @@ export const deleteAgent = async (
 ): Promise<void> => {
     const { id } = req.params;
     try {
-        await agentsService.deleteAgent(Number(id));
+        await agentsService.deleteAgent(id);
         res.status(204).end();
     } catch (error) {
         console.log(error);

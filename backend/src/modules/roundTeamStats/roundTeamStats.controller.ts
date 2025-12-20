@@ -3,7 +3,7 @@ import * as roundTeamStatsService from "./roundTeamStats.service";
 
 // GET /roundTeamStats - Retrieve all round team stats
 export const getRoundTeamStats = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

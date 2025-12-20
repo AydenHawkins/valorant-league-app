@@ -5,12 +5,12 @@ export const getAllAgents = async () => {
     return await agentsRepository.findAll();
 };
 
-export const getAgentById = async (id: number) => {
+export const getAgentById = async (id: string) => {
     return await agentsRepository.findById(id);
 };
 
 interface CreateAgentInput {
-    id: number;
+    id: string;
     name: string;
     role: string;
 }
@@ -25,11 +25,11 @@ interface UpdateAgentInput {
     role?: string;
 }
 
-export const updateAgent = async (id: number, data: UpdateAgentInput) => {
+export const updateAgent = async (id: string, data: UpdateAgentInput) => {
     const { name, role } = data;
     return await agentsRepository.update(id, { name, role });
 };
 
-export const deleteAgent = async (id: number) => {
+export const deleteAgent = async (id: string) => {
     return await agentsRepository.remove(id);
 };

@@ -3,7 +3,7 @@ import * as roundsService from "./rounds.service";
 
 // GET /rounds - Retrieve all rounds
 export const getRounds = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

@@ -3,7 +3,7 @@ import * as teamsService from "./teams.service";
 
 // GET /teams - Retrieve all teams
 export const getTeams = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

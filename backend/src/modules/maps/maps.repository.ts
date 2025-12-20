@@ -6,24 +6,24 @@ export const findAll = async () => {
 
 export const findById = async (id: string) => {
     return await prisma.map.findUnique({
-        where: { id: Number(id) },
+        where: { id },
     });
 };
 
-export const create = async (data: { id: number; name: string }) => {
+export const create = async (data: { id: string; name: string }) => {
     return await prisma.map.create({
         data,
     });
 };
 
-export const update = async (id: number, data: { name?: string }) => {
+export const update = async (id: string, data: { name?: string }) => {
     return await prisma.map.update({
         where: { id },
         data,
     });
 };
 
-export const remove = async (id: number) => {
+export const remove = async (id: string) => {
     return await prisma.map.delete({
         where: { id },
     });

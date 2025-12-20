@@ -8,30 +8,30 @@ interface RoundTeamStatData {
 }
 
 export const findAll = async () => {
-    return await prisma.roundTeamStat.findMany();
+    return await prisma.roundTeamStats.findMany();
 };
 
 export const findById = async (id: string) => {
-    return await prisma.roundTeamStat.findUnique({
+    return await prisma.roundTeamStats.findUnique({
         where: { id: parseInt(id) },
     });
 };
 
 export const create = async (data: RoundTeamStatData) => {
-    return await prisma.roundTeamStat.create({
+    return await prisma.roundTeamStats.create({
         data,
     });
 };
 
 export const update = async (id: string, data: Partial<RoundTeamStatData>) => {
-    return await prisma.roundTeamStat.update({
+    return await prisma.roundTeamStats.update({
         where: { id: parseInt(id) },
         data,
     });
 };
 
 export const remove = async (id: string) => {
-    return await prisma.roundTeamStat.delete({
+    return await prisma.roundTeamStats.delete({
         where: { id: parseInt(id) },
     });
 };

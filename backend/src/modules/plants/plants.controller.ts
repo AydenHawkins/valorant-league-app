@@ -3,7 +3,7 @@ import * as plantsService from "./plants.service";
 
 // GET /plants - Retrieve all plants
 export const getPlants = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

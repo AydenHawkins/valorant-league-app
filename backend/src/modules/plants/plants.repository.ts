@@ -10,30 +10,30 @@ interface PlantData {
 }
 
 export const findAll = async () => {
-    return await prisma.plants.findMany();
+    return await prisma.plant.findMany();
 };
 
 export const findById = async (id: string) => {
-    return await prisma.plants.findUnique({
+    return await prisma.plant.findUnique({
         where: { id: parseInt(id) },
     });
 };
 
 export const create = async (data: PlantData) => {
-    return await prisma.plants.create({
+    return await prisma.plant.create({
         data,
     });
 };
 
 export const update = async (id: string, data: Partial<PlantData>) => {
-    return await prisma.plants.update({
+    return await prisma.plant.update({
         where: { id: parseInt(id) },
         data,
     });
 };
 
 export const remove = async (id: string) => {
-    return await prisma.plants.delete({
+    return await prisma.plant.delete({
         where: { id: parseInt(id) },
     });
 };

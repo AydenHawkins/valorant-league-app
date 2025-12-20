@@ -27,7 +27,7 @@ export const signup = async (
     const token = jwt.sign(
         { userId: user.id, username: user.username },
         JWT_SECRET,
-        { expiresIn: JWT_EXPIRES_IN }
+        { expiresIn: JWT_EXPIRES_IN } as any
     );
 
     return { user, token };
@@ -50,7 +50,7 @@ export const login = async (username: string, password: string) => {
     const token = jwt.sign(
         { userId: user.id, username: user.username },
         JWT_SECRET,
-        { expiresIn: JWT_EXPIRES_IN }
+        { expiresIn: JWT_EXPIRES_IN } as any
     );
 
     return {

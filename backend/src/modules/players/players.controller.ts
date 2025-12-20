@@ -3,7 +3,7 @@ import * as playersService from "./players.service";
 
 // GET /players - Retrieve all players
 export const getPlayers = async (
-    req: Request,
+    _req: Request,
     res: Response
 ): Promise<void> => {
     try {

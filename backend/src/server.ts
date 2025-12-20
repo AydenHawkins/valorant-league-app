@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 // CORS configuration to allow credentials (cookies)
-const corsOptions = {
+const corsOptions: cors.CorsOptions = {
     origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
 };
@@ -21,9 +21,9 @@ app.use(cookieParser());
 
 app.use("/api", routes);
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
     res.json({ message: "Valorant Tournament API is running!" });
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT: string | number = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
