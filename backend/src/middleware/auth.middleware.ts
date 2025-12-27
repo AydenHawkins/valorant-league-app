@@ -54,3 +54,32 @@ export const authenticateToken = (
         }
     );
 };
+
+/**
+ * Middleware to require a specific user role
+ * @param role - The required role ('ADMIN', 'PLAYER')
+ * @returns Middleware function that checks user role
+ */
+export const requireRole = (role: string) => {
+    return (req: Request, res: Response, next: NextFunction): void => {
+        // Ensure user is authenticated
+        if (!req.user) {
+            res.status(401).json({ error: "Authentication required" });
+            return;
+        }
+
+        // Ensure user has the required role
+        if (req.user.role !== role) {
+            res.status(403).json({
+                error: "Forbidden: Insufficient permissions",
+                required: role,
+                current: req.user.role,
+            });
+            return;
+        }
+
+        next();
+    };
+};
+
+export const requireAdmin = () => requireRole("ADMIN");
