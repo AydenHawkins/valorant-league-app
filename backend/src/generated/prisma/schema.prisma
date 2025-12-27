@@ -11,16 +11,29 @@ datasource db {
 // ==================== AUTHENTICATION ====================
 //
 
+enum Role {
+  ADMIN
+  PLAYER
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   username String @unique
   email    String @unique
   password String
+  role     Role   @default(PLAYER)
+
+  playerId Int?    @unique
+  player   Player? @relation(fields: [playerId], references: [id])
+
+  ownedTeams Team[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([username])
+  @@index([email])
+  @@index([role])
 }
 
 //
@@ -107,6 +120,9 @@ model Team {
   id   Int    @id @default(autoincrement())
   name String @unique
 
+  ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -119,6 +135,7 @@ model Team {
   matchParticipations MatchParticipation[]
 
   @@index([name])
+  @@index([ownerId])
 }
 
 model Player {
@@ -126,6 +143,9 @@ model Player {
   name  String
   tag   String
   puuid String @unique
+
+  userId Int?  @unique
+  user   User?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -504,6 +524,8 @@ model TeamRoster {
   seasonId Int
   season   Season @relation(fields: [seasonId], references: [id])
 
+  isCaptain Boolean @default(false)
+
   startDate DateTime  @default(now())
   endDate   DateTime?
 
@@ -514,6 +536,7 @@ model TeamRoster {
   @@index([teamId])
   @@index([playerId])
   @@index([seasonId])
+  @@index([seasonId, isCaptain])
 }
 
 model Substitution {

@@ -125,6 +125,8 @@ exports.Prisma.UserScalarFieldEnum = {
   username: 'username',
   email: 'email',
   password: 'password',
+  role: 'role',
+  playerId: 'playerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -164,6 +166,7 @@ exports.Prisma.SeasonScalarFieldEnum = {
 exports.Prisma.TeamScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -173,6 +176,7 @@ exports.Prisma.PlayerScalarFieldEnum = {
   name: 'name',
   tag: 'tag',
   puuid: 'puuid',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -346,6 +350,7 @@ exports.Prisma.TeamRosterScalarFieldEnum = {
   teamId: 'teamId',
   playerId: 'playerId',
   seasonId: 'seasonId',
+  isCaptain: 'isCaptain',
   startDate: 'startDate',
   endDate: 'endDate',
   createdAt: 'createdAt',
@@ -375,7 +380,10 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.Role = exports.$Enums.Role = {
+  ADMIN: 'ADMIN',
+  PLAYER: 'PLAYER'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
