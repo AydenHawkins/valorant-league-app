@@ -11,11 +11,17 @@ datasource db {
 // ==================== AUTHENTICATION ====================
 //
 
+enum Role {
+  ADMIN
+  PLAYER
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   username String @unique
   email String @unique
   password String
+  role Role @default(PLAYER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
