@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
 import * as authRepository from "./auth.repository";
 
 const SALT_ROUNDS = 10;
@@ -21,13 +21,17 @@ export const signup = async (
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     // Create user
-    const user = await authRepository.createUser(username, email, hashedPassword);
+    const user = await authRepository.createUser(
+        username,
+        email,
+        hashedPassword
+    );
 
     // Generate JWT token
     const token = jwt.sign(
-        { userId: user.id, username: user.username },
+        { userId: user.id, username: user.username, role: user.role },
         JWT_SECRET,
-        { expiresIn: JWT_EXPIRES_IN } as any
+        { expiresIn: JWT_EXPIRES_IN } as SignOptions
     );
 
     return { user, token };
@@ -48,9 +52,9 @@ export const login = async (username: string, password: string) => {
 
     // Generate JWT token
     const token = jwt.sign(
-        { userId: user.id, username: user.username },
+        { userId: user.id, username: user.username, role: user.role },
         JWT_SECRET,
-        { expiresIn: JWT_EXPIRES_IN } as any
+        { expiresIn: JWT_EXPIRES_IN } as SignOptions
     );
 
     return {

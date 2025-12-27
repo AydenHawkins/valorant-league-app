@@ -6,16 +6,16 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 interface JwtPayload {
     userId: number;
     username: string;
+    role: string;
 }
 
-declare global {
-    namespace Express {
-        interface Request {
-            user?: {
-                userId: number;
-                username: string;
-            };
-        }
+declare module "express-serve-static-core" {
+    interface Request {
+        user?: {
+            userId: number;
+            username: string;
+            role: string;
+        };
     }
 }
 
@@ -31,18 +31,26 @@ export const authenticateToken = (
         return;
     }
 
-    jwt.verify(token, JWT_SECRET, (err: jwt.VerifyErrors | null, decoded: string | jwt.JwtPayload | undefined) => {
-        if (err) {
-            res.status(403).json({ error: "Invalid or expired token" });
-            return;
+    jwt.verify(
+        token,
+        JWT_SECRET,
+        (
+            err: jwt.VerifyErrors | null,
+            decoded: string | jwt.JwtPayload | undefined
+        ) => {
+            if (err) {
+                res.status(403).json({ error: "Invalid or expired token" });
+                return;
+            }
+
+            const payload = decoded as JwtPayload;
+            req.user = {
+                userId: payload.userId,
+                username: payload.username,
+                role: payload.role,
+            };
+
+            next();
         }
-
-        const payload = decoded as JwtPayload;
-        req.user = {
-            userId: payload.userId,
-            username: payload.username,
-        };
-
-        next();
-    });
+    );
 };
