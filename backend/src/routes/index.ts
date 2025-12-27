@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Import routes from modules
 import authRoutes from "../modules/auth/auth.routes";
+import usersRoutes from "../modules/users/users.routes";
 import agentsRoutes from "../modules/agents/agents.routes";
 import mapsRoutes from "../modules/maps/maps.routes";
 import leagueRoutes from "../modules/leagues/leagues.routes";
@@ -25,6 +26,7 @@ import matchParserRoutes from "../modules/matchParser/matchParser.routes";
 
 // Mount routes
 router.use("/auth", authRoutes);
+router.use("/users", usersRoutes);
 router.use("/agents", agentsRoutes);
 router.use("/maps", mapsRoutes);
 router.use("/leagues", leagueRoutes);
