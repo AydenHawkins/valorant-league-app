@@ -8,11 +8,13 @@ import * as usersService from "./users.service";
 
 export const getUserProfile = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         const userId = parseInt(req.params.id);
-        const user = await usersService.getUserById(userId);
+        const isOwnerOrAdmin =
+            req.user?.userId === userId || req.user?.role === "ADMIN";
+        const user = await usersService.getUserById(userId, isOwnerOrAdmin);
 
         res.status(200).json(user);
     } catch (error) {
@@ -34,7 +36,7 @@ export const getUserProfile = async (
 
 export const updateUserProfile = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         const userId = parseInt(req.params.id);
@@ -53,6 +55,40 @@ export const updateUserProfile = async (
         });
 
         res.status(200).json(updateUser);
+    } catch (error) {
+        if (error instanceof Error) {
+            if (error.message === "User not found") {
+                res.status(404).json({ error: error.message });
+                return;
+            }
+            res.status(500).json({ error: error.message });
+        }
+    }
+};
+
+/**
+ * Delete user by ID.
+ * DELETE /api/users/:id
+ * Authorization: Users can only delete their own account, or admin
+ */
+
+export const deleteUser = async (
+    req: Request,
+    res: Response,
+): Promise<void> => {
+    try {
+        const userId = parseInt(req.params.id);
+
+        if (req.user!.userId !== userId && req.user!.role !== "ADMIN") {
+            res.status(403).json({
+                error: "Forbidden: You can only delete your own account",
+            });
+            return;
+        }
+
+        await usersService.deleteUser(userId);
+
+        res.status(204).send();
     } catch (error) {
         if (error instanceof Error) {
             if (error.message === "User not found") {

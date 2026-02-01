@@ -6,13 +6,13 @@ import prisma from "../../utils/prisma";
  * @return User object with selected fields or null if not found
  */
 
-export const findUserById = async (id: number) => {
+export const findUserById = async (id: number, includePrivate: boolean = false) => {
     return await prisma.user.findUnique({
         where: { id },
         select: {
             id: true,
             username: true,
-            email: true,
+            ...(includePrivate && { email: true }),
             role: true,
             playerId: true,
             player: {
@@ -55,6 +55,16 @@ export const updateUserProfile = async (
             createdAt: true,
             updatedAt: true,
         },
+    });
+};
+
+/**
+ * Delete user by ID.
+ * @param id - User ID
+ */
+export const deleteUser = async (id: number) => {
+    return await prisma.user.delete({
+        where: { id },
     });
 };
 

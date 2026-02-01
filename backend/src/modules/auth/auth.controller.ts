@@ -39,10 +39,10 @@ export const signupController = async (
 
         // Set HTTP-only cookie
         res.cookie("token", result.token, {
-            httpOnly: true, // Cannot be accessed by JavaScript
-            secure: false, // Allow HTTP in development
-            sameSite: "lax", // Less strict for development
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         res.status(201).json({
@@ -79,16 +79,15 @@ export const loginController = async (
 
         // Set HTTP-only cookie
         res.cookie("token", result.token, {
-            httpOnly: true, // Cannot be accessed by JavaScript
-            secure: false, // Allow HTTP in development
-            sameSite: "lax", // Less strict for development
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
         res.status(200).json({
             message: "Login successful",
             user: result.user,
-            // No token in response body
         });
     } catch (error) {
         if (error instanceof Error && error.message === "Invalid credentials") {
