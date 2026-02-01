@@ -1,5 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import { ValorantApiResponse } from "./valorantApi.types";
 
 dotenv.config();
 
@@ -16,30 +17,13 @@ const valorantApi = axios.create({
 
 export async function getMatchById(
     region: string,
-    matchId: string
-): Promise<any> {
+    matchId: string,
+): Promise<ValorantApiResponse> {
     try {
         const response = await valorantApi.get(`/match/${region}/${matchId}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching match by ID:", error);
-        throw error;
-    }
-}
-
-export async function getMatchesByPlayer(
-    region: string,
-    platform: string,
-    name: string,
-    tag: string
-): Promise<any> {
-    try {
-        const response = await valorantApi.get(
-            `/matches/${region}/${platform}/${name}/${tag}`
-        );
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching matches by player:", error);
         throw error;
     }
 }

@@ -57,3 +57,64 @@ export const updateUserProfile = async (
         },
     });
 };
+
+/**
+ * Find player by PUUID.
+ */
+export const findPlayerByPUUID = async (puuid: string) => {
+    return await prisma.player.findUnique({
+        where: { puuid },
+        include: {
+            user: true,
+        },
+    });
+};
+
+/**
+ * Create a new player or update existing one.
+ */
+export const upsertPlayer = async (data: {
+    puuid: string;
+    name: string;
+    tag: string;
+}) => {
+    return await prisma.player.upsert({
+        where: { puuid: data.puuid },
+        update: {
+            name: data.name,
+            tag: data.tag,
+        },
+        create: {
+            puuid: data.puuid,
+            name: data.name,
+            tag: data.tag,
+        },
+    });
+};
+
+/**
+ * Link user to player (Riot account)
+ */
+export const linkUserToPlayer = async (userId: number, playerId: number) => {
+    return await prisma.user.update({
+        where: { id: userId },
+        data: { playerId: playerId },
+        select: {
+            id: true,
+            username: true,
+            email: true,
+            role: true,
+            playerId: true,
+            player: {
+                select: {
+                    id: true,
+                    name: true,
+                    tag: true,
+                    puuid: true,
+                },
+            },
+            createdAt: true,
+            updatedAt: true,
+        },
+    });
+};
