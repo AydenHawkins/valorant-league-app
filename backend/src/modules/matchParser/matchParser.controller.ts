@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as matchParserService from "./matchParser.service";
-import * as valorantApi from "../../integrations/valorantApi.integrations";
+import * as valorantApi from "../../integrations/valorantApi/valorantApi.integrations";
 
 /**
  * POST /matchParser/preview
@@ -8,7 +8,7 @@ import * as valorantApi from "../../integrations/valorantApi.integrations";
  */
 export const previewMatchData = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         const { region, matchId, seriesId, matchNumber } = req.body;
@@ -47,10 +47,11 @@ export const previewMatchData = async (
  */
 export const importMatchData = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
-        const { region, matchId, seriesId, matchNumber, teamMappings } = req.body;
+        const { region, matchId, seriesId, matchNumber, teamMappings } =
+            req.body;
 
         if (!region || !matchId || !seriesId || !teamMappings) {
             res.status(400).json({
@@ -74,7 +75,7 @@ export const importMatchData = async (
                 seriesId,
                 matchNumber: matchNumber || 1,
                 teamMappings,
-            }
+            },
         );
 
         res.json({
@@ -106,7 +107,7 @@ export const importMatchData = async (
  */
 export const validateMatchData = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         const { region, matchId } = req.body;

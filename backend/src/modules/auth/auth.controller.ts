@@ -3,7 +3,7 @@ import * as authService from "./auth.service";
 
 export const signupController = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         const { username, email, password } = req.body;
@@ -48,10 +48,12 @@ export const signupController = async (
         res.status(201).json({
             message: "User created successfully",
             user: result.user,
-            // No token in response body
         });
     } catch (error) {
-        if (error instanceof Error && error.message === "Username already exists") {
+        if (
+            error instanceof Error &&
+            error.message === "Username already exists"
+        ) {
             res.status(409).json({ error: error.message });
             return;
         }
@@ -62,7 +64,7 @@ export const signupController = async (
 
 export const loginController = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         const { username, password } = req.body;
@@ -101,7 +103,7 @@ export const loginController = async (
 
 export const logoutController = async (
     _req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         // Clear the token cookie
