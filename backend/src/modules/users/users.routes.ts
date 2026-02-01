@@ -5,14 +5,19 @@ import { authenticateToken } from "../../middleware/auth.middleware";
 const router = Router();
 
 /**
- * GET /api/users/:id - Get user profile by ID
+ * POST /api/users/link - Link authenticated user to a player via invite code
  */
-router.get("/:id", usersController.getUserProfile);
+router.post("/link", authenticateToken, usersController.linkPlayer);
 
 /**
- * PATCH /api/users/:id - Update user profile
+ * GET /api/users/:id - Get user by ID
  */
-router.patch("/:id", authenticateToken, usersController.updateUserProfile);
+router.get("/:id", usersController.getUser);
+
+/**
+ * PATCH /api/users/:id - Update user
+ */
+router.patch("/:id", authenticateToken, usersController.updateUser);
 
 /**
  * DELETE /api/users/:id - Delete user by ID

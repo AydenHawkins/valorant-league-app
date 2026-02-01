@@ -6,7 +6,10 @@ import prisma from "../../utils/prisma";
  * @return User object with selected fields or null if not found
  */
 
-export const findUserById = async (id: number, includePrivate: boolean = false) => {
+export const findUserById = async (
+    id: number,
+    includePrivate: boolean = false,
+) => {
     return await prisma.user.findUnique({
         where: { id },
         select: {
@@ -36,12 +39,12 @@ export const findUserById = async (id: number, includePrivate: boolean = false) 
  * @return Updated user object with selected fields
  */
 
-export const updateUserProfile = async (
+export const updateUser = async (
     id: number,
     data: {
         username?: string;
         email?: string;
-    }
+    },
 ) => {
     return await prisma.user.update({
         where: { id },
@@ -69,11 +72,13 @@ export const deleteUser = async (id: number) => {
 };
 
 /**
- * Find player by PUUID.
+ * Find player by invite code.
+ * @param inviteCode - The invite code
+ * @return Player with user relation or null
  */
-export const findPlayerByPUUID = async (puuid: string) => {
+export const findPlayerByInviteCode = async (inviteCode: string) => {
     return await prisma.player.findUnique({
-        where: { puuid },
+        where: { inviteCode },
         include: {
             user: true,
         },
@@ -81,24 +86,13 @@ export const findPlayerByPUUID = async (puuid: string) => {
 };
 
 /**
- * Create a new player or update existing one.
+ * Clear the invite code from a player after successful linking.
+ * @param playerId - Player ID
  */
-export const upsertPlayer = async (data: {
-    puuid: string;
-    name: string;
-    tag: string;
-}) => {
-    return await prisma.player.upsert({
-        where: { puuid: data.puuid },
-        update: {
-            name: data.name,
-            tag: data.tag,
-        },
-        create: {
-            puuid: data.puuid,
-            name: data.name,
-            tag: data.tag,
-        },
+export const clearInviteCode = async (playerId: number) => {
+    return await prisma.player.update({
+        where: { id: playerId },
+        data: { inviteCode: null },
     });
 };
 

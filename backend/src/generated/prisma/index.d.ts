@@ -10127,6 +10127,7 @@ export namespace Prisma {
     tag: string | null
     puuid: string | null
     userId: number | null
+    inviteCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10137,6 +10138,7 @@ export namespace Prisma {
     tag: string | null
     puuid: string | null
     userId: number | null
+    inviteCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10147,6 +10149,7 @@ export namespace Prisma {
     tag: number
     puuid: number
     userId: number
+    inviteCode: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -10169,6 +10172,7 @@ export namespace Prisma {
     tag?: true
     puuid?: true
     userId?: true
+    inviteCode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10179,6 +10183,7 @@ export namespace Prisma {
     tag?: true
     puuid?: true
     userId?: true
+    inviteCode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10189,6 +10194,7 @@ export namespace Prisma {
     tag?: true
     puuid?: true
     userId?: true
+    inviteCode?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10286,6 +10292,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId: number | null
+    inviteCode: string | null
     createdAt: Date
     updatedAt: Date
     _count: PlayerCountAggregateOutputType | null
@@ -10315,6 +10322,7 @@ export namespace Prisma {
     tag?: boolean
     puuid?: boolean
     userId?: boolean
+    inviteCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | Player$userArgs<ExtArgs>
@@ -10338,6 +10346,7 @@ export namespace Prisma {
     tag?: boolean
     puuid?: boolean
     userId?: boolean
+    inviteCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["player"]>
@@ -10348,6 +10357,7 @@ export namespace Prisma {
     tag?: boolean
     puuid?: boolean
     userId?: boolean
+    inviteCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["player"]>
@@ -10358,11 +10368,12 @@ export namespace Prisma {
     tag?: boolean
     puuid?: boolean
     userId?: boolean
+    inviteCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PlayerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "tag" | "puuid" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["player"]>
+  export type PlayerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "tag" | "puuid" | "userId" | "inviteCode" | "createdAt" | "updatedAt", ExtArgs["result"]["player"]>
   export type PlayerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Player$userArgs<ExtArgs>
     rosters?: boolean | Player$rostersArgs<ExtArgs>
@@ -10403,6 +10414,7 @@ export namespace Prisma {
       tag: string
       puuid: string
       userId: number | null
+      inviteCode: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["player"]>
@@ -10845,6 +10857,7 @@ export namespace Prisma {
     readonly tag: FieldRef<"Player", 'String'>
     readonly puuid: FieldRef<"Player", 'String'>
     readonly userId: FieldRef<"Player", 'Int'>
+    readonly inviteCode: FieldRef<"Player", 'String'>
     readonly createdAt: FieldRef<"Player", 'DateTime'>
     readonly updatedAt: FieldRef<"Player", 'DateTime'>
   }
@@ -27815,6 +27828,7 @@ export namespace Prisma {
     tag: 'tag',
     puuid: 'puuid',
     userId: 'userId',
+    inviteCode: 'inviteCode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -28551,6 +28565,7 @@ export namespace Prisma {
     tag?: StringFilter<"Player"> | string
     puuid?: StringFilter<"Player"> | string
     userId?: IntNullableFilter<"Player"> | number | null
+    inviteCode?: StringNullableFilter<"Player"> | string | null
     createdAt?: DateTimeFilter<"Player"> | Date | string
     updatedAt?: DateTimeFilter<"Player"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -28573,6 +28588,7 @@ export namespace Prisma {
     tag?: SortOrder
     puuid?: SortOrder
     userId?: SortOrderInput | SortOrder
+    inviteCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -28593,6 +28609,7 @@ export namespace Prisma {
     id?: number
     puuid?: string
     userId?: number
+    inviteCode?: string
     name_tag?: PlayerNameTagCompoundUniqueInput
     AND?: PlayerWhereInput | PlayerWhereInput[]
     OR?: PlayerWhereInput[]
@@ -28613,7 +28630,7 @@ export namespace Prisma {
     deaths?: KillListRelationFilter
     killAssists?: KillListRelationFilter
     matchParticipations?: MatchParticipationListRelationFilter
-  }, "id" | "puuid" | "userId" | "name_tag">
+  }, "id" | "puuid" | "userId" | "inviteCode" | "name_tag">
 
   export type PlayerOrderByWithAggregationInput = {
     id?: SortOrder
@@ -28621,6 +28638,7 @@ export namespace Prisma {
     tag?: SortOrder
     puuid?: SortOrder
     userId?: SortOrderInput | SortOrder
+    inviteCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PlayerCountOrderByAggregateInput
@@ -28639,6 +28657,7 @@ export namespace Prisma {
     tag?: StringWithAggregatesFilter<"Player"> | string
     puuid?: StringWithAggregatesFilter<"Player"> | string
     userId?: IntNullableWithAggregatesFilter<"Player"> | number | null
+    inviteCode?: StringNullableWithAggregatesFilter<"Player"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Player"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Player"> | Date | string
   }
@@ -30307,6 +30326,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -30329,6 +30349,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -30350,6 +30371,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -30372,6 +30394,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -30394,6 +30417,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30403,6 +30427,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30413,6 +30438,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32164,6 +32190,21 @@ export namespace Prisma {
     ownerId?: SortOrder
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
@@ -32220,6 +32261,7 @@ export namespace Prisma {
     tag?: SortOrder
     puuid?: SortOrder
     userId?: SortOrder
+    inviteCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -32235,6 +32277,7 @@ export namespace Prisma {
     tag?: SortOrder
     puuid?: SortOrder
     userId?: SortOrder
+    inviteCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -32245,6 +32288,7 @@ export namespace Prisma {
     tag?: SortOrder
     puuid?: SortOrder
     userId?: SortOrder
+    inviteCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -32252,6 +32296,24 @@ export namespace Prisma {
   export type PlayerSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type SeasonScalarRelationFilter = {
@@ -32322,21 +32384,6 @@ export namespace Prisma {
     blueTeamId?: SortOrder
     bestOf?: SortOrder
     winnerTeamId?: SortOrder
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -32429,24 +32476,6 @@ export namespace Prisma {
     seriesId?: SortOrder
     matchNumber?: SortOrder
     gameLengthMs?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -34100,6 +34129,10 @@ export namespace Prisma {
     connect?: MatchParticipationWhereUniqueInput | MatchParticipationWhereUniqueInput[]
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type UserUpdateOneWithoutPlayerNestedInput = {
     create?: XOR<UserCreateWithoutPlayerInput, UserUncheckedCreateWithoutPlayerInput>
     connectOrCreate?: UserCreateOrConnectWithoutPlayerInput
@@ -34604,10 +34637,6 @@ export namespace Prisma {
     connectOrCreate?: MatchParticipationCreateOrConnectWithoutMatchInput | MatchParticipationCreateOrConnectWithoutMatchInput[]
     createMany?: MatchParticipationCreateManyMatchInputEnvelope
     connect?: MatchParticipationWhereUniqueInput | MatchParticipationWhereUniqueInput[]
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -35678,11 +35707,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -35698,6 +35722,11 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -35729,6 +35758,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     rosters?: TeamRosterCreateNestedManyWithoutPlayerInput
@@ -35750,6 +35780,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     rosters?: TeamRosterUncheckedCreateNestedManyWithoutPlayerInput
@@ -35823,6 +35854,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rosters?: TeamRosterUpdateManyWithoutPlayerNestedInput
@@ -35844,6 +35876,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rosters?: TeamRosterUncheckedUpdateManyWithoutPlayerNestedInput
@@ -38324,6 +38357,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -38345,6 +38379,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -38613,6 +38648,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -38634,6 +38670,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -38887,6 +38924,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -38908,6 +38946,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -39051,6 +39090,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -39072,6 +39112,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -39621,6 +39662,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -39642,6 +39684,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -39714,6 +39757,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -39735,6 +39779,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -39785,6 +39830,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -39806,6 +39852,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -39878,6 +39925,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -39899,6 +39947,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -39975,6 +40024,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -39996,6 +40046,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -40100,6 +40151,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -40121,6 +40173,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -40323,6 +40376,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -40344,6 +40398,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -40369,6 +40424,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -40390,6 +40446,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -40415,6 +40472,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -40436,6 +40494,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -40524,6 +40583,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -40545,6 +40605,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -40576,6 +40637,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -40597,6 +40659,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -40637,6 +40700,7 @@ export namespace Prisma {
     tag?: StringFilter<"Player"> | string
     puuid?: StringFilter<"Player"> | string
     userId?: IntNullableFilter<"Player"> | number | null
+    inviteCode?: StringNullableFilter<"Player"> | string | null
     createdAt?: DateTimeFilter<"Player"> | Date | string
     updatedAt?: DateTimeFilter<"Player"> | Date | string
   }
@@ -40678,6 +40742,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -40699,6 +40764,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -40799,6 +40865,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -40820,6 +40887,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -40950,6 +41018,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -40971,6 +41040,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -40996,6 +41066,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPlayerInput
@@ -41017,6 +41088,7 @@ export namespace Prisma {
     tag: string
     puuid: string
     userId?: number | null
+    inviteCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserUncheckedCreateNestedOneWithoutPlayerInput
@@ -41143,6 +41215,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -41164,6 +41237,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -41195,6 +41269,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -41216,6 +41291,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -43186,6 +43262,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPlayerNestedInput
@@ -43207,6 +43284,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUncheckedUpdateOneWithoutPlayerNestedInput
@@ -43228,6 +43306,7 @@ export namespace Prisma {
     tag?: StringFieldUpdateOperationsInput | string
     puuid?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

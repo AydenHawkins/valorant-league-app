@@ -177,6 +177,7 @@ exports.Prisma.PlayerScalarFieldEnum = {
   tag: 'tag',
   puuid: 'puuid',
   userId: 'userId',
+  inviteCode: 'inviteCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
