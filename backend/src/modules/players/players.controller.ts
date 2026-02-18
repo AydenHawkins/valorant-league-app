@@ -48,6 +48,15 @@ export const getPlayerByPuuid = async (
         }
         res.status(200).json(player);
     } catch (error) {
+        if (
+            error instanceof Error &&
+            error.message === "Invalid PUUID format"
+        ) {
+            res.status(400).json({
+                error: "Invalid PUUID format",
+            });
+            return;
+        }
         console.error("Error fetching player:", error);
         res.status(500).json({ error: "Internal server error" });
     }
@@ -62,6 +71,24 @@ export const createPlayer = async (
         const newPlayer = await playersService.createPlayer(req.body);
         res.status(201).json(newPlayer);
     } catch (error) {
+        if (
+            error instanceof Error &&
+            error.message === "PUUID_ALREADY_EXISTS"
+        ) {
+            res.status(409).json({
+                error: "Player with this PUUID already exists",
+            });
+            return;
+        }
+        if (
+            error instanceof Error &&
+            error.message === "Invalid PUUID format"
+        ) {
+            res.status(400).json({
+                error: "Invalid PUUID format",
+            });
+            return;
+        }
         console.error("Error creating player:", error);
         res.status(500).json({ error: "Internal server error" });
     }
@@ -105,6 +132,15 @@ export const updatePlayer = async (
         const updatedPlayer = await playersService.updatePlayer(id, req.body);
         res.status(200).json(updatedPlayer);
     } catch (error) {
+        if (
+            error instanceof Error &&
+            error.message === "Invalid PUUID format"
+        ) {
+            res.status(400).json({
+                error: "Invalid PUUID format",
+            });
+            return;
+        }
         console.error("Error updating player:", error);
         res.status(500).json({ error: "Internal server error" });
     }
