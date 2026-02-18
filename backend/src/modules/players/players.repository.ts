@@ -1,49 +1,49 @@
 import prisma from "../../utils/prisma";
 
 interface PlayerData {
-    name: string;
-    tag: string;
-    puuid: string;
+  name: string;
+  tag: string;
+  puuid: string;
 }
 
 export const findAll = async () => {
-    return await prisma.player.findMany();
+  return await prisma.player.findMany();
 };
 
 export const findById = async (id: string) => {
-    return await prisma.player.findUnique({
-        where: { id: parseInt(id) },
-    });
+  return await prisma.player.findUnique({
+    where: { id: parseInt(id) },
+  });
 };
 
 export const findByPuuid = async (puuid: string) => {
-    return await prisma.player.findUnique({
-        where: { puuid },
-    });
+  return await prisma.player.findUnique({
+    where: { puuid },
+  });
 };
 
 export const create = async (data: PlayerData) => {
-    return await prisma.player.create({
-        data,
-    });
+  return await prisma.player.create({
+    data,
+  });
 };
 
 export const update = async (id: string, data: Partial<PlayerData>) => {
-    return await prisma.player.update({
-        where: { id: parseInt(id) },
-        data,
-    });
+  return await prisma.player.update({
+    where: { id: parseInt(id) },
+    data,
+  });
 };
 
 export const saveInviteCode = async (id: string, inviteCode: string) => {
-    return await prisma.player.update({
-        where: { id: parseInt(id) },
-        data: { inviteCode },
-    });
+  return await prisma.player.update({
+    where: { id: parseInt(id) },
+    data: { inviteCode },
+  });
 };
 
 export const remove = async (id: string) => {
-    return await prisma.player.delete({
-        where: { id: parseInt(id) },
-    });
+  return await prisma.player.delete({
+    where: { id: parseInt(id) },
+  });
 };

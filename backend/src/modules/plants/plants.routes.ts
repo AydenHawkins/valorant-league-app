@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
-    getPlants,
-    getPlantById,
-    createPlant,
-    updatePlant,
-    deletePlant,
+  authenticateToken,
+  requireAdmin,
+} from "../../middleware/auth.middleware";
+import {
+  getPlants,
+  getPlantById,
+  createPlant,
+  updatePlant,
+  deletePlant,
 } from "./plants.controller";
 
 const router = Router();

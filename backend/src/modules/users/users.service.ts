@@ -6,16 +6,16 @@ import * as usersRepository from "./users.repository";
  * @returns The user profile.
  */
 export const getUserById = async (
-    id: number,
-    includePrivate: boolean = false,
+  id: number,
+  includePrivate: boolean = false,
 ) => {
-    const user = await usersRepository.findUserById(id, includePrivate);
+  const user = await usersRepository.findUserById(id, includePrivate);
 
-    if (!user) {
-        throw new Error("User not found");
-    }
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-    return user;
+  return user;
 };
 
 /**
@@ -26,18 +26,18 @@ export const getUserById = async (
  */
 
 export const updateUser = async (
-    id: number,
-    data: {
-        username?: string;
-        email?: string;
-    },
+  id: number,
+  data: {
+    username?: string;
+    email?: string;
+  },
 ) => {
-    const existingUser = await usersRepository.findUserById(id);
-    if (!existingUser) {
-        throw new Error("User not found");
-    }
+  const existingUser = await usersRepository.findUserById(id);
+  if (!existingUser) {
+    throw new Error("User not found");
+  }
 
-    return await usersRepository.updateUser(id, data);
+  return await usersRepository.updateUser(id, data);
 };
 
 /**
@@ -45,12 +45,12 @@ export const updateUser = async (
  * @param id - The ID of the user.
  */
 export const deleteUser = async (id: number) => {
-    const existingUser = await usersRepository.findUserById(id);
-    if (!existingUser) {
-        throw new Error("User not found");
-    }
+  const existingUser = await usersRepository.findUserById(id);
+  if (!existingUser) {
+    throw new Error("User not found");
+  }
 
-    return await usersRepository.deleteUser(id);
+  return await usersRepository.deleteUser(id);
 };
 
 /**
@@ -59,27 +59,30 @@ export const deleteUser = async (id: number) => {
  * @param inviteCode - The invite code for the player.
  * @returns The updated user with linked player.
  */
-export const linkWithInviteCode = async (userId: number, inviteCode: string) => {
-    const user = await usersRepository.findUserById(userId);
-    if (!user) {
-        throw new Error("User not found");
-    }
+export const linkWithInviteCode = async (
+  userId: number,
+  inviteCode: string,
+) => {
+  const user = await usersRepository.findUserById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-    if (user.playerId) {
-        throw new Error("User is already linked to a player");
-    }
+  if (user.playerId) {
+    throw new Error("User is already linked to a player");
+  }
 
-    const player = await usersRepository.findPlayerByInviteCode(inviteCode);
-    if (!player) {
-        throw new Error("Invalid invite code");
-    }
+  const player = await usersRepository.findPlayerByInviteCode(inviteCode);
+  if (!player) {
+    throw new Error("Invalid invite code");
+  }
 
-    if (player.userId) {
-        throw new Error("Player is already linked to an account");
-    }
+  if (player.userId) {
+    throw new Error("Player is already linked to an account");
+  }
 
-    const updatedUser = await usersRepository.linkUserToPlayer(userId, player.id);
-    await usersRepository.clearInviteCode(player.id);
+  const updatedUser = await usersRepository.linkUserToPlayer(userId, player.id);
+  await usersRepository.clearInviteCode(player.id);
 
-    return updatedUser;
+  return updatedUser;
 };

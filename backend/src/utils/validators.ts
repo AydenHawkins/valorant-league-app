@@ -4,8 +4,8 @@
  */
 
 export const isValidPUUID = (puuid: string): boolean => {
-    const puuidRegex = /^[a-zA-z0-9-]{32,78}$/;
-    return puuidRegex.test(puuid);
+  const puuidRegex = /^[a-zA-z0-9-]{32,78}$/;
+  return puuidRegex.test(puuid);
 };
 
 /**
@@ -14,7 +14,7 @@ export const isValidPUUID = (puuid: string): boolean => {
  * Tag: 3-5 digits
  */
 export const isValidRiotId = (name: string, tag: string): boolean => {
-    const nameRegex = /^.{3,16}$/;
-    const tagRegex = /^[a-zA-Z0-9]{3,5}$/;
-    return nameRegex.test(name) && tagRegex.test(tag);
+  const nameRegex = /^.{3,16}$/;
+  const tagRegex = /^[a-zA-Z0-9]{3,5}$/;
+  return nameRegex.test(name) && tagRegex.test(tag);
 };

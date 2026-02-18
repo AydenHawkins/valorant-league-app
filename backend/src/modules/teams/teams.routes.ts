@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { authenticateToken } from "../../middleware/auth.middleware";
 import {
-    getTeams,
-    getTeamById,
-    createTeam,
-    updateTeam,
-    deleteTeam,
+  getTeams,
+  getTeamById,
+  createTeam,
+  updateTeam,
+  deleteTeam,
 } from "./teams.controller";
 
 const router = Router();

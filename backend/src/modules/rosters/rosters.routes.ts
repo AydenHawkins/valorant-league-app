@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { authenticateToken } from "../../middleware/auth.middleware";
 import {
-    getRosters,
-    getRosterById,
-    createRoster,
-    updateRoster,
-    deleteRoster,
+  getRosters,
+  getRosterById,
+  createRoster,
+  updateRoster,
+  deleteRoster,
 } from "./rosters.controller";
 
 const router = Router();

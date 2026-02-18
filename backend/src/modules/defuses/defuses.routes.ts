@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
-    getDefuses,
-    getDefuseById,
-    createDefuse,
-    updateDefuse,
-    deleteDefuse,
+  authenticateToken,
+  requireAdmin,
+} from "../../middleware/auth.middleware";
+import {
+  getDefuses,
+  getDefuseById,
+  createDefuse,
+  updateDefuse,
+  deleteDefuse,
 } from "./defuses.controller";
 
 const router = Router();

@@ -7,29 +7,29 @@ import prisma from "../../utils/prisma";
  */
 
 export const findUserById = async (
-    id: number,
-    includePrivate: boolean = false,
+  id: number,
+  includePrivate: boolean = false,
 ) => {
-    return await prisma.user.findUnique({
-        where: { id },
+  return await prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      username: true,
+      ...(includePrivate && { email: true }),
+      role: true,
+      playerId: true,
+      player: {
         select: {
-            id: true,
-            username: true,
-            ...(includePrivate && { email: true }),
-            role: true,
-            playerId: true,
-            player: {
-                select: {
-                    id: true,
-                    name: true,
-                    tag: true,
-                    puuid: true,
-                },
-            },
-            createdAt: true,
-            updatedAt: true,
+          id: true,
+          name: true,
+          tag: true,
+          puuid: true,
         },
-    });
+      },
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
 };
 
 /**
@@ -40,25 +40,25 @@ export const findUserById = async (
  */
 
 export const updateUser = async (
-    id: number,
-    data: {
-        username?: string;
-        email?: string;
-    },
+  id: number,
+  data: {
+    username?: string;
+    email?: string;
+  },
 ) => {
-    return await prisma.user.update({
-        where: { id },
-        data,
-        select: {
-            id: true,
-            username: true,
-            email: true,
-            role: true,
-            playerId: true,
-            createdAt: true,
-            updatedAt: true,
-        },
-    });
+  return await prisma.user.update({
+    where: { id },
+    data,
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      role: true,
+      playerId: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
 };
 
 /**
@@ -66,9 +66,9 @@ export const updateUser = async (
  * @param id - User ID
  */
 export const deleteUser = async (id: number) => {
-    return await prisma.user.delete({
-        where: { id },
-    });
+  return await prisma.user.delete({
+    where: { id },
+  });
 };
 
 /**
@@ -77,12 +77,12 @@ export const deleteUser = async (id: number) => {
  * @return Player with user relation or null
  */
 export const findPlayerByInviteCode = async (inviteCode: string) => {
-    return await prisma.player.findUnique({
-        where: { inviteCode },
-        include: {
-            user: true,
-        },
-    });
+  return await prisma.player.findUnique({
+    where: { inviteCode },
+    include: {
+      user: true,
+    },
+  });
 };
 
 /**
@@ -90,35 +90,35 @@ export const findPlayerByInviteCode = async (inviteCode: string) => {
  * @param playerId - Player ID
  */
 export const clearInviteCode = async (playerId: number) => {
-    return await prisma.player.update({
-        where: { id: playerId },
-        data: { inviteCode: null },
-    });
+  return await prisma.player.update({
+    where: { id: playerId },
+    data: { inviteCode: null },
+  });
 };
 
 /**
  * Link user to player (Riot account)
  */
 export const linkUserToPlayer = async (userId: number, playerId: number) => {
-    return await prisma.user.update({
-        where: { id: userId },
-        data: { playerId: playerId },
+  return await prisma.user.update({
+    where: { id: userId },
+    data: { playerId: playerId },
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      role: true,
+      playerId: true,
+      player: {
         select: {
-            id: true,
-            username: true,
-            email: true,
-            role: true,
-            playerId: true,
-            player: {
-                select: {
-                    id: true,
-                    name: true,
-                    tag: true,
-                    puuid: true,
-                },
-            },
-            createdAt: true,
-            updatedAt: true,
+          id: true,
+          name: true,
+          tag: true,
+          puuid: true,
         },
-    });
+      },
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
 };

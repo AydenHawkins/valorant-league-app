@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
-    getKills,
-    getKillById,
-    createKill,
-    updateKill,
-    deleteKill,
+  authenticateToken,
+  requireAdmin,
+} from "../../middleware/auth.middleware";
+import {
+  getKills,
+  getKillById,
+  createKill,
+  updateKill,
+  deleteKill,
 } from "./kills.controller";
 
 const router = Router();
