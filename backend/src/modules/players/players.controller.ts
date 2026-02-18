@@ -4,7 +4,7 @@ import * as playersService from "./players.service";
 // GET /players - Retrieve all players
 export const getPlayers = async (
     _req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         const players = await playersService.getAllPlayers();
@@ -18,7 +18,7 @@ export const getPlayers = async (
 // GET /players/:id - Retrieve a player by ID
 export const getPlayerById = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     const { id } = req.params;
     try {
@@ -37,7 +37,7 @@ export const getPlayerById = async (
 // POST /players - Create a new player
 export const createPlayer = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     try {
         const newPlayer = await playersService.createPlayer(req.body);
@@ -48,10 +48,33 @@ export const createPlayer = async (
     }
 };
 
+// POST /players/:id/invite-code - Generate an invite code for a player
+export const generateInviteCode = async (
+    req: Request,
+    res: Response,
+): Promise<void> => {
+    const { id } = req.params;
+    try {
+        const inviteCode = await playersService.generateInviteCode(id);
+        if (!inviteCode) {
+            res.status(404).json({ error: "Player not found" });
+            return;
+        }
+        res.status(200).json({ inviteCode });
+    } catch (error) {
+        if (error instanceof Error && error.message === "PLAYER_ALREADY_LINKED") {
+            res.status(409).json({ error: "Player is already linked to a user account" });
+            return;
+        }
+        console.error("Error generating invite code:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 // PATCH /players/:id - Update an existing player
 export const updatePlayer = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     const { id } = req.params;
     try {
@@ -66,7 +89,7 @@ export const updatePlayer = async (
 // DELETE /players/:id - Delete a player
 export const deletePlayer = async (
     req: Request,
-    res: Response
+    res: Response,
 ): Promise<void> => {
     const { id } = req.params;
     try {
