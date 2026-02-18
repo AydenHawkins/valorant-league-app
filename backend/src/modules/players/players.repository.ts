@@ -29,6 +29,13 @@ export const update = async (id: string, data: Partial<PlayerData>) => {
     });
 };
 
+export const saveInviteCode = async (id: string, inviteCode: string) => {
+    return await prisma.player.update({
+        where: { id: parseInt(id) },
+        data: { inviteCode },
+    });
+};
+
 export const remove = async (id: string) => {
     return await prisma.player.delete({
         where: { id: parseInt(id) },

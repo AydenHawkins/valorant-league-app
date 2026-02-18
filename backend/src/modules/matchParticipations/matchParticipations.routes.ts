@@ -1,4 +1,5 @@
-import express from "express";
+import { Router } from "express";
+import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
     getMatchParticipations,
     getMatchParticipationById,
@@ -7,12 +8,12 @@ import {
     deleteMatchParticipation,
 } from "./matchParticipations.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getMatchParticipations);
 router.get("/:id", getMatchParticipationById);
-router.post("/", createMatchParticipation);
-router.patch("/:id", updateMatchParticipation);
-router.delete("/:id", deleteMatchParticipation);
+router.post("/", authenticateToken, requireAdmin(), createMatchParticipation);
+router.patch("/:id", authenticateToken, requireAdmin(), updateMatchParticipation);
+router.delete("/:id", authenticateToken, requireAdmin(), deleteMatchParticipation);
 
 export default router;

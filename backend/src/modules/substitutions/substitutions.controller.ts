@@ -8,7 +8,7 @@ export const getSubstitutions = async (
 ): Promise<void> => {
     try {
         const substitutions = await substitutionsService.getAllSubstitutions();
-        res.json(substitutions);
+        res.status(200).json(substitutions);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch substitutions" });
@@ -23,11 +23,11 @@ export const getSubstitutionById = async (
     const { id } = req.params;
     try {
         const substitution = await substitutionsService.getSubstitutionById(id);
-        if (substitution) {
-            res.json(substitution);
-        } else {
+        if (!substitution) {
             res.status(404).json({ error: "Substitution not found" });
+            return;
         }
+        res.status(200).json(substitution);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch substitution" });
@@ -50,7 +50,7 @@ export const createSubstitution = async (
     }
 };
 
-// PUT /substitutions/:id - Update a substitution
+// PATCH /substitutions/:id - Update a substitution
 export const updateSubstitution = async (
     req: Request,
     res: Response
@@ -61,7 +61,7 @@ export const updateSubstitution = async (
             id,
             req.body
         );
-        res.json(substitution);
+        res.status(200).json(substitution);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to update substitution" });

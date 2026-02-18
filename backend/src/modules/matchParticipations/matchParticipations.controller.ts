@@ -27,11 +27,11 @@ export const getMatchParticipationById = async (
     try {
         const matchParticipation =
             await matchParticipationsService.getMatchParticipationById(id);
-        if (matchParticipation) {
-            res.status(200).json(matchParticipation);
-        } else {
+        if (!matchParticipation) {
             res.status(404).json({ error: "Match participation not found" });
+            return;
         }
+        res.status(200).json(matchParticipation);
     } catch (error) {
         console.error("Error retrieving match participation:", error);
         res.status(500).json({

@@ -1,4 +1,5 @@
-import express from "express";
+import { Router } from "express";
+import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
     getSeries,
     getSeriesById,
@@ -7,12 +8,12 @@ import {
     deleteSeries,
 } from "./series.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getSeries);
 router.get("/:id", getSeriesById);
-router.post("/", createSeries);
-router.put("/:id", updateSeries);
-router.delete("/:id", deleteSeries);
+router.post("/", authenticateToken, requireAdmin(), createSeries);
+router.patch("/:id", authenticateToken, requireAdmin(), updateSeries);
+router.delete("/:id", authenticateToken, requireAdmin(), deleteSeries);
 
 export default router;

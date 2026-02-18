@@ -1,11 +1,11 @@
-import express from "express";
+import { Router } from "express";
 import {
     previewMatchData,
     importMatchData,
     validateMatchData,
 } from "./matchParser.controller";
 
-const router = express.Router();
+const router = Router();
 
 // Preview parsed match data before importing
 router.post("/preview", previewMatchData);

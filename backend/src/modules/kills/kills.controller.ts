@@ -20,11 +20,11 @@ export const getKillById = async (
     const { id } = req.params;
     try {
         const kill = await killsService.getKillById(id);
-        if (kill) {
-            res.status(200).json(kill);
-        } else {
+        if (!kill) {
             res.status(404).json({ error: "Kill not found" });
+            return;
         }
+        res.status(200).json(kill);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to retrieve kill" });
@@ -45,7 +45,7 @@ export const createKill = async (
     }
 };
 
-// PUT /kills/:id - Update a kill by ID
+// PATCH /kills/:id - Update a kill by ID
 export const updateKill = async (
     req: Request,
     res: Response

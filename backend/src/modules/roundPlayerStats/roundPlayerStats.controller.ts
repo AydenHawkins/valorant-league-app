@@ -8,7 +8,7 @@ export const getRoundPlayerStats = async (
 ): Promise<void> => {
     try {
         const stats = await roundPlayerStatsService.getAllRoundPlayerStats();
-        res.json(stats);
+        res.status(200).json(stats);
     } catch (error) {
         console.error(error);
         res.status(500).json({
@@ -25,11 +25,11 @@ export const getRoundPlayerStatById = async (
     const { id } = req.params;
     try {
         const stat = await roundPlayerStatsService.getRoundPlayerStatById(id);
-        if (stat) {
-            res.json(stat);
-        } else {
+        if (!stat) {
             res.status(404).json({ error: "Round player stat not found" });
+            return;
         }
+        res.status(200).json(stat);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to retrieve round player stat" });
@@ -52,7 +52,7 @@ export const createRoundPlayerStat = async (
     }
 };
 
-// PUT /roundPlayerStats/:id - Update an existing round player stat
+// PATCH /roundPlayerStats/:id - Update an existing round player stat
 export const updateRoundPlayerStat = async (
     req: Request,
     res: Response
@@ -63,7 +63,7 @@ export const updateRoundPlayerStat = async (
             id,
             req.body
         );
-        res.json(updatedStat);
+        res.status(200).json(updatedStat);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to update round player stat" });

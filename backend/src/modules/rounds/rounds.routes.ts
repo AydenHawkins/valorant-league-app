@@ -1,4 +1,5 @@
-import express from "express";
+import { Router } from "express";
+import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
     getRounds,
     getRoundById,
@@ -7,12 +8,12 @@ import {
     deleteRound,
 } from "./rounds.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getRounds);
 router.get("/:id", getRoundById);
-router.post("/", createRound);
-router.put("/:id", updateRound);
-router.delete("/:id", deleteRound);
+router.post("/", authenticateToken, requireAdmin(), createRound);
+router.patch("/:id", authenticateToken, requireAdmin(), updateRound);
+router.delete("/:id", authenticateToken, requireAdmin(), deleteRound);
 
 export default router;

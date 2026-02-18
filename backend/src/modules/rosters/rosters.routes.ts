@@ -1,4 +1,5 @@
-import express from "express";
+import { Router } from "express";
+import { authenticateToken } from "../../middleware/auth.middleware";
 import {
     getRosters,
     getRosterById,
@@ -7,12 +8,12 @@ import {
     deleteRoster,
 } from "./rosters.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getRosters);
 router.get("/:id", getRosterById);
-router.post("/", createRoster);
-router.put("/:id", updateRoster);
-router.delete("/:id", deleteRoster);
+router.post("/", authenticateToken, createRoster);
+router.patch("/:id", authenticateToken, updateRoster);
+router.delete("/:id", authenticateToken, deleteRoster);
 
 export default router;

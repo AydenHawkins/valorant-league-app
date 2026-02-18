@@ -8,9 +8,9 @@ export const getAgents = async (
 ): Promise<void> => {
     try {
         const agents = await agentsService.getAllAgents();
-        res.json(agents);
+        res.status(200).json(agents);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to fetch agents" });
     }
 };
@@ -20,16 +20,16 @@ export const getAgentById = async (
     req: Request,
     res: Response
 ): Promise<void> => {
-    const { id} = req.params;
+    const { id } = req.params;
     try {
         const agent = await agentsService.getAgentById(id);
-        if (agent) {
-            res.json(agent);
-        } else {
+        if (!agent) {
             res.status(404).json({ error: "Agent not found" });
+            return;
         }
+        res.status(200).json(agent);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to fetch agent" });
     }
 };
@@ -43,7 +43,7 @@ export const createAgent = async (
         const newAgent = await agentsService.createAgent(req.body);
         res.status(201).json(newAgent);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to create agent" });
     }
 };
@@ -55,13 +55,10 @@ export const updateAgent = async (
 ): Promise<void> => {
     const { id } = req.params;
     try {
-        const updatedAgent = await agentsService.updateAgent(
-            id,
-            req.body
-        );
-        res.json(updatedAgent);
+        const updatedAgent = await agentsService.updateAgent(id, req.body);
+        res.status(200).json(updatedAgent);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to update agent" });
     }
 };
@@ -76,7 +73,7 @@ export const deleteAgent = async (
         await agentsService.deleteAgent(id);
         res.status(204).end();
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to delete agent" });
     }
 };

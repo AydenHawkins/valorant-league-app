@@ -8,9 +8,9 @@ export const getLeagues = async (
 ): Promise<void> => {
     try {
         const leagues = await leaguesService.getAllLeagues();
-        res.json(leagues);
+        res.status(200).json(leagues);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to fetch leagues" });
     }
 };
@@ -23,13 +23,13 @@ export const getLeagueById = async (
     const { id } = req.params;
     try {
         const league = await leaguesService.getLeagueById(id);
-        if (league) {
-            res.json(league);
-        } else {
+        if (!league) {
             res.status(404).json({ error: "League not found" });
+            return;
         }
+        res.status(200).json(league);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to fetch league" });
     }
 };
@@ -43,12 +43,12 @@ export const createLeague = async (
         const newLeague = await leaguesService.createLeague(req.body);
         res.status(201).json(newLeague);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to create league" });
     }
 };
 
-// PUT /leagues/:id - Update an existing league
+// PATCH /leagues/:id - Update an existing league
 export const updateLeague = async (
     req: Request,
     res: Response
@@ -56,9 +56,9 @@ export const updateLeague = async (
     const { id } = req.params;
     try {
         const updatedLeague = await leaguesService.updateLeague(id, req.body);
-        res.json(updatedLeague);
+        res.status(200).json(updatedLeague);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to update league" });
     }
 };
@@ -73,7 +73,7 @@ export const deleteLeague = async (
         await leaguesService.deleteLeague(id);
         res.status(204).end();
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to delete league" });
     }
 };
