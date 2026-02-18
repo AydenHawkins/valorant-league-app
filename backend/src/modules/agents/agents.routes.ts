@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getAgents,
     getAgentById,
@@ -7,7 +7,7 @@ import {
     deleteAgent,
 } from "./agents.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getAgents);
 router.get("/:id", getAgentById);

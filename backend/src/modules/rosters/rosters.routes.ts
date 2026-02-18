@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getRosters,
     getRosterById,
@@ -7,7 +7,7 @@ import {
     deleteRoster,
 } from "./rosters.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getRosters);
 router.get("/:id", getRosterById);

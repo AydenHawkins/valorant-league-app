@@ -1,6 +1,6 @@
-import express from "express";
+import { Router } from "express";
 
-const router = express.Router();
+const router = Router();
 
 // Import routes from modules
 import authRoutes from "../modules/auth/auth.routes";

@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getMaps,
     getMapById,
@@ -7,7 +7,7 @@ import {
     deleteMap,
 } from "./maps.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getMaps);
 router.get("/:id", getMapById);

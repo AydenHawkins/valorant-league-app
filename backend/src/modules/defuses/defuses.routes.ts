@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getDefuses,
     getDefuseById,
@@ -7,7 +7,7 @@ import {
     deleteDefuse,
 } from "./defuses.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getDefuses);
 router.get("/:id", getDefuseById);

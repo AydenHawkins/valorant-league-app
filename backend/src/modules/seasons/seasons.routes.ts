@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getSeasons,
     getSeasonById,
@@ -9,7 +9,7 @@ import {
     createSeasonForLeague,
 } from "./seasons.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getSeasons);
 router.get("/:id", getSeasonById);

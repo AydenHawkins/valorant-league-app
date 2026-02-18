@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getKills,
     getKillById,
@@ -7,7 +7,7 @@ import {
     deleteKill,
 } from "./kills.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getKills);
 router.get("/:id", getKillById);

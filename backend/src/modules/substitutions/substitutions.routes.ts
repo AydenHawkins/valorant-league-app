@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getSubstitutions,
     getSubstitutionById,
@@ -7,7 +7,7 @@ import {
     deleteSubstitution,
 } from "./substitutions.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getSubstitutions);
 router.get("/:id", getSubstitutionById);

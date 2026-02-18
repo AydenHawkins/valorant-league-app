@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getMatches,
     getMatchById,
@@ -7,7 +7,7 @@ import {
     deleteMatch,
 } from "./matches.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getMatches);
 router.get("/:id", getMatchById);

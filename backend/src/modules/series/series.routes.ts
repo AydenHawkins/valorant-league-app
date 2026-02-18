@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getSeries,
     getSeriesById,
@@ -7,7 +7,7 @@ import {
     deleteSeries,
 } from "./series.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getSeries);
 router.get("/:id", getSeriesById);

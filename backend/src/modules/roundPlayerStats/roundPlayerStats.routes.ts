@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
     getRoundPlayerStats,
     getRoundPlayerStatById,
@@ -7,7 +7,7 @@ import {
     deleteRoundPlayerStat,
 } from "./roundPlayerStats.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getRoundPlayerStats);
 router.get("/:id", getRoundPlayerStatById);
