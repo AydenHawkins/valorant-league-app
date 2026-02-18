@@ -16,6 +16,12 @@ export const findById = async (id: string) => {
     });
 };
 
+export const findByPuuid = async (puuid: string) => {
+    return await prisma.player.findUnique({
+        where: { puuid },
+    });
+};
+
 export const create = async (data: PlayerData) => {
     return await prisma.player.create({
         data,

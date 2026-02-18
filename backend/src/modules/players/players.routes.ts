@@ -10,12 +10,14 @@ import {
     generateInviteCode,
     updatePlayer,
     deletePlayer,
+    getPlayerByPuuid,
 } from "./players.controller";
 
 const router = Router();
 
 router.get("/", getPlayers);
 router.get("/:id", getPlayerById);
+router.get("/puuid/:puuid", getPlayerByPuuid);
 router.post("/", authenticateToken, requireAdmin(), createPlayer);
 router.post(
     "/:id/invite-code",

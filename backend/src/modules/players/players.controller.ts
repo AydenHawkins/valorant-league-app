@@ -34,6 +34,25 @@ export const getPlayerById = async (
     }
 };
 
+// GET /players/puuid/:puuid - Retrieve a player by PUUID
+export const getPlayerByPuuid = async (
+    req: Request,
+    res: Response,
+): Promise<void> => {
+    const { puuid } = req.params;
+    try {
+        const player = await playersService.getPlayerByPuuid(puuid);
+        if (!player) {
+            res.status(404).json({ error: "Player not found" });
+            return;
+        }
+        res.status(200).json(player);
+    } catch (error) {
+        console.error("Error fetching player:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 // POST /players - Create a new player
 export const createPlayer = async (
     req: Request,
@@ -62,8 +81,13 @@ export const generateInviteCode = async (
         }
         res.status(200).json({ inviteCode });
     } catch (error) {
-        if (error instanceof Error && error.message === "PLAYER_ALREADY_LINKED") {
-            res.status(409).json({ error: "Player is already linked to a user account" });
+        if (
+            error instanceof Error &&
+            error.message === "PLAYER_ALREADY_LINKED"
+        ) {
+            res.status(409).json({
+                error: "Player is already linked to a user account",
+            });
             return;
         }
         console.error("Error generating invite code:", error);

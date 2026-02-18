@@ -15,6 +15,10 @@ export const getPlayerById = async (id: string) => {
     return await playersRepository.findById(id);
 };
 
+export const getPlayerByPuuid = async (puuid: string) => {
+    return await playersRepository.findByPuuid(puuid);
+};
+
 export const createPlayer = async (data: PlayerInput) => {
     const { name, tag, puuid } = data;
     return await playersRepository.create({ name, tag, puuid });
