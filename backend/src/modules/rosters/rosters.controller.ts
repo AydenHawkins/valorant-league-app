@@ -8,7 +8,7 @@ export const getRosters = async (
 ): Promise<void> => {
     try {
         const rosters = await rostersService.getAllRosters();
-        res.json(rosters);
+        res.status(200).json(rosters);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch rosters" });
@@ -23,11 +23,11 @@ export const getRosterById = async (
     const { id } = req.params;
     try {
         const roster = await rostersService.getRosterById(id);
-        if (roster) {
-            res.json(roster);
-        } else {
+        if (!roster) {
             res.status(404).json({ error: "Roster not found" });
+            return;
         }
+        res.status(200).json(roster);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch roster" });
@@ -48,7 +48,7 @@ export const createRoster = async (
     }
 };
 
-// PUT /rosters/:id - Update a roster by ID
+// PATCH /rosters/:id - Update a roster by ID
 export const updateRoster = async (
     req: Request,
     res: Response
@@ -56,7 +56,7 @@ export const updateRoster = async (
     const { id } = req.params;
     try {
         const roster = await rostersService.updateRoster(id, req.body);
-        res.json(roster);
+        res.status(200).json(roster);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to update roster" });

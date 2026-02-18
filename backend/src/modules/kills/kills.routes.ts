@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
     getKills,
     getKillById,
@@ -11,8 +12,8 @@ const router = Router();
 
 router.get("/", getKills);
 router.get("/:id", getKillById);
-router.post("/", createKill);
-router.put("/:id", updateKill);
-router.delete("/:id", deleteKill);
+router.post("/", authenticateToken, requireAdmin(), createKill);
+router.patch("/:id", authenticateToken, requireAdmin(), updateKill);
+router.delete("/:id", authenticateToken, requireAdmin(), deleteKill);
 
 export default router;

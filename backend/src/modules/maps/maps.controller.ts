@@ -5,7 +5,7 @@ import * as mapsService from "./maps.service";
 export const getMaps = async (_req: Request, res: Response): Promise<void> => {
     try {
         const maps = await mapsService.getAllMaps();
-        res.json(maps);
+        res.status(200).json(maps);
     } catch (error) {
         console.error("Error retrieving maps:", error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -24,7 +24,7 @@ export const getMapById = async (
             res.status(404).json({ error: "Map not found" });
             return;
         }
-        res.json(map);
+        res.status(200).json(map);
     } catch (error) {
         console.error("Error retrieving map:", error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -53,7 +53,7 @@ export const updateMap = async (
     const { id } = req.params;
     try {
         const updatedMap = await mapsService.updateMap(id, req.body);
-        res.json(updatedMap);
+        res.status(200).json(updatedMap);
     } catch (error) {
         console.error("Error updating map:", error);
         res.status(500).json({ error: "Internal Server Error" });

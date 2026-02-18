@@ -8,9 +8,9 @@ export const getSeasons = async (
 ): Promise<void> => {
     try {
         const seasons = await seasonsService.getAllSeasons();
-        res.json(seasons);
+        res.status(200).json(seasons);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to fetch seasons" });
     }
 };
@@ -23,13 +23,13 @@ export const getSeasonById = async (
     const { id } = req.params;
     try {
         const season = await seasonsService.getSeasonById(id);
-        if (season) {
-            res.json(season);
-        } else {
+        if (!season) {
             res.status(404).json({ error: "Season not found" });
+            return;
         }
+        res.status(200).json(season);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to fetch season" });
     }
 };
@@ -42,9 +42,9 @@ export const getSeasonsForLeague = async (
     const { leagueId } = req.params;
     try {
         const seasons = await seasonsService.getSeasonsForLeague(leagueId);
-        res.json(seasons);
+        res.status(200).json(seasons);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to fetch seasons for league" });
     }
 };
@@ -59,12 +59,12 @@ export const createSeason = async (
         const newSeason = await seasonsService.createSeason(leagueId, seasonData);
         res.status(201).json(newSeason);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to create season" });
     }
 };
 
-// PUT /seasons/:id - Update an existing season
+// PATCH /seasons/:id - Update an existing season
 export const updateSeason = async (
     req: Request,
     res: Response
@@ -72,9 +72,9 @@ export const updateSeason = async (
     const { id } = req.params;
     try {
         const updatedSeason = await seasonsService.updateSeason(id, req.body);
-        res.json(updatedSeason);
+        res.status(200).json(updatedSeason);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to update season" });
     }
 };
@@ -89,7 +89,7 @@ export const deleteSeason = async (
         await seasonsService.deleteSeason(id);
         res.status(204).end();
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to delete season" });
     }
 };
@@ -107,7 +107,7 @@ export const createSeasonForLeague = async (
         );
         res.status(201).json(newSeason);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to create season for league" });
     }
 };

@@ -23,11 +23,11 @@ export const getDefuseById = async (
     const { id } = req.params;
     try {
         const defuse = await defusesService.getDefuseById(id);
-        if (defuse) {
-            res.status(200).json(defuse);
-        } else {
+        if (!defuse) {
             res.status(404).json({ error: "Defuse not found" });
+            return;
         }
+        res.status(200).json(defuse);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to retrieve defuse" });
@@ -48,7 +48,7 @@ export const createDefuse = async (
     }
 };
 
-// PUT /defuses/:id - Update an existing defuse
+// PATCH /defuses/:id - Update an existing defuse
 export const updateDefuse = async (
     req: Request,
     res: Response

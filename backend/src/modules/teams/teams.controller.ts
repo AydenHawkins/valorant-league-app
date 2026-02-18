@@ -8,7 +8,7 @@ export const getTeams = async (
 ): Promise<void> => {
     try {
         const teams = await teamsService.getAllTeams();
-        res.json(teams);
+        res.status(200).json(teams);
     } catch (error) {
         console.error("Error fetching teams:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -23,11 +23,11 @@ export const getTeamById = async (
     const { id } = req.params;
     try {
         const team = await teamsService.getTeamById(id);
-        if (team) {
-            res.json(team);
-        } else {
+        if (!team) {
             res.status(404).json({ error: "Team not found" });
+            return;
         }
+        res.status(200).json(team);
     } catch (error) {
         console.error("Error fetching team:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -48,7 +48,7 @@ export const createTeam = async (
     }
 };
 
-// PUT /teams/:id - Update an existing team
+// PATCH /teams/:id - Update an existing team
 export const updateTeam = async (
     req: Request,
     res: Response
@@ -56,7 +56,7 @@ export const updateTeam = async (
     const { id } = req.params;
     try {
         const updatedTeam = await teamsService.updateTeam(id, req.body);
-        res.json(updatedTeam);
+        res.status(200).json(updatedTeam);
     } catch (error) {
         console.error("Error updating team:", error);
         res.status(500).json({ error: "Internal server error" });

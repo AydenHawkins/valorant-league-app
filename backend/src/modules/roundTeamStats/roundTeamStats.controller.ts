@@ -8,7 +8,7 @@ export const getRoundTeamStats = async (
 ): Promise<void> => {
     try {
         const roundTeamStats = await roundTeamStatsService.getAllRoundTeamStats();
-        res.json(roundTeamStats);
+        res.status(200).json(roundTeamStats);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch round team stats" });
@@ -27,7 +27,7 @@ export const getRoundTeamStatById = async (
             res.status(404).json({ error: "Round team stat not found" });
             return;
         }
-        res.json(roundTeamStat);
+        res.status(200).json(roundTeamStat);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch round team stat" });
@@ -50,7 +50,7 @@ export const createRoundTeamStat = async (
     }
 };
 
-// PUT /roundTeamStats/:id - Update an existing round team stat
+// PATCH /roundTeamStats/:id - Update an existing round team stat
 export const updateRoundTeamStat = async (
     req: Request,
     res: Response
@@ -59,7 +59,7 @@ export const updateRoundTeamStat = async (
     try {
         const updatedRoundTeamStat =
             await roundTeamStatsService.updateRoundTeamStat(id, req.body);
-        res.json(updatedRoundTeamStat);
+        res.status(200).json(updatedRoundTeamStat);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to update round team stat" });

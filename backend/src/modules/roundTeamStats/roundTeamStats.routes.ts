@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
     getRoundTeamStats,
     getRoundTeamStatById,
@@ -11,8 +12,8 @@ const router = Router();
 
 router.get("/", getRoundTeamStats);
 router.get("/:id", getRoundTeamStatById);
-router.post("/", createRoundTeamStat);
-router.put("/:id", updateRoundTeamStat);
-router.delete("/:id", deleteRoundTeamStat);
+router.post("/", authenticateToken, requireAdmin(), createRoundTeamStat);
+router.patch("/:id", authenticateToken, requireAdmin(), updateRoundTeamStat);
+router.delete("/:id", authenticateToken, requireAdmin(), deleteRoundTeamStat);
 
 export default router;

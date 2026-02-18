@@ -10,7 +10,7 @@ export const getRounds = async (
         const rounds = await roundsService.getAllRounds();
         res.status(200).json(rounds);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to retrieve rounds" });
     }
 };
@@ -23,13 +23,13 @@ export const getRoundById = async (
     const { id } = req.params;
     try {
         const round = await roundsService.getRoundById(id);
-        if (round) {
-            res.status(200).json(round);
-        } else {
+        if (!round) {
             res.status(404).json({ error: "Round not found" });
+            return;
         }
+        res.status(200).json(round);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to retrieve round" });
     }
 };
@@ -43,12 +43,12 @@ export const createRound = async (
         const newRound = await roundsService.createRound(req.body);
         res.status(201).json(newRound);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to create round" });
     }
 };
 
-// PUT /rounds/:id - Update a round by ID
+// PATCH /rounds/:id - Update a round by ID
 export const updateRound = async (
     req: Request,
     res: Response
@@ -58,7 +58,7 @@ export const updateRound = async (
         const updatedRound = await roundsService.updateRound(id, req.body);
         res.status(200).json(updatedRound);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to update round" });
     }
 };
@@ -73,7 +73,7 @@ export const deleteRound = async (
         await roundsService.deleteRound(id);
         res.status(204).send();
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: "Failed to delete round" });
     }
 };

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
     getSubstitutions,
     getSubstitutionById,
@@ -11,8 +12,8 @@ const router = Router();
 
 router.get("/", getSubstitutions);
 router.get("/:id", getSubstitutionById);
-router.post("/", createSubstitution);
-router.put("/:id", updateSubstitution);
-router.delete("/:id", deleteSubstitution);
+router.post("/", authenticateToken, requireAdmin(), createSubstitution);
+router.patch("/:id", authenticateToken, requireAdmin(), updateSubstitution);
+router.delete("/:id", authenticateToken, requireAdmin(), deleteSubstitution);
 
 export default router;

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authenticateToken } from "../../middleware/auth.middleware";
 import {
     getTeams,
     getTeamById,
@@ -11,8 +12,8 @@ const router = Router();
 
 router.get("/", getTeams);
 router.get("/:id", getTeamById);
-router.post("/", createTeam);
-router.put("/:id", updateTeam);
-router.delete("/:id", deleteTeam);
+router.post("/", authenticateToken, createTeam);
+router.patch("/:id", authenticateToken, updateTeam);
+router.delete("/:id", authenticateToken, deleteTeam);
 
 export default router;

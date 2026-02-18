@@ -8,7 +8,7 @@ export const getPlayers = async (
 ): Promise<void> => {
     try {
         const players = await playersService.getAllPlayers();
-        res.json(players);
+        res.status(200).json(players);
     } catch (error) {
         console.error("Error fetching players:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -23,11 +23,11 @@ export const getPlayerById = async (
     const { id } = req.params;
     try {
         const player = await playersService.getPlayerById(id);
-        if (player) {
-            res.json(player);
-        } else {
+        if (!player) {
             res.status(404).json({ error: "Player not found" });
+            return;
         }
+        res.status(200).json(player);
     } catch (error) {
         console.error("Error fetching player:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -48,7 +48,7 @@ export const createPlayer = async (
     }
 };
 
-// PUT /players/:id - Update an existing player
+// PATCH /players/:id - Update an existing player
 export const updatePlayer = async (
     req: Request,
     res: Response
@@ -56,7 +56,7 @@ export const updatePlayer = async (
     const { id } = req.params;
     try {
         const updatedPlayer = await playersService.updatePlayer(id, req.body);
-        res.json(updatedPlayer);
+        res.status(200).json(updatedPlayer);
     } catch (error) {
         console.error("Error updating player:", error);
         res.status(500).json({ error: "Internal server error" });

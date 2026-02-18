@@ -8,7 +8,7 @@ export const getSeries = async (
 ): Promise<void> => {
     try {
         const series = await seriesService.getAllSeries();
-        res.json(series);
+        res.status(200).json(series);
     } catch (error) {
         console.error("Error fetching series:", error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -23,11 +23,11 @@ export const getSeriesById = async (
     const { id } = req.params;
     try {
         const series = await seriesService.getSeriesById(id);
-        if (series) {
-            res.json(series);
-        } else {
+        if (!series) {
             res.status(404).json({ error: "Series not found" });
+            return;
         }
+        res.status(200).json(series);
     } catch (error) {
         console.error("Error fetching series:", error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -48,7 +48,7 @@ export const createSeries = async (
     }
 };
 
-// PUT /series/:id - Update an existing series
+// PATCH /series/:id - Update an existing series
 export const updateSeries = async (
     req: Request,
     res: Response
@@ -56,7 +56,7 @@ export const updateSeries = async (
     const { id } = req.params;
     try {
         const updatedSeries = await seriesService.updateSeries(id, req.body);
-        res.json(updatedSeries);
+        res.status(200).json(updatedSeries);
     } catch (error) {
         console.error("Error updating series:", error);
         res.status(500).json({ error: "Internal Server Error" });
