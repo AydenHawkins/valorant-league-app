@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import * as playersRepository from "./players.repository";
+import { isValidPUUID } from "../../utils/validators";
 
 interface PlayerInput {
     name: string;
@@ -16,11 +17,24 @@ export const getPlayerById = async (id: string) => {
 };
 
 export const getPlayerByPuuid = async (puuid: string) => {
+    if (!isValidPUUID(puuid)) {
+        throw new Error("Invalid PUUID format");
+    }
+
     return await playersRepository.findByPuuid(puuid);
 };
 
 export const createPlayer = async (data: PlayerInput) => {
     const { name, tag, puuid } = data;
+
+    if (!isValidPUUID(puuid)) {
+        throw new Error("Invalid PUUID format");
+    }
+
+    if (await playersRepository.findByPuuid(puuid)) {
+        throw new Error("PUUID_ALREADY_EXISTS");
+    }
+
     return await playersRepository.create({ name, tag, puuid });
 };
 
@@ -45,6 +59,11 @@ export const generateInviteCode = async (
 
 export const updatePlayer = async (id: string, data: Partial<PlayerInput>) => {
     const { name, tag, puuid } = data;
+
+    if (puuid && !isValidPUUID(puuid)) {
+        throw new Error("Invalid PUUID format");
+    }
+
     return await playersRepository.update(id, { name, tag, puuid });
 };
 
