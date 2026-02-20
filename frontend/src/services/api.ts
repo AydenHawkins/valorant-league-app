@@ -1,46 +1,46 @@
 const API_BASE_URL =
     import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 
-interface ApiResponse<T = any> {
+interface ApiResponse {
     error?: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export const api = {
-    async post<T = any>(endpoint: string, data: any): Promise<T> {
+    async post<T>(endpoint: string, data: unknown): Promise<T> {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: "include", // Include HTTP-only cookies
+            credentials: "include",
             body: JSON.stringify(data),
         });
 
-        const responseData: ApiResponse<T> = await response.json();
+        const responseData = (await response.json()) as ApiResponse;
 
         if (!response.ok) {
             throw new Error(responseData.error || "An error occurred");
         }
 
-        return responseData as T;
+        return responseData as unknown as T;
     },
 
-    async get<T = any>(endpoint: string): Promise<T> {
+    async get<T>(endpoint: string): Promise<T> {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: "include", // Include HTTP-only cookies
+            credentials: "include",
         });
 
-        const responseData: ApiResponse<T> = await response.json();
+        const responseData = (await response.json()) as ApiResponse;
 
         if (!response.ok) {
             throw new Error(responseData.error || "An error occurred");
         }
 
-        return responseData as T;
+        return responseData as unknown as T;
     },
 };
