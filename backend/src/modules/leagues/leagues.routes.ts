@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
-    getLeagues,
-    getLeagueById,
-    createLeague,
-    updateLeague,
-    deleteLeague,
+  authenticateToken,
+  requireAdmin,
+} from "../../middleware/auth.middleware";
+import {
+  getLeagues,
+  getLeagueById,
+  createLeague,
+  updateLeague,
+  deleteLeague,
 } from "./leagues.controller";
 
 const router = Router();

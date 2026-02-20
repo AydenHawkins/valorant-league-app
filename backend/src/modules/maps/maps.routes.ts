@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
-    getMaps,
-    getMapById,
-    createMap,
-    updateMap,
-    deleteMap,
+  authenticateToken,
+  requireAdmin,
+} from "../../middleware/auth.middleware";
+import {
+  getMaps,
+  getMapById,
+  createMap,
+  updateMap,
+  deleteMap,
 } from "./maps.controller";
 
 const router = Router();

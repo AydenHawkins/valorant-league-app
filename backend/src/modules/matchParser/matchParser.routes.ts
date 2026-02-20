@@ -1,8 +1,8 @@
 import { Router } from "express";
 import {
-    previewMatchData,
-    importMatchData,
-    validateMatchData,
+  previewMatchData,
+  importMatchData,
+  validateMatchData,
 } from "./matchParser.controller";
 
 const router = Router();

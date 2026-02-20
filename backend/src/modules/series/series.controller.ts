@@ -3,77 +3,77 @@ import * as seriesService from "./series.service";
 
 // GET /series - Retrieve all series
 export const getSeries = async (
-    _req: Request,
-    res: Response
+  _req: Request,
+  res: Response,
 ): Promise<void> => {
-    try {
-        const series = await seriesService.getAllSeries();
-        res.status(200).json(series);
-    } catch (error) {
-        console.error("Error fetching series:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+  try {
+    const series = await seriesService.getAllSeries();
+    res.status(200).json(series);
+  } catch (error) {
+    console.error("Error fetching series:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 // GET /series/:id - Retrieve a series by ID
 export const getSeriesById = async (
-    req: Request,
-    res: Response
+  req: Request,
+  res: Response,
 ): Promise<void> => {
-    const { id } = req.params;
-    try {
-        const series = await seriesService.getSeriesById(id);
-        if (!series) {
-            res.status(404).json({ error: "Series not found" });
-            return;
-        }
-        res.status(200).json(series);
-    } catch (error) {
-        console.error("Error fetching series:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+  const { id } = req.params;
+  try {
+    const series = await seriesService.getSeriesById(id);
+    if (!series) {
+      res.status(404).json({ error: "Series not found" });
+      return;
     }
+    res.status(200).json(series);
+  } catch (error) {
+    console.error("Error fetching series:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 // POST /series - Create a new series
 export const createSeries = async (
-    req: Request,
-    res: Response
+  req: Request,
+  res: Response,
 ): Promise<void> => {
-    try {
-        const newSeries = await seriesService.createSeries(req.body);
-        res.status(201).json(newSeries);
-    } catch (error) {
-        console.error("Error creating series:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+  try {
+    const newSeries = await seriesService.createSeries(req.body);
+    res.status(201).json(newSeries);
+  } catch (error) {
+    console.error("Error creating series:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 // PATCH /series/:id - Update an existing series
 export const updateSeries = async (
-    req: Request,
-    res: Response
+  req: Request,
+  res: Response,
 ): Promise<void> => {
-    const { id } = req.params;
-    try {
-        const updatedSeries = await seriesService.updateSeries(id, req.body);
-        res.status(200).json(updatedSeries);
-    } catch (error) {
-        console.error("Error updating series:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+  const { id } = req.params;
+  try {
+    const updatedSeries = await seriesService.updateSeries(id, req.body);
+    res.status(200).json(updatedSeries);
+  } catch (error) {
+    console.error("Error updating series:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 // DELETE /series/:id - Delete a series
 export const deleteSeries = async (
-    req: Request,
-    res: Response
+  req: Request,
+  res: Response,
 ): Promise<void> => {
-    const { id } = req.params;
-    try {
-        await seriesService.deleteSeries(id);
-        res.status(204).end();
-    } catch (error) {
-        console.error("Error deleting series:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+  const { id } = req.params;
+  try {
+    await seriesService.deleteSeries(id);
+    res.status(204).end();
+  } catch (error) {
+    console.error("Error deleting series:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };

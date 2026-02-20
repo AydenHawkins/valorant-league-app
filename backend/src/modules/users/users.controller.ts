@@ -6,26 +6,23 @@ import * as usersService from "./users.service";
  * GET /api/users/:id
  */
 
-export const getUser = async (
-    req: Request,
-    res: Response,
-): Promise<void> => {
-    try {
-        const userId = parseInt(req.params.id);
-        const isOwnerOrAdmin =
-            req.user?.userId === userId || req.user?.role === "ADMIN";
-        const user = await usersService.getUserById(userId, isOwnerOrAdmin);
+export const getUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = parseInt(req.params.id);
+    const isOwnerOrAdmin =
+      req.user?.userId === userId || req.user?.role === "ADMIN";
+    const user = await usersService.getUserById(userId, isOwnerOrAdmin);
 
-        res.status(200).json(user);
-    } catch (error) {
-        if (error instanceof Error) {
-            if (error.message === "User not found") {
-                res.status(404).json({ error: error.message });
-                return;
-            }
-            res.status(500).json({ error: error.message });
-        }
+    res.status(200).json(user);
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "User not found") {
+        res.status(404).json({ error: error.message });
+        return;
+      }
+      res.status(500).json({ error: error.message });
     }
+  }
 };
 
 /**
@@ -35,35 +32,35 @@ export const getUser = async (
  */
 
 export const updateUser = async (
-    req: Request,
-    res: Response,
+  req: Request,
+  res: Response,
 ): Promise<void> => {
-    try {
-        const userId = parseInt(req.params.id);
-        const { username, email } = req.body;
+  try {
+    const userId = parseInt(req.params.id);
+    const { username, email } = req.body;
 
-        if (req.user!.userId !== userId && req.user!.role !== "ADMIN") {
-            res.status(403).json({
-                error: "Forbidden: You can only update your own profile",
-            });
-            return;
-        }
-
-        const updatedUser = await usersService.updateUser(userId, {
-            username,
-            email,
-        });
-
-        res.status(200).json(updatedUser);
-    } catch (error) {
-        if (error instanceof Error) {
-            if (error.message === "User not found") {
-                res.status(404).json({ error: error.message });
-                return;
-            }
-            res.status(500).json({ error: error.message });
-        }
+    if (req.user!.userId !== userId && req.user!.role !== "ADMIN") {
+      res.status(403).json({
+        error: "Forbidden: You can only update your own profile",
+      });
+      return;
     }
+
+    const updatedUser = await usersService.updateUser(userId, {
+      username,
+      email,
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "User not found") {
+        res.status(404).json({ error: error.message });
+        return;
+      }
+      res.status(500).json({ error: error.message });
+    }
+  }
 };
 
 /**
@@ -73,31 +70,31 @@ export const updateUser = async (
  */
 
 export const deleteUser = async (
-    req: Request,
-    res: Response,
+  req: Request,
+  res: Response,
 ): Promise<void> => {
-    try {
-        const userId = parseInt(req.params.id);
+  try {
+    const userId = parseInt(req.params.id);
 
-        if (req.user!.userId !== userId && req.user!.role !== "ADMIN") {
-            res.status(403).json({
-                error: "Forbidden: You can only delete your own account",
-            });
-            return;
-        }
-
-        await usersService.deleteUser(userId);
-
-        res.status(204).send();
-    } catch (error) {
-        if (error instanceof Error) {
-            if (error.message === "User not found") {
-                res.status(404).json({ error: error.message });
-                return;
-            }
-            res.status(500).json({ error: error.message });
-        }
+    if (req.user!.userId !== userId && req.user!.role !== "ADMIN") {
+      res.status(403).json({
+        error: "Forbidden: You can only delete your own account",
+      });
+      return;
     }
+
+    await usersService.deleteUser(userId);
+
+    res.status(204).send();
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "User not found") {
+        res.status(404).json({ error: error.message });
+        return;
+      }
+      res.status(500).json({ error: error.message });
+    }
+  }
 };
 
 /**
@@ -106,37 +103,37 @@ export const deleteUser = async (
  */
 
 export const linkPlayer = async (
-    req: Request,
-    res: Response,
+  req: Request,
+  res: Response,
 ): Promise<void> => {
-    try {
-        const { inviteCode } = req.body;
+  try {
+    const { inviteCode } = req.body;
 
-        if (!inviteCode) {
-            res.status(400).json({ error: "Invite code is required" });
-            return;
-        }
-
-        const updatedUser = await usersService.linkWithInviteCode(
-            req.user!.userId,
-            inviteCode,
-        );
-
-        res.status(200).json(updatedUser);
-    } catch (error) {
-        if (error instanceof Error) {
-            if (error.message === "Invalid invite code") {
-                res.status(404).json({ error: error.message });
-                return;
-            }
-            if (
-                error.message === "User is already linked to a player" ||
-                error.message === "Player is already linked to an account"
-            ) {
-                res.status(409).json({ error: error.message });
-                return;
-            }
-            res.status(500).json({ error: error.message });
-        }
+    if (!inviteCode) {
+      res.status(400).json({ error: "Invite code is required" });
+      return;
     }
+
+    const updatedUser = await usersService.linkWithInviteCode(
+      req.user!.userId,
+      inviteCode,
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "Invalid invite code") {
+        res.status(404).json({ error: error.message });
+        return;
+      }
+      if (
+        error.message === "User is already linked to a player" ||
+        error.message === "Player is already linked to an account"
+      ) {
+        res.status(409).json({ error: error.message });
+        return;
+      }
+      res.status(500).json({ error: error.message });
+    }
+  }
 };

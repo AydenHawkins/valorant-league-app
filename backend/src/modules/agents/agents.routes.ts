@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
-    getAgents,
-    getAgentById,
-    createAgent,
-    updateAgent,
-    deleteAgent,
+  authenticateToken,
+  requireAdmin,
+} from "../../middleware/auth.middleware";
+import {
+  getAgents,
+  getAgentById,
+  createAgent,
+  updateAgent,
+  deleteAgent,
 } from "./agents.controller";
 
 const router = Router();

@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
-    getRoundPlayerStats,
-    getRoundPlayerStatById,
-    createRoundPlayerStat,
-    updateRoundPlayerStat,
-    deleteRoundPlayerStat,
+  authenticateToken,
+  requireAdmin,
+} from "../../middleware/auth.middleware";
+import {
+  getRoundPlayerStats,
+  getRoundPlayerStatById,
+  createRoundPlayerStat,
+  updateRoundPlayerStat,
+  deleteRoundPlayerStat,
 } from "./roundPlayerStats.controller";
 
 const router = Router();

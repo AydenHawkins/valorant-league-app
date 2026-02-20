@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { authenticateToken, requireAdmin } from "../../middleware/auth.middleware";
 import {
-    getSubstitutions,
-    getSubstitutionById,
-    createSubstitution,
-    updateSubstitution,
-    deleteSubstitution,
+  authenticateToken,
+  requireAdmin,
+} from "../../middleware/auth.middleware";
+import {
+  getSubstitutions,
+  getSubstitutionById,
+  createSubstitution,
+  updateSubstitution,
+  deleteSubstitution,
 } from "./substitutions.controller";
 
 const router = Router();

@@ -1,12 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import AuthLayout from "../layouts/AuthLayout";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 import Home from "../pages/public/Home";
 // import Leagues from "../pages/public/Leagues";
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
-
+import Dashboard from "../pages/Dashboard.tsx";
 export default function AppRoutes() {
     return (
         <Routes>
@@ -16,10 +17,34 @@ export default function AppRoutes() {
                 {/* <Route path="/leagues" element={<Leagues />} /> */}
             </Route>
 
-            {/* Auth pages */}
+            {/* Protected pages (require authentication) */}
+            <Route
+                path="/dashboard"
+                element={
+                    <ProtectedRoute>
+                        <Dashboard />
+                    </ProtectedRoute>
+                }
+            />
+
+            {/* Auth pages (redirect if already authenticated) */}
             <Route element={<AuthLayout />}>
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
+                <Route
+                    path="/login"
+                    element={
+                        <ProtectedRoute requireAuth={false}>
+                            <Login />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/signup"
+                    element={
+                        <ProtectedRoute requireAuth={false}>
+                            <Signup />
+                        </ProtectedRoute>
+                    }
+                />
             </Route>
         </Routes>
     );
