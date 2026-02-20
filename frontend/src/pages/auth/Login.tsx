@@ -1,15 +1,20 @@
 import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { authService } from "../../services/auth";
+import { useAuth } from "../../contexts";
 
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+    const { login, isLoading } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Get the page user was trying to access before login
+    const from = location.state?.from?.pathname || "/dashboard";
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -20,16 +25,15 @@ export default function Login() {
             return;
         }
 
-        setIsLoading(true);
-
         try {
-            await authService.login(username, password);
-            navigate("/");
+            await login(username, password);
+            navigate(from, { replace: true });
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : "Failed to login. Try again.";
+            const errorMessage =
+                err instanceof Error
+                    ? err.message
+                    : "Failed to login. Try again.";
             setError(errorMessage);
-        } finally {
-            setIsLoading(false);
         }
     }
 
@@ -69,19 +73,19 @@ export default function Login() {
 
                     {error && <p className="text-[#FF4BD5] text-sm">{error}</p>}
 
-                    <Button type="submit" disabled={isLoading}>
+                    <Button type="submit" disabled={isLoading} className="w-full">
                         {isLoading ? "Logging in..." : "Login"}
                     </Button>
                 </form>
 
                 <p className="text-center text-sm text-[#89E3FF] mt-4">
                     Don't have an account?{" "}
-                    <a
-                        href="/signup"
+                    <Link
+                        to="/signup"
                         className="text-[#25C8FF] hover:text-[#33E3CC]"
                     >
                         Sign up
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>

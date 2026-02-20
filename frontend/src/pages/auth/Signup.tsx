@@ -1,8 +1,8 @@
 import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { authService } from "../../services/auth";
+import { useAuth } from "../../contexts";
 
 export default function Signup() {
     const [username, setUsername] = useState("");
@@ -10,7 +10,7 @@ export default function Signup() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+    const { signup, isLoading } = useAuth();
     const navigate = useNavigate();
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -27,16 +27,15 @@ export default function Signup() {
             return;
         }
 
-        setIsLoading(true);
-
         try {
-            await authService.signup(username, email, password);
-            navigate("/login");
+            await signup(username, email, password);
+            navigate("/dashboard");
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : "Failed to create account.";
+            const errorMessage =
+                err instanceof Error
+                    ? err.message
+                    : "Failed to create account.";
             setError(errorMessage);
-        } finally {
-            setIsLoading(false);
         }
     }
 
@@ -91,19 +90,19 @@ export default function Signup() {
 
                     {error && <p className="text-[#FF4BD5] text-sm">{error}</p>}
 
-                    <Button type="submit" disabled={isLoading}>
+                    <Button type="submit" disabled={isLoading} className="w-full">
                         {isLoading ? "Creating Account..." : "Sign Up"}
                     </Button>
                 </form>
 
                 <p className="text-center text-sm text-[#89E3FF] mt-4">
                     Already have an account?{" "}
-                    <a
-                        href="/login"
+                    <Link
+                        to="/login"
                         className="text-[#25C8FF] hover:text-[#33E3CC]"
                     >
                         Login
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>
