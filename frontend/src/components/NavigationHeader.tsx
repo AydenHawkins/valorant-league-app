@@ -21,7 +21,7 @@ export default function NavigationHeader() {
                     <img
                         src={logo}
                         alt="BVL Logo"
-                        className="h-8 w-8 object-contain"
+                        className="h-15 w-15 object-contain"
                     />
                     <span className="text-lg font-bold text-white tracking-wide">
                         Better Vibes League

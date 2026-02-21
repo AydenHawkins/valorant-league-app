@@ -8,6 +8,7 @@ import Home from "../pages/public/Home";
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
 import Dashboard from "../pages/Dashboard.tsx";
+import Profile from "../pages/public/Profile.tsx";
 export default function AppRoutes() {
     return (
         <Routes>
@@ -15,6 +16,7 @@ export default function AppRoutes() {
             <Route element={<PublicLayout />}>
                 <Route path="/" element={<Home />} />
                 {/* <Route path="/leagues" element={<Leagues />} /> */}
+                <Route path="/profile" element={<Profile />} />
             </Route>
 
             {/* Protected pages (require authentication) */}
