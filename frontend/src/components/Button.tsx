@@ -6,7 +6,7 @@ interface ButtonProps {
     onClick?: MouseEventHandler<HTMLButtonElement>;
     disabled?: boolean;
     className?: string;
-    variant?: "primary" | "danger";
+    variant?: "primary" | "danger" | "outline";
 }
 
 export default function Button({
@@ -20,7 +20,9 @@ export default function Button({
     const variantClass =
         variant === "danger"
             ? "bg-red-600 hover:bg-red-700"
-            : "bg-[#25C8FF] hover:bg-[#33E3CC] shadow-[0_0_10px_#25C8FF] hover:shadow-[0_0_15px_#33E3CC]";
+            : variant === "outline"
+              ? "bg-[#0D0A1A] border border-[#2D1B69] text-[#A5B4FC] hover:border-[#8B5CF6] hover:text-white"
+              : "bg-[#60A5FA] hover:bg-[#3B82F6]";
 
     return (
         <button
