@@ -1,14 +1,13 @@
 import { api } from './api';
-
-interface User {
-    id: number;
-    username: string;
-    email: string;
-}
+import { User } from '../contexts/AuthContextValue';
 
 interface AuthResponse {
     user: User;
     message?: string;
+}
+
+interface LinkResponse {
+    user: User;
 }
 
 export const authService = {
@@ -58,6 +57,16 @@ export const authService = {
     getUser(): User | null {
         const user = localStorage.getItem('user');
         return user ? JSON.parse(user) : null;
+    },
+
+    async linkPlayer(inviteCode: string): Promise<LinkResponse> {
+        const response = await api.post<LinkResponse>('/users/link', { inviteCode });
+
+        if (response.user) {
+            localStorage.setItem('user', JSON.stringify(response.user));
+        }
+
+        return response;
     },
 
     isAuthenticated(): boolean {
