@@ -19,6 +19,12 @@ export const api = {
 
         const responseData = (await response.json()) as ApiResponse;
 
+        if (response.status === 401) {
+            localStorage.removeItem("user");
+            window.location.href = "/login";
+            throw new Error("Session expired");
+        }
+
         if (!response.ok) {
             throw new Error(responseData.error || "An error occurred");
         }
@@ -36,6 +42,12 @@ export const api = {
         });
 
         const responseData = (await response.json()) as ApiResponse;
+
+        if (response.status === 401) {
+            localStorage.removeItem("user");
+            window.location.href = "/login";
+            throw new Error("Session expired");
+        }
 
         if (!response.ok) {
             throw new Error(responseData.error || "An error occurred");
