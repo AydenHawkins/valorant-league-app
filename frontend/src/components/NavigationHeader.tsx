@@ -97,15 +97,23 @@ export default function NavigationHeader() {
 
                                 {dropdownOpen && (
                                     <div className="absolute right-0 top-full mt-2 w-44 bg-[#130D35] border border-[#2D1B69] rounded-xl shadow-lg overflow-hidden z-50">
-                                        <Link
-                                            to={`/profile/${user?.username}`}
-                                            onClick={() =>
-                                                setDropdownOpen(false)
-                                            }
-                                            className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] transition-all"
-                                        >
-                                            View Profile
-                                        </Link>
+                                        {user?.player ? (
+                                            <Link
+                                                to={`/players/${user.player.id}`}
+                                                onClick={() => setDropdownOpen(false)}
+                                                className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] transition-all"
+                                            >
+                                                View Profile
+                                            </Link>
+                                        ) : (
+                                            <Link
+                                                to="/link"
+                                                onClick={() => setDropdownOpen(false)}
+                                                className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] transition-all"
+                                            >
+                                                Link Account
+                                            </Link>
+                                        )}
                                         <div className="border-t border-[#2D1B69]" />
                                         <button
                                             onClick={() => {
