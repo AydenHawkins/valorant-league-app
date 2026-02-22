@@ -3,6 +3,11 @@ import prisma from "../../utils/prisma";
 export const findUserByUsername = async (username: string) => {
   return await prisma.user.findUnique({
     where: { username },
+    include: {
+      player: {
+        select: { id: true, name: true, tag: true, puuid: true },
+      },
+    },
   });
 };
 
@@ -22,6 +27,9 @@ export const createUser = async (
       username: true,
       email: true,
       role: true,
+      player: {
+        select: { id: true, name: true, tag: true, puuid: true },
+      },
       createdAt: true,
       updatedAt: true,
     },

@@ -45,6 +45,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     };
 
+    const linkPlayer = async (inviteCode: string): Promise<void> => {
+        setIsLoading(true);
+        try {
+            const response = await authService.linkPlayer(inviteCode);
+            setUser(response.user);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const logout = async (): Promise<void> => {
         setIsLoading(true);
         try {
@@ -64,6 +74,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         login,
         signup,
         logout,
+        linkPlayer,
         isLoading,
         isInitializing,
         isAuthenticated: !!user,

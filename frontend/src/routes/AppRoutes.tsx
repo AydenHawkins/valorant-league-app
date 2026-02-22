@@ -8,6 +8,8 @@ import Home from "../pages/public/Home";
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
 import Dashboard from "../pages/Dashboard.tsx";
+import Profile from "../pages/public/Profile.tsx";
+import LinkAccount from "../pages/auth/LinkAccount.tsx";
 export default function AppRoutes() {
     return (
         <Routes>
@@ -15,6 +17,7 @@ export default function AppRoutes() {
             <Route element={<PublicLayout />}>
                 <Route path="/" element={<Home />} />
                 {/* <Route path="/leagues" element={<Leagues />} /> */}
+                <Route path="/profile/:username" element={<Profile />} />
             </Route>
 
             {/* Protected pages (require authentication) */}
@@ -23,6 +26,14 @@ export default function AppRoutes() {
                 element={
                     <ProtectedRoute>
                         <Dashboard />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/link"
+                element={
+                    <ProtectedRoute>
+                        <LinkAccount />
                     </ProtectedRoute>
                 }
             />
