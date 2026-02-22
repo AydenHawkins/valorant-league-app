@@ -16,7 +16,7 @@ export default function AppRoutes() {
             <Route element={<PublicLayout />}>
                 <Route path="/" element={<Home />} />
                 {/* <Route path="/leagues" element={<Leagues />} /> */}
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/:username" element={<Profile />} />
             </Route>
 
             {/* Protected pages (require authentication) */}

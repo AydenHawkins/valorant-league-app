@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts";
 import Button from "./Button";
 import logo from "../assets/bvlogo.png";
@@ -29,56 +29,58 @@ export default function NavigationHeader() {
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
-                    <Link
-                        to="/"
-                        className="text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] px-3 py-1.5 rounded-md transition-all"
-                    >
-                        Home
-                    </Link>
-                    <Link
-                        to="/teams"
-                        className="text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] px-3 py-1.5 rounded-md transition-all"
-                    >
-                        Teams
-                    </Link>
-                    <Link
-                        to="/players"
-                        className="text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] px-3 py-1.5 rounded-md transition-all"
-                    >
-                        Players
-                    </Link>
-                    <Link
-                        to="/matches"
-                        className="text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] px-3 py-1.5 rounded-md transition-all"
-                    >
-                        Matches
-                    </Link>
-                    <Link
-                        to="/leaderboard"
-                        className="text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] px-3 py-1.5 rounded-md transition-all"
-                    >
-                        Leaderboard
-                    </Link>
-                    <Link
-                        to="/stats"
-                        className="text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] px-3 py-1.5 rounded-md transition-all"
-                    >
-                        Stats
-                    </Link>
+                    {[
+                        { to: "/", label: "Home", end: true },
+                        { to: "/teams", label: "Teams" },
+                        { to: "/players", label: "Players" },
+                        { to: "/matches", label: "Matches" },
+                        { to: "/leaderboard", label: "Leaderboard" },
+                        { to: "/stats", label: "Stats" },
+                    ].map(({ to, label, end }) => (
+                        <NavLink
+                            key={to}
+                            to={to}
+                            end={end}
+                            className={({ isActive }) =>
+                                `px-3 py-1.5 rounded-md transition-all ${
+                                    isActive
+                                        ? "text-white bg-white/[0.07]"
+                                        : "text-[#A5B4FC] hover:text-white hover:bg-white/[0.07]"
+                                }`
+                            }
+                        >
+                            {label}
+                        </NavLink>
+                    ))}
                 </nav>
 
                 <div className="flex items-center gap-3">
                     {isAuthenticated ? (
                         <>
-                            <Link
+                            <NavLink
                                 to="/dashboard"
-                                className="text-sm text-[#A5B4FC] hover:text-white hover:bg-white/[0.07] px-3 py-1.5 rounded-md transition-all"
+                                className={({ isActive }) =>
+                                    `text-sm px-3 py-1.5 rounded-md transition-all ${
+                                        isActive
+                                            ? "text-white bg-white/[0.07]"
+                                            : "text-[#A5B4FC] hover:text-white hover:bg-white/[0.07]"
+                                    }`
+                                }
                             >
                                 Dashboard
-                            </Link>
-                            <span className="text-sm text-gray-500">
+                            </NavLink>
+                            <NavLink
+                                to={`/profile/${user?.username}`}
+                                className={({ isActive }) =>
+                                    `text-sm px-3 py-1.5 rounded-md transition-all ${
+                                        isActive
+                                            ? "text-white bg-white/[0.07]"
+                                            : "text-gray-400 hover:text-white hover:bg-white/[0.07]"
+                                    }`
+                                }
+                            >
                                 {user?.username}
-                            </span>
+                            </NavLink>
                             <Button
                                 onClick={handleLogout}
                                 variant="danger"

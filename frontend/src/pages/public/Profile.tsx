@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // ─── Icons ───────────────────────────────────────────────────────────────────
 
@@ -265,6 +265,8 @@ const achievements = [
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Profile() {
+    const { username } = useParams<{ username: string }>();
+
     return (
         <div className="bg-[#0D0A1A] min-h-screen text-white py-8 px-4">
             <div className="max-w-5xl mx-auto space-y-6">
@@ -274,7 +276,7 @@ export default function Profile() {
                         Home
                     </Link>
                     <span>/</span>
-                    <span className="text-white">Tyson Profile</span>
+                    <span className="text-white">{username} Profile</span>
                 </nav>
 
                 {/* Profile Header */}
@@ -285,7 +287,7 @@ export default function Profile() {
 
                     <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-3 mb-2">
-                            <span className="text-3xl font-black">Tyson</span>
+                            <span className="text-3xl font-black">{username}</span>
                             <span className="text-gray-500 text-xl font-bold">
                                 #GOAT
                             </span>
