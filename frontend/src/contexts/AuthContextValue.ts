@@ -1,9 +1,17 @@
 import { createContext } from "react";
 
+export interface LinkedPlayer {
+    id: number;
+    name: string;
+    tag: string;
+    puuid: string;
+}
+
 export interface User {
     id: number;
     username: string;
     email: string;
+    player: LinkedPlayer | null;
 }
 
 export interface AuthContextType {
@@ -15,6 +23,7 @@ export interface AuthContextType {
         password: string,
     ) => Promise<void>;
     logout: () => Promise<void>;
+    linkPlayer: (inviteCode: string) => Promise<void>;
     isLoading: boolean;
     isInitializing: boolean;
     isAuthenticated: boolean;
