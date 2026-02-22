@@ -9,6 +9,7 @@ import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
 import Dashboard from "../pages/Dashboard.tsx";
 import Profile from "../pages/public/Profile.tsx";
+import LinkAccount from "../pages/auth/LinkAccount.tsx";
 export default function AppRoutes() {
     return (
         <Routes>
@@ -25,6 +26,14 @@ export default function AppRoutes() {
                 element={
                     <ProtectedRoute>
                         <Dashboard />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/link"
+                element={
+                    <ProtectedRoute>
+                        <LinkAccount />
                     </ProtectedRoute>
                 }
             />
