@@ -34,6 +34,8 @@ model User {
   @@index([username])
   @@index([email])
   @@index([role])
+  teamInvitations TeamInvitation[]
+  leagueRegistrations LeagueRegistration[]
 }
 
 //
@@ -114,6 +116,7 @@ model Season {
   @@unique([leagueId, name])
   @@index([startDate])
   @@index([leagueId])
+  leagueRegistrations LeagueRegistration[]
 }
 
 model Team {
@@ -136,6 +139,8 @@ model Team {
 
   @@index([name])
   @@index([ownerId])
+  teamInvitations TeamInvitation[]
+  leagueRegistrations LeagueRegistration[]
 }
 
 model Player {
@@ -168,6 +173,7 @@ model Player {
   @@index([puuid])
   @@index([name, tag])
   @@index([inviteCode])
+  teamInvitations TeamInvitation[]
 }
 
 //
@@ -540,6 +546,50 @@ model TeamRoster {
   @@index([playerId])
   @@index([seasonId])
   @@index([seasonId, isCaptain])
+}
+
+model TeamInvitation {
+  id     Int    @id @default(autoincrement())
+  teamId Int
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  playerId Int
+  player   Player @relation(fields: [playerId], references: [id])
+
+  invitedById Int
+  invitedBy   User @relation(fields: [invitedById], references: [id])
+
+  status String @default("pending") // "pending", "accepted", "rejected"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, playerId])
+  @@index([teamId])
+  @@index([playerId])
+  @@index([status])
+}
+
+model LeagueRegistration {
+  id       Int    @id @default(autoincrement())
+  teamId   Int
+  team     Team   @relation(fields: [teamId], references: [id])
+
+  seasonId Int
+  season   Season @relation(fields: [seasonId], references: [id])
+
+  registeredById Int
+  registeredBy   User @relation(fields: [registeredById], references: [id])
+
+  status String @default("pending") // "pending", "approved", "rejected"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, seasonId])
+  @@index([teamId])
+  @@index([seasonId])
+  @@index([status])
 }
 
 model Substitution {
