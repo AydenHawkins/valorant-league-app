@@ -358,6 +358,26 @@ exports.Prisma.TeamRosterScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TeamInvitationScalarFieldEnum = {
+  id: 'id',
+  teamId: 'teamId',
+  playerId: 'playerId',
+  invitedById: 'invitedById',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LeagueRegistrationScalarFieldEnum = {
+  id: 'id',
+  teamId: 'teamId',
+  seasonId: 'seasonId',
+  registeredById: 'registeredById',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SubstitutionScalarFieldEnum = {
   id: 'id',
   matchId: 'matchId',
@@ -406,6 +426,8 @@ exports.Prisma.ModelName = {
   RoundTeamStats: 'RoundTeamStats',
   Kill: 'Kill',
   TeamRoster: 'TeamRoster',
+  TeamInvitation: 'TeamInvitation',
+  LeagueRegistration: 'LeagueRegistration',
   Substitution: 'Substitution'
 };
 
