@@ -28,8 +28,10 @@ model User {
 
   ownedTeams Team[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  teamInvitations     TeamInvitation[]
+  leagueRegistrations LeagueRegistration[]
 
   @@index([username])
   @@index([email])
@@ -108,8 +110,9 @@ model Season {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  series      Series[]
-  teamRosters TeamRoster[]
+  series              Series[]
+  teamRosters         TeamRoster[]
+  leagueRegistrations LeagueRegistration[]
 
   @@unique([leagueId, name])
   @@index([startDate])
@@ -133,6 +136,8 @@ model Team {
   substitutions       Substitution[]
   roundStats          RoundTeamStats[]
   matchParticipations MatchParticipation[]
+  teamInvitations     TeamInvitation[]
+  leagueRegistrations LeagueRegistration[]
 
   @@index([name])
   @@index([ownerId])
@@ -163,6 +168,7 @@ model Player {
   deaths              Kill[]               @relation("Victim")
   killAssists         Kill[]               @relation("Assistant")
   matchParticipations MatchParticipation[]
+  teamInvitations     TeamInvitation[]
 
   @@unique([name, tag])
   @@index([puuid])
@@ -540,6 +546,50 @@ model TeamRoster {
   @@index([playerId])
   @@index([seasonId])
   @@index([seasonId, isCaptain])
+}
+
+model TeamInvitation {
+  id     Int  @id @default(autoincrement())
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  playerId Int
+  player   Player @relation(fields: [playerId], references: [id])
+
+  invitedById Int
+  invitedBy   User @relation(fields: [invitedById], references: [id])
+
+  status String @default("pending") // "pending", "accepted", "rejected"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, playerId])
+  @@index([teamId])
+  @@index([playerId])
+  @@index([status])
+}
+
+model LeagueRegistration {
+  id     Int  @id @default(autoincrement())
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  seasonId Int
+  season   Season @relation(fields: [seasonId], references: [id])
+
+  registeredById Int
+  registeredBy   User @relation(fields: [registeredById], references: [id])
+
+  status String @default("pending") // "pending", "approved", "rejected"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, seasonId])
+  @@index([teamId])
+  @@index([seasonId])
+  @@index([status])
 }
 
 model Substitution {
